@@ -1,0 +1,15 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "aliariff.auto-add-brackets",
+    "formulahendry.auto-close-tag",
+    "steoates.autoimport",
+    "formulahendry.auto-rename-tag",
+    "dbaeumer.vscode-eslint",
+    "rohit-gohri.format-code-action",
+    "andys8.jest-snippets",
+    "nrwl.angular-console",
+    "prisma.prisma",
+    "firsttris.vscode-jest-runner"
+  ]
+}

@@ -1,0 +1,87 @@
+{
+  "workbench.colorCustomizations": {
+    "focusBorder": "#ee335500",
+    "tab.activeBorderTop": "#ff000000"
+  },
+  "editor.bracketPairColorization.enabled": true,
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": [
+      "source.organizeImports",
+      "source.formatDocument",
+      "source.fixAll.eslint"
+    ]
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": [
+      "source.organizeImports",
+      "source.formatDocument",
+      "source.fixAll.eslint"
+    ]
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": [
+      "source.organizeImports",
+      "source.formatDocument",
+      "source.fixAll.eslint"
+    ]
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": [
+      "source.organizeImports",
+      "source.formatDocument",
+      "source.fixAll.eslint"
+    ]
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": [
+      "source.formatDocument",
+      "source.fixAll.eslint"
+    ]
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": ["source.formatDocument"]
+  },
+  "editor.formatOnSave": false,
+  "explorer.confirmDragAndDrop": false,
+  "explorer.confirmDelete": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "workbench.startupEditor": "none",
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/node_modules": true,
+    // "**/.vscode": true,
+    ".husky": true,
+    "**/.gitkeep": true,
+    "**/.turbo": true,
+    "**/.next": true,
+    "**/dist": true
+  },
+  "search.exclude": {
+    "./.nx-container": true,
+    "**/node_modules": true
+  },
+  "files.associations": {
+    "*.xml": "html",
+    "*.svg": "html",
+    "*.css": "css"
+  },
+  "editor.tabSize": 2,
+  "editor.foldingMaximumRegions": 65000,
+  "explorer.compactFolders": false,
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma",
+    "editor.codeActionsOnSave": ["source.formatDocument"]
+  }
+}

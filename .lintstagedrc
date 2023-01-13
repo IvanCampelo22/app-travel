@@ -1,0 +1,8 @@
+{
+  "*.{js,ts,css,scss,postcss,md,json,tsx}": [
+    "prettier --write --plugin-search-dir=.",
+    "prettier --check --plugin-search-dir=."
+  ],
+  "*.{js,ts,tsx}": "eslint --max-warnings=0 --no-ignore",
+  "*": "yarn test"
+}

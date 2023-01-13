@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator zod {
+  provider                = "zod-prisma-types"
+  output                  = "../../../common/schemas/src"
+  useInstanceOfForDecimal = true
+}
+
+model Tenant {
+  id                BigInt    @id @default(autoincrement())
+  name              String    @db.VarChar(64)
+  dobName           String?   @db.VarChar(64)
+  taxId             String?   @db.VarChar(30)
+  /// @zod.string.email()
+  email             String    @db.VarChar(64)
+  phone             String?   @db.VarChar(32)
+  mobilePhone       String?   @db.VarChar(64)
+  contactPrefix     String?   @db.VarChar(6)
+  contactFirstName  String?   @db.VarChar(32)
+  contactMiddleName String?   @db.VarChar(32)
+  contactLastName   String?   @db.VarChar(32)
+  brandUrl          String?
+  ownerUserId       String?
+  countryCode       String?   @db.VarChar(2)
+  currencyCode      String?   @db.VarChar(3)
+  locale            String?   @db.VarChar(6)
+  isActive          Boolean?  @default(true)
+  /// @zod.custom.omit([model, input])
+  createdAt         DateTime? @default(now())
+  /// @zod.custom.omit([model, input])
+  updatedAt         DateTime? @updatedAt
+  Account           Account[]
+}
+
+model Account {
+  id       BigInt  @id @default(autoincrement())
+  name     String  @db.VarChar(64)
+  dobName  String? @db.VarChar(64)
+  taxId    String? @db.VarChar(30)
+  /// @zod.string.email()
+  email    String  @db.VarChar(64)
+  tenant   Tenant  @relation(fields: [tenantId], references: [id])
+  tenantId BigInt
+}
