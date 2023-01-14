@@ -1,3 +1,3 @@
-import { LoginHandler } from '@web-auth';
+import { LoginHandler } from '@web-auth'
 
-export default LoginHandler;
+export default LoginHandler

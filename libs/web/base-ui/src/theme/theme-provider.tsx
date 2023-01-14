@@ -1,14 +1,14 @@
-import { MantineProvider } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
-import { GlobalStyles } from './global-styles';
-import { customTheme } from './theme';
+import { MantineProvider } from '@mantine/core'
+import { NotificationsProvider } from '@mantine/notifications'
+import { GlobalStyles } from './global-styles'
+import { customTheme } from './theme'
 
 type ThemeProviderProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 const ThemeProvider = (props: ThemeProviderProps) => {
-  const { children } = props;
+  const { children } = props
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS theme={customTheme}>
       <GlobalStyles />
@@ -16,7 +16,7 @@ const ThemeProvider = (props: ThemeProviderProps) => {
         {children}
       </NotificationsProvider>
     </MantineProvider>
-  );
-};
+  )
+}
 
-export { ThemeProvider };
+export { ThemeProvider }

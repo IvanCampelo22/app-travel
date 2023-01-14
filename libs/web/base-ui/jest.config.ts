@@ -5,9 +5,9 @@ export default {
   transform: {
     '^.+\\.[tj]sx?$': [
       '@swc/jest',
-      { jsc: { transform: { react: { runtime: 'automatic' } } } },
-    ],
+      { jsc: { transform: { react: { runtime: 'automatic' } } } }
+    ]
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/web/base-ui',
-};
+  coverageDirectory: '../../../coverage/libs/web/base-ui'
+}

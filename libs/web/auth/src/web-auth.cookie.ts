@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import Iron from '@hapi/iron';
-import { deleteCookie, getCookie, setCookie } from 'cookies-next';
-import { authEnvironment } from './web-auth.environment';
-import { CookieProps } from './web-auth.types';
-const psl = require('psl');
+import Iron from '@hapi/iron'
+import { deleteCookie, getCookie, setCookie } from 'cookies-next'
+import { authEnvironment } from './web-auth.environment'
+import { CookieProps } from './web-auth.types'
+const psl = require('psl')
 
 class WebAuthCookie<T> {
-  private _encrypted: string;
-  private _decrypted: T;
+  private _encrypted: string
+  private _decrypted: T
 
   constructor(private readonly props: CookieProps) {}
 
@@ -16,8 +16,8 @@ class WebAuthCookie<T> {
       value,
       authEnvironment.sessionSecret,
       Iron.defaults
-    );
-    return this._encrypted;
+    )
+    return this._encrypted
   }
 
   public async decrypt<C extends T>(): Promise<T> {
@@ -25,13 +25,13 @@ class WebAuthCookie<T> {
       this._encrypted,
       authEnvironment.sessionSecret,
       Iron.defaults
-    )) as C;
-    return this._decrypted;
+    )) as C
+    return this._decrypted
   }
 
   public persist() {
-    const { name, maxAge, req, res } = this.props;
-    const domain = psl.parse(req.headers.host).domain;
+    const { name, maxAge, req, res } = this.props
+    const domain = psl.parse(req.headers.host).domain
     setCookie(name.toString(), this._encrypted, {
       req,
       res,
@@ -40,29 +40,29 @@ class WebAuthCookie<T> {
       path: '/',
       sameSite: 'lax',
       domain,
-      maxAge: maxAge || 900,
-    });
+      maxAge: maxAge || 900
+    })
   }
 
   public extract() {
-    const { name, req, res } = this.props;
-    const value = getCookie(name.toString(), { req, res });
+    const { name, req, res } = this.props
+    const value = getCookie(name.toString(), { req, res })
     if (value) {
-      this._encrypted = value as string;
-      return this;
+      this._encrypted = value as string
+      return this
     }
-    throw new Error('Cookie not found');
+    throw new Error('Cookie not found')
   }
 
   public remove() {
-    const { name, req, res } = this.props;
-    const domain = psl.parse(req.headers.host).domain;
-    deleteCookie(name, { req, res, path: '/', domain });
+    const { name, req, res } = this.props
+    const domain = psl.parse(req.headers.host).domain
+    deleteCookie(name, { req, res, path: '/', domain })
   }
 
   public getEncrypted() {
-    return this._encrypted;
+    return this._encrypted
   }
 }
 
-export { WebAuthCookie };
+export { WebAuthCookie }

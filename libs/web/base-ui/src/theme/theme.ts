@@ -1,17 +1,12 @@
-import { MantineThemeOverride } from '@mantine/core';
-import { Fira_Sans_Condensed } from '@next/font/google';
+import { MantineThemeOverride } from '@mantine/core'
 
-const defaultFont = Fira_Sans_Condensed({
-  weight: ['300', '400', '500', '600', '700'],
-  style: 'normal',
-  subsets: ['latin'],
-});
+// const defaultFont = Fira_Sans_Condensed({
+//   weight: ['300', '400', '500', '600', '700'],
+//   style: 'normal',
+//   subsets: ['latin']
+// })
 
 const customTheme: MantineThemeOverride = {
-  fontFamily: defaultFont.style.fontFamily,
-  headings: {
-    fontFamily: defaultFont.style.fontFamily,
-  },
   colors: {
     gray: [
       '#F9FAFB',
@@ -23,7 +18,7 @@ const customTheme: MantineThemeOverride = {
       '#475467',
       '#344054',
       '#1D2939',
-      '#101828',
+      '#101828'
     ],
     red: [
       '#FEF3F2',
@@ -35,7 +30,7 @@ const customTheme: MantineThemeOverride = {
       '#D92D20',
       '#B42318',
       '#912018',
-      '#7A271A',
+      '#7A271A'
     ],
     yellow: [
       '#FFFAEB',
@@ -47,7 +42,7 @@ const customTheme: MantineThemeOverride = {
       '#DC6803',
       '#B54708',
       '#93370D',
-      '#7A2E0E',
+      '#7A2E0E'
     ],
     green: [
       '#ECFDF3',
@@ -59,7 +54,7 @@ const customTheme: MantineThemeOverride = {
       '#039855',
       '#027A48',
       '#05603A',
-      '#054F31',
+      '#054F31'
     ],
     blue: [
       '#EFF8FF',
@@ -71,8 +66,8 @@ const customTheme: MantineThemeOverride = {
       '#1570EF',
       '#175CD3',
       '#1849A9',
-      '#194185',
-    ],
+      '#194185'
+    ]
   },
   components: {
     Input: {
@@ -81,12 +76,12 @@ const customTheme: MantineThemeOverride = {
           boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)',
           border: '1px solid #D0D5DD',
           ':focus': {
-            boxShadow: `0 0 0 1px ${theme.colors.blue[8]}`,
-          },
-        },
-      }),
-    },
-  },
-};
+            boxShadow: `0 0 0 1px ${theme.colors.blue[8]}`
+          }
+        }
+      })
+    }
+  }
+}
 
-export { customTheme };
+export { customTheme }

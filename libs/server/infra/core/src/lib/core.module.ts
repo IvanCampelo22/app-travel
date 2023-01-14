@@ -1,6 +1,6 @@
-import { Global, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { DatabaseConfig } from './configurations/database.config';
+import { Global, Module } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { DatabaseConfig } from './configurations/database.config'
 
 @Global()
 @Module({
@@ -9,10 +9,10 @@ import { DatabaseConfig } from './configurations/database.config';
       isGlobal: true,
       ignoreEnvFile: true,
       cache: true,
-      load: [DatabaseConfig],
-    }),
+      load: [DatabaseConfig]
+    })
   ],
   providers: [],
-  exports: [],
+  exports: []
 })
 export class CoreModule {}

@@ -9,9 +9,9 @@ if (
   typeof globalThis.TextEncoder === 'undefined' ||
   typeof globalThis.TextDecoder === 'undefined'
 ) {
-  const utils = require('util');
-  globalThis.TextEncoder = utils.TextEncoder;
-  globalThis.TextDecoder = utils.TextDecoder;
+  const utils = require('util')
+  globalThis.TextEncoder = utils.TextEncoder
+  globalThis.TextDecoder = utils.TextDecoder
 }
 
 // // Node.js doesn't support Blob or File, so we're polyfilling those with
@@ -26,4 +26,4 @@ if (
 //   globalThis.File = stdFile.File;
 // }
 
-export {};
+export {}

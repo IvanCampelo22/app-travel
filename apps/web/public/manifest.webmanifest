@@ -1,0 +1,12 @@
+{
+  "name": "Viagem10",
+  "icons": [
+    { "src": "/icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "/icons/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "background_color": "#fff",
+  "display": "fullscreen",
+  "start_url": "/",
+  "theme_color": "#fff",
+  "description": "Viagem10 é a melhor e mais completa plataforma de viagem"
+}

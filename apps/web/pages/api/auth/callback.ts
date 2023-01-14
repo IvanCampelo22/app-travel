@@ -1,3 +1,3 @@
-import { CallbackHandler } from '@web-auth';
+import { CallbackHandler } from '@web-auth'
 
-export default CallbackHandler;
+export default CallbackHandler

@@ -5,10 +5,10 @@ export default {
   transform: {
     '^.+\\.[tj]sx?$': [
       '@swc/jest',
-      { jsc: { transform: { react: { runtime: 'automatic' } } } },
-    ],
+      { jsc: { transform: { react: { runtime: 'automatic' } } } }
+    ]
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../../coverage/libs/web/auth',
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-};
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.ts']
+}

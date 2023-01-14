@@ -1,4 +1,4 @@
-import * as environment from 'env-var';
+import * as environment from 'env-var'
 
 const authEnvironment = {
   backPath: '/admin',
@@ -12,8 +12,8 @@ const authEnvironment = {
       .required()
       .asString(),
     redirect_uris: [environment.get('AUTH_REDIRECT_URI').required().asString()],
-    response_types: ['code'],
-  },
-};
+    response_types: ['code']
+  }
+}
 
-export { authEnvironment };
+export { authEnvironment }

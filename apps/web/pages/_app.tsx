@@ -1,18 +1,10 @@
-import { AppProps } from 'next/app';
-import Head from 'next/head';
-import './styles.css';
+import { AppPropsWithLayout, ThemeProvider } from '@web/base-ui'
 
-function CustomApp({ Component, pageProps }: AppProps) {
-  return (
-    <>
-      <Head>
-        <title>Welcome to web!</title>
-      </Head>
-      <main className="app">
-        <Component {...pageProps} />
-      </main>
-    </>
-  );
+function App({ Component, pageProps }: AppPropsWithLayout) {
+  const layout = Component.getLayout ?? ((page) => page)
+  const element = layout(<Component {...pageProps} />)
+
+  return <ThemeProvider>{element}</ThemeProvider>
 }
 
-export default CustomApp;
+export default App
