@@ -10,7 +10,7 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2017", "dom", "ES2021"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "strictPropertyInitialization": false,
@@ -23,7 +23,9 @@
       "@server/database": ["libs/server/infra/database/src/index.ts"],
       "@server/tenant": ["libs/server/tenant/src/index.ts"],
       "@web/auth": ["libs/web/auth/src/index.ts"],
-      "@web/base-ui": ["libs/web/base-ui/src/index.ts"]
+      "@web/base-ui": ["libs/web/base-ui/src/index.ts"],
+      "@web/money-input": ["libs/web/money-input/src/index.ts"],
+      "@web/phone-input": ["libs/web/phone-input/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

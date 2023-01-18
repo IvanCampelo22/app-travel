@@ -4,7 +4,7 @@ import { WebAuthCookie } from './web-auth.cookie'
 import { authEnvironment } from './web-auth.environment'
 import { CookieNames, State } from './web-auth.types'
 
-async function LoginHandler(req: NextApiRequest, res: NextApiResponse) {
+async function loginHandler(req: NextApiRequest, res: NextApiResponse) {
   const webAuth = await WebAuthClient.getInstance()
   const backPath = (req.query.backPath as string) || authEnvironment.backPath
   const { code_verifier, code_challenge } = webAuth.generatePkce()
@@ -24,4 +24,4 @@ async function LoginHandler(req: NextApiRequest, res: NextApiResponse) {
   res.redirect(authorizationUrl)
 }
 
-export { LoginHandler }
+export { loginHandler }

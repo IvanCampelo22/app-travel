@@ -5,7 +5,7 @@ import { authEnvironment } from './web-auth.environment'
 import { WebAuthSession } from './web-auth.session'
 import { CookieNames, State } from './web-auth.types'
 
-const CallbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
+const callbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   const webAuth = await WebAuthClient.getInstance()
   const name = CookieNames.STATE
   const stateCookie = new WebAuthCookie<State>({ name, req, res })
@@ -31,4 +31,4 @@ const CallbackHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.redirect(state)
 }
 
-export { CallbackHandler }
+export { callbackHandler }

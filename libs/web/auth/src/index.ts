@@ -1,3 +1,3 @@
-export { CallbackHandler } from './web-auth.callback'
+export { callbackHandler } from './web-auth.callback'
 export { WebAuthClient } from './web-auth.client'
-export { LoginHandler } from './web-auth.login'
+export { loginHandler } from './web-auth.login'
