@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import { TextInput, TextInputProps } from '@mantine/core'
 import React, { KeyboardEvent, useRef } from 'react'
-import { PhoneNumberUtils } from '../utils/phone-input.utils'
+import { PhoneNumberUtils } from './phone-input.utils'
 
 interface PhoneInputProps extends TextInputProps {
   countryCode: string
