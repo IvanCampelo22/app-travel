@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom'
 import { fireEvent, screen } from '@testing-library/react'
 import { renderWithTheme } from '@web/base-ui'
-import { MoneyInput } from './money-input'
+import { MoneyInput } from '../lib/money-input'
 
 describe('MoneyInput', () => {
   it('should render R$ 0,00 on focus', () => {
