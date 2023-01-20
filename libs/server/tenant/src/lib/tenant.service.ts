@@ -18,4 +18,22 @@ export class TenantService {
 
     return this.db.tenant.create({ ...input })
   }
+
+  async findMany() {
+    return await this.db.tenant.findMany()
+  }
+
+  async update(params: Prisma.TenantUpdateArgs) {
+    return await this.db.tenant.update({
+      ...params
+    })
+  }
+  async deactivate(id: bigint, isActive: false) {
+    return await this.db.tenant.update({
+      where: { id },
+      data: {
+        isActive
+      }
+    })
+  }
 }
