@@ -8,22 +8,15 @@ interface PhoneInputProps extends TextInputProps {
 }
 
 const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
-  ({ countryCode, ...others }: PhoneInputProps, ref) => {
-    const numbers: number[] = []
-    const numbersRef = useRef(numbers)
-    const digits = Array(10)
-      .fill(0)
-      .map((_, i) => `${i}`)
+  ({ countryCode, placeholder, ...others }: PhoneInputProps, ref) => {
+    const numbersRef = useRef<number[]>([])
 
     const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
       const { key } = event
 
-      if (
-        key === PhoneNumberUtils.BACKSPACE ||
-        key === PhoneNumberUtils.DELETE
-      ) {
+      if (PhoneNumberUtils.BACKSPACE_OR_DELETE.includes(key)) {
         numbersRef.current.pop()
-      } else if (digits.includes(key)) {
+      } else if (PhoneNumberUtils.DIGITS.includes(key)) {
         numbersRef.current.push(Number(key))
 
         if (PhoneNumberUtils.isTooLong(numbersRef.current, countryCode))
@@ -34,11 +27,13 @@ const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
         numbersRef.current,
         countryCode
       )
+      event.preventDefault()
     }
 
     return (
       <TextInput
         {...others}
+        placeholder={placeholder ? placeholder : 'Phone'}
         size="md"
         autoComplete="off"
         onKeyDown={handleKeyDown}
