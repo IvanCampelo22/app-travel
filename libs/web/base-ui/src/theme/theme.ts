@@ -65,6 +65,18 @@ const customTheme = (fontFamily: string): MantineThemeOverride => ({
       '#175CD3',
       '#1849A9',
       '#194185'
+    ],
+    blueGray: [
+      '#F8F9FC',
+      '#EAECF5',
+      '#D5D9EB',
+      '#AFB5D9',
+      '#717BBC',
+      '#4E5BA6',
+      '#3E4784',
+      '#363F72',
+      '#293056',
+      '#101323'
     ]
   },
   primaryColor: 'blue',
