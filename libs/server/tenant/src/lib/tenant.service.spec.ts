@@ -19,6 +19,7 @@ describe('Tenant Service', () => {
   })
 
   beforeEach(async () => {
+    await db.account.deleteMany({})
     await db.tenant.deleteMany({})
   })
 
@@ -63,6 +64,7 @@ describe('Tenant Service', () => {
       expect(tenant.length).toBe(2)
     })
   })
+
   describe('update', () => {
     it('should update a tenant object', async () => {
       const input: Prisma.TenantCreateArgs = {
