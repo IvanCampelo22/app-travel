@@ -40,12 +40,13 @@ model Tenant {
 }
 
 model Account {
-  id       BigInt  @id @default(autoincrement())
-  name     String  @db.VarChar(64)
-  dobName  String? @db.VarChar(64)
-  taxId    String? @db.VarChar(30)
+  id       BigInt   @id @default(autoincrement())
+  name     String   @db.VarChar(64)
+  dobName  String?  @db.VarChar(64)
+  taxId    String?  @db.VarChar(30)
   /// @zod.string.email()
-  email    String  @db.VarChar(64)
-  tenant   Tenant  @relation(fields: [tenantId], references: [id])
+  email    String   @db.VarChar(64)
+  isActive Boolean? @default(true)
+  tenant   Tenant   @relation(fields: [tenantId], references: [id])
   tenantId BigInt
 }

@@ -65,6 +65,7 @@ export const AccountSchema = z.object({
   dobName: z.string().nullish(),
   taxId: z.string().nullish(),
   email: z.string().email(),
+  isActive: z.boolean().nullish(),
   tenantId: z.bigint()
 })
 
@@ -163,6 +164,7 @@ export const AccountSelectSchema: z.ZodType<PrismaClient.Prisma.AccountSelect> =
       dobName: z.boolean().optional(),
       taxId: z.boolean().optional(),
       email: z.boolean().optional(),
+      isActive: z.boolean().optional(),
       tenant: z.union([z.boolean(), z.lazy(() => TenantArgsSchema)]).optional(),
       tenantId: z.boolean().optional()
     })
@@ -500,6 +502,10 @@ export const AccountWhereInputSchema: z.ZodType<PrismaClient.Prisma.AccountWhere
         .optional()
         .nullable(),
       email: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+      isActive: z
+        .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
+        .optional()
+        .nullable(),
       tenant: z
         .union([
           z.lazy(() => TenantRelationFilterSchema),
@@ -520,6 +526,7 @@ export const AccountOrderByWithRelationInputSchema: z.ZodType<PrismaClient.Prism
       dobName: z.lazy(() => SortOrderSchema).optional(),
       taxId: z.lazy(() => SortOrderSchema).optional(),
       email: z.lazy(() => SortOrderSchema).optional(),
+      isActive: z.lazy(() => SortOrderSchema).optional(),
       tenant: z.lazy(() => TenantOrderByWithRelationInputSchema).optional(),
       tenantId: z.lazy(() => SortOrderSchema).optional()
     })
@@ -540,6 +547,7 @@ export const AccountOrderByWithAggregationInputSchema: z.ZodType<PrismaClient.Pr
       dobName: z.lazy(() => SortOrderSchema).optional(),
       taxId: z.lazy(() => SortOrderSchema).optional(),
       email: z.lazy(() => SortOrderSchema).optional(),
+      isActive: z.lazy(() => SortOrderSchema).optional(),
       tenantId: z.lazy(() => SortOrderSchema).optional(),
       _count: z.lazy(() => AccountCountOrderByAggregateInputSchema).optional(),
       _avg: z.lazy(() => AccountAvgOrderByAggregateInputSchema).optional(),
@@ -591,6 +599,13 @@ export const AccountScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient
       email: z
         .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
         .optional(),
+      isActive: z
+        .union([
+          z.lazy(() => BoolNullableWithAggregatesFilterSchema),
+          z.boolean()
+        ])
+        .optional()
+        .nullable(),
       tenantId: z
         .union([z.lazy(() => BigIntWithAggregatesFilterSchema), z.bigint()])
         .optional()
@@ -1183,6 +1198,7 @@ export const AccountCreateInputSchema: z.ZodType<PrismaClient.Prisma.AccountCrea
       dobName: z.string().optional().nullable(),
       taxId: z.string().optional().nullable(),
       email: z.string().email(),
+      isActive: z.boolean().optional().nullable(),
       tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountInputSchema)
     })
     .strict()
@@ -1195,6 +1211,7 @@ export const AccountUncheckedCreateInputSchema: z.ZodType<PrismaClient.Prisma.Ac
       dobName: z.string().optional().nullable(),
       taxId: z.string().optional().nullable(),
       email: z.string().email(),
+      isActive: z.boolean().optional().nullable(),
       tenantId: z.bigint()
     })
     .strict()
@@ -1234,6 +1251,13 @@ export const AccountUpdateInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpda
           z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
         .optional(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       tenant: z
         .lazy(() => TenantUpdateOneRequiredWithoutAccountNestedInputSchema)
         .optional()
@@ -1275,6 +1299,13 @@ export const AccountUncheckedUpdateInputSchema: z.ZodType<PrismaClient.Prisma.Ac
           z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
         .optional(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       tenantId: z
         .union([
           z.bigint(),
@@ -1292,6 +1323,7 @@ export const AccountCreateManyInputSchema: z.ZodType<PrismaClient.Prisma.Account
       dobName: z.string().optional().nullable(),
       taxId: z.string().optional().nullable(),
       email: z.string().email(),
+      isActive: z.boolean().optional().nullable(),
       tenantId: z.bigint()
     })
     .strict()
@@ -1330,7 +1362,14 @@ export const AccountUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma
           z.string().email(),
           z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
+        .optional(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
         .optional()
+        .nullable()
     })
     .strict()
 
@@ -1369,6 +1408,13 @@ export const AccountUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prism
           z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
         .optional(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       tenantId: z
         .union([
           z.bigint(),
@@ -1699,6 +1745,7 @@ export const AccountCountOrderByAggregateInputSchema: z.ZodType<PrismaClient.Pri
       dobName: z.lazy(() => SortOrderSchema).optional(),
       taxId: z.lazy(() => SortOrderSchema).optional(),
       email: z.lazy(() => SortOrderSchema).optional(),
+      isActive: z.lazy(() => SortOrderSchema).optional(),
       tenantId: z.lazy(() => SortOrderSchema).optional()
     })
     .strict()
@@ -1719,6 +1766,7 @@ export const AccountMaxOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prism
       dobName: z.lazy(() => SortOrderSchema).optional(),
       taxId: z.lazy(() => SortOrderSchema).optional(),
       email: z.lazy(() => SortOrderSchema).optional(),
+      isActive: z.lazy(() => SortOrderSchema).optional(),
       tenantId: z.lazy(() => SortOrderSchema).optional()
     })
     .strict()
@@ -1731,6 +1779,7 @@ export const AccountMinOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prism
       dobName: z.lazy(() => SortOrderSchema).optional(),
       taxId: z.lazy(() => SortOrderSchema).optional(),
       email: z.lazy(() => SortOrderSchema).optional(),
+      isActive: z.lazy(() => SortOrderSchema).optional(),
       tenantId: z.lazy(() => SortOrderSchema).optional()
     })
     .strict()
@@ -2285,7 +2334,8 @@ export const AccountCreateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prism
       name: z.string(),
       dobName: z.string().optional().nullable(),
       taxId: z.string().optional().nullable(),
-      email: z.string()
+      email: z.string(),
+      isActive: z.boolean().optional().nullable()
     })
     .strict()
 
@@ -2296,7 +2346,8 @@ export const AccountUncheckedCreateWithoutTenantInputSchema: z.ZodType<PrismaCli
       name: z.string(),
       dobName: z.string().optional().nullable(),
       taxId: z.string().optional().nullable(),
-      email: z.string()
+      email: z.string(),
+      isActive: z.boolean().optional().nullable()
     })
     .strict()
 
@@ -2386,6 +2437,10 @@ export const AccountScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma.Accoun
         .optional()
         .nullable(),
       email: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
+      isActive: z
+        .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
+        .optional()
+        .nullable(),
       tenantId: z
         .union([z.lazy(() => BigIntFilterSchema), z.bigint()])
         .optional()
@@ -2746,7 +2801,8 @@ export const AccountCreateManyTenantInputSchema: z.ZodType<PrismaClient.Prisma.A
       name: z.string(),
       dobName: z.string().optional().nullable(),
       taxId: z.string().optional().nullable(),
-      email: z.string().email()
+      email: z.string().email(),
+      isActive: z.boolean().optional().nullable()
     })
     .strict()
 
@@ -2784,7 +2840,14 @@ export const AccountUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prism
           z.string(),
           z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
+        .optional(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
         .optional()
+        .nullable()
     })
     .strict()
 
@@ -2822,7 +2885,14 @@ export const AccountUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaCli
           z.string(),
           z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
+        .optional(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
         .optional()
+        .nullable()
     })
     .strict()
 
@@ -2860,7 +2930,14 @@ export const AccountUncheckedUpdateManyWithoutAccountInputSchema: z.ZodType<Pris
           z.string().email(),
           z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
+        .optional(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
         .optional()
+        .nullable()
     })
     .strict()
 
