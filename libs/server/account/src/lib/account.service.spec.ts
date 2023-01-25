@@ -110,15 +110,18 @@ describe('Account Service', () => {
 
       const accountCreateArgs: Prisma.AccountCreateArgs = {
         data: {
-          tenantId: tenantId,
+          tenantId,
           name: 'account1',
           email: 'account1@gmail.com'
         }
       }
 
-      const { id: accountId } = await db.account.create(accountCreateArgs)
-      const account = await accountService.deactivate(accountId, false)
+      const { id: accountId, isActive } = await db.account.create(
+        accountCreateArgs
+      )
+      expect(isActive).toBeTruthy()
 
+      const account = await accountService.deactivate(accountId, false)
       expect(account.isActive).toBe(false)
     })
   })
