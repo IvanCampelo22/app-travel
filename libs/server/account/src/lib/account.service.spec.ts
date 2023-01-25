@@ -18,34 +18,32 @@ describe('Account Service', () => {
     db = moduleRef.get<DatabaseService>(DatabaseService)
   })
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await db.account.deleteMany({})
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await db.$disconnect()
   })
 
   describe('create', () => {
     it('should save and return a account object', async () => {
-      const inputTenant: Prisma.TenantCreateArgs = {
+      const tenantInput: Prisma.TenantCreateArgs = {
         data: {
           name: 'tenant1',
           email: 'tenant1@gmail.com'
         }
       }
-      await db.tenant.create(inputTenant)
-      const objs = await db.tenant.findFirst()
+      const { id: tenantId } = await db.tenant.create(tenantInput)
 
-      const input: Prisma.AccountCreateArgs = {
+      const accountInput: Prisma.AccountCreateArgs = {
         data: {
-          tenantId: objs!.id,
+          tenantId,
           name: 'Account1',
           email: 'account1@gmail.com'
         }
       }
-
-      const account = await accountService.create(input)
+      const account = await accountService.create(accountInput)
 
       expect(account.email).toBe('account1@gmail.com')
     })
@@ -53,29 +51,35 @@ describe('Account Service', () => {
 
   describe('findMany', () => {
     it('should find all account objects', async () => {
-      const inputTenant: Prisma.TenantCreateArgs = {
+      const tenantCreateArgs: Prisma.TenantCreateArgs = {
         data: {
           name: 'tenant1',
           email: 'tenant1@gmail.com'
         }
       }
 
-      await db.tenant.create(inputTenant)
-      const objs = await db.tenant.findFirst()
+      const { id: tenantId } = await db.tenant.create(tenantCreateArgs)
 
-      const input1: Prisma.AccountCreateArgs = {
-        data: {
-          tenantId: objs!.id,
-          name: 'Account1',
-          email: 'account1@gmail.com'
-        }
+      const accountCreateArgs: Prisma.AccountCreateManyArgs = {
+        data: [
+          {
+            tenantId,
+            name: 'Account1',
+            email: 'account1@gmail.com'
+          },
+          {
+            tenantId,
+            name: 'Account2',
+            email: 'account2@gmail.com'
+          }
+        ]
       }
 
-      await db.account.create(input1)
+      await db.account.createMany(accountCreateArgs)
 
       const input2: Prisma.AccountCreateArgs = {
         data: {
-          tenantId: objs!.id,
+          tenantId,
           name: 'Account2',
           email: 'account2@gmail.com'
         }
@@ -87,6 +91,7 @@ describe('Account Service', () => {
       expect(accountObjs.length).toBe(2)
     })
   })
+
   describe('update', () => {
     it('should update a object account', async () => {
       const inputTenant: Prisma.TenantCreateArgs = {
@@ -127,20 +132,18 @@ describe('Account Service', () => {
           email: 'tenant1@gmail.com'
         }
       }
-      await db.tenant.create(inputTenant)
-      const objs = await db.tenant.findFirst()
+      const { id: tenantId } = await db.tenant.create(inputTenant)
 
       const inputAccount: Prisma.AccountCreateArgs = {
         data: {
-          tenantId: objs!.id,
+          tenantId: tenantId,
           name: 'account1',
           email: 'account1@gmail.com'
         }
       }
-      await db.account.create(inputAccount)
-      const objsAccount = await db.account.findFirst()
+      const { id: accountId } = await db.account.create(inputAccount)
 
-      const account = await accountService.deactivate(objsAccount!.id, false)
+      const account = await accountService.deactivate(accountId, false)
       expect(account.isActive).toBe(false)
     })
   })

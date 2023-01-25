@@ -18,25 +18,25 @@ describe('Tenant Service', () => {
     db = moduleRef.get<DatabaseService>(DatabaseService)
   })
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await db.account.deleteMany({})
     await db.tenant.deleteMany({})
   })
 
-  afterEach(async () => {
+  afterAll(async () => {
     await db.$disconnect()
   })
 
   describe('create', () => {
     it('should save and return a tenant object', async () => {
-      const input: Prisma.TenantCreateArgs = {
+      const tenantCreateArgs: Prisma.TenantCreateArgs = {
         data: {
           name: 'Tenant 1',
           email: 'tenant1@gmail.com'
         }
       }
 
-      const tenant = await tenantService.create(input)
+      const tenant = await tenantService.create(tenantCreateArgs)
 
       expect(tenant.email).toBe('tenant1@gmail.com')
     })
@@ -44,64 +44,61 @@ describe('Tenant Service', () => {
 
   describe('findMany', () => {
     it('should return all tenants objects', async () => {
-      const input1: Prisma.TenantCreateArgs = {
-        data: {
-          name: 'tenant1',
-          email: 'tenant1@gmail.com'
-        }
-      }
-      const input2: Prisma.TenantCreateArgs = {
-        data: {
-          name: 'tenant2',
-          email: 'tenant2@gmail.com'
-        }
+      const tenantCreateManyArgs: Prisma.TenantCreateManyArgs = {
+        data: [
+          {
+            name: 'tenant1',
+            email: 'tenant1@gmail.com'
+          },
+          {
+            name: 'tenant2',
+            email: 'tenant2@gmail.com'
+          }
+        ]
       }
 
-      await db.tenant.create({ ...input1 })
-      await db.tenant.create({ ...input2 })
+      await db.tenant.createMany(tenantCreateManyArgs)
+      const tenants = await tenantService.findMany()
 
-      const tenant = await tenantService.findMany()
-      expect(tenant.length).toBe(2)
+      expect(tenants.length).toBe(2)
     })
   })
 
   describe('update', () => {
     it('should update a tenant object', async () => {
-      const input: Prisma.TenantCreateArgs = {
+      const tenantCreateArgs: Prisma.TenantCreateArgs = {
         data: {
           name: 'tenant1',
           email: 'tenant1@gmail.com'
         }
       }
 
-      await tenantService.create({ ...input })
-      const obj = await db.tenant.findFirst()
+      const { id } = await tenantService.create({ ...tenantCreateArgs })
 
-      const updateTenant: Prisma.TenantUpdateArgs = {
-        where: { id: obj!.id },
+      const tenantUpdateArgs: Prisma.TenantUpdateArgs = {
+        where: { id },
         data: {
           name: 'Tenant2',
           email: 'tenant2@gmail.com'
         }
       }
-      const tenant = await tenantService.update(updateTenant)
+      const tenant = await tenantService.update(tenantUpdateArgs)
       expect(tenant.name).toBe('Tenant2')
     })
   })
 
   describe('deactivate', () => {
     it('should deactivate a tenant object', async () => {
-      const input: Prisma.TenantCreateArgs = {
+      const tenantCreateArgs: Prisma.TenantCreateArgs = {
         data: {
           name: 'tenant1',
           email: 'tenant2@gmail.com',
           isActive: true
         }
       }
-      await tenantService.create({ ...input })
-      const obj = await db.tenant.findFirst()
+      const { id } = await tenantService.create({ ...tenantCreateArgs })
+      const tenant = await tenantService.deactivate(id, false)
 
-      const tenant = await tenantService.deactivate(obj!.id, false)
       expect(tenant.isActive).toBe(false)
     })
   })
