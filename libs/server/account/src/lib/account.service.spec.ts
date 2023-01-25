@@ -1,13 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { Prisma } from '@prisma/client'
+import { Prisma, Tenant } from '@prisma/client'
 import { CoreModule } from '@server/core'
 import { DatabaseModule, DatabaseService } from '@server/database'
+
 import { AccountModule } from './account.module'
 import { AccountService } from './account.service'
 
 describe('Account Service', () => {
   let accountService: AccountService
   let db: DatabaseService
+  let tenant: Tenant
 
   beforeAll(async () => {
     const moduleRef: TestingModule = await Test.createTestingModule({
@@ -16,6 +18,13 @@ describe('Account Service', () => {
 
     accountService = moduleRef.get<AccountService>(AccountService)
     db = moduleRef.get<DatabaseService>(DatabaseService)
+
+    tenant = await db.tenant.create({
+      data: {
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      }
+    })
   })
 
   afterEach(async () => {
@@ -23,27 +32,22 @@ describe('Account Service', () => {
   })
 
   afterAll(async () => {
+    await db.tenant.deleteMany({})
     await db.$disconnect()
   })
 
   describe('create', () => {
     it('should save and return a account object', async () => {
-      const tenantInput: Prisma.TenantCreateArgs = {
-        data: {
-          name: 'tenant1',
-          email: 'tenant1@gmail.com'
-        }
-      }
-      const { id: tenantId } = await db.tenant.create(tenantInput)
+      const { id: tenantId } = tenant
 
-      const accountInput: Prisma.AccountCreateArgs = {
+      const accountCreateArgs: Prisma.AccountCreateArgs = {
         data: {
           tenantId,
           name: 'Account1',
           email: 'account1@gmail.com'
         }
       }
-      const account = await accountService.create(accountInput)
+      const account = await accountService.create(accountCreateArgs)
 
       expect(account.email).toBe('account1@gmail.com')
     })
@@ -51,14 +55,7 @@ describe('Account Service', () => {
 
   describe('findMany', () => {
     it('should find all account objects', async () => {
-      const tenantCreateArgs: Prisma.TenantCreateArgs = {
-        data: {
-          name: 'tenant1',
-          email: 'tenant1@gmail.com'
-        }
-      }
-
-      const { id: tenantId } = await db.tenant.create(tenantCreateArgs)
+      const { id: tenantId } = tenant
 
       const accountCreateArgs: Prisma.AccountCreateManyArgs = {
         data: [
@@ -76,74 +73,52 @@ describe('Account Service', () => {
       }
 
       await db.account.createMany(accountCreateArgs)
+      const accounts = await db.account.findMany()
 
-      const input2: Prisma.AccountCreateArgs = {
-        data: {
-          tenantId,
-          name: 'Account2',
-          email: 'account2@gmail.com'
-        }
-      }
-
-      await db.account.create(input2)
-
-      const accountObjs = await db.account.findMany()
-      expect(accountObjs.length).toBe(2)
+      expect(accounts.length).toBe(2)
     })
   })
 
   describe('update', () => {
     it('should update a object account', async () => {
-      const inputTenant: Prisma.TenantCreateArgs = {
-        data: {
-          name: 'tenant1',
-          email: 'tenant1@gmail.com'
-        }
-      }
-      await db.tenant.create(inputTenant)
-      const objs = await db.tenant.findFirst()
+      const { id: tenantId } = tenant
 
-      const inputAccount: Prisma.AccountCreateArgs = {
+      const accountCreateArgs: Prisma.AccountCreateArgs = {
         data: {
-          tenantId: objs!.id,
+          tenantId,
           name: 'account1',
           email: 'account1@gmail.com'
         }
       }
-      await db.account.create(inputAccount)
-      const objsAccount = await db.account.findFirst()
-      const updateAccount: Prisma.AccountUpdateArgs = {
-        where: { id: objsAccount!.id },
+      const { id } = await db.account.create(accountCreateArgs)
+      const accountUpdateArgs: Prisma.AccountUpdateArgs = {
+        where: { id },
         data: {
           name: 'account2',
           email: 'account2@gmail.com'
         }
       }
-      const account = await db.account.update(updateAccount)
+
+      const account = await db.account.update(accountUpdateArgs)
       expect(account.email).toBe('account2@gmail.com')
     })
   })
 
   describe('deactivate', () => {
     it('should deactivate a account object', async () => {
-      const inputTenant: Prisma.TenantCreateArgs = {
-        data: {
-          name: 'tenant1',
-          email: 'tenant1@gmail.com'
-        }
-      }
-      const { id: tenantId } = await db.tenant.create(inputTenant)
+      const { id: tenantId } = tenant
 
-      const inputAccount: Prisma.AccountCreateArgs = {
+      const accountCreateArgs: Prisma.AccountCreateArgs = {
         data: {
           tenantId: tenantId,
           name: 'account1',
           email: 'account1@gmail.com'
         }
       }
-      const { id: accountId } = await db.account.create(inputAccount)
 
+      const { id: accountId } = await db.account.create(accountCreateArgs)
       const account = await accountService.deactivate(accountId, false)
+
       expect(account.isActive).toBe(false)
     })
   })
