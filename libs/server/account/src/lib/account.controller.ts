@@ -8,21 +8,21 @@ export class AccountController {
 
   @Post()
   async create(@Body() input: Prisma.AccountCreateArgs) {
-    return await this.service.create(input)
+    return this.service.create(input)
   }
 
   @Get()
   async findMany() {
-    return await this.service.findMany()
+    return this.service.findMany()
   }
 
-  @Patch('id')
+  @Patch(':id')
   async update(@Param('id') id: number, params: Prisma.AccountUpdateArgs) {
-    return await this.service.update({ ...params, where: { id } })
+    return this.service.update({ ...params, where: { id } })
   }
 
   @Patch(':id')
   async remove(id: bigint, isActive: false) {
-    return await this.service.deactivate(id, isActive)
+    return this.service.deactivate(id, isActive)
   }
 }
