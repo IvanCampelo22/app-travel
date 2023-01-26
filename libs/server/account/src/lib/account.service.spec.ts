@@ -105,7 +105,7 @@ describe('Account Service', () => {
   })
 
   describe('deactivate', () => {
-    it('should deactivate a account object', async () => {
+    it('should deactivate a account model', async () => {
       const { id: tenantId } = tenant
 
       const accountCreateArgs: Prisma.AccountCreateArgs = {
