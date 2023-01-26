@@ -22,6 +22,12 @@
       "@server/core": ["libs/server/infra/core/src/index.ts"],
       "@server/database": ["libs/server/infra/database/src/index.ts"],
       "@server/tenant": ["libs/server/tenant/src/index.ts"],
+      "@viagem10-monorepo/web/horizontal-tabs": [
+        "libs/web/horizontal-tabs/src/index.ts"
+      ],
+      "@viagem10-monorepo/web/page-header": [
+        "libs/web/page-header/src/index.ts"
+      ],
       "@web/auth": ["libs/web/auth/src/index.ts"],
       "@web/base-ui": ["libs/web/base-ui/src/index.ts"],
       "@web/customer-service-resume": [
