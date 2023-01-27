@@ -289,7 +289,7 @@ model BookingProduct {
   hotelName          String?              @db.VarChar(128)
   hotelStarRating    Int?
   hotelMealPlan      HotelMealPlan?
-  stayType           StayType
+  stayType           StayType?
   isActive           Boolean?             @default(true)
   /// @zod.custom.omit([model, input])
   createdAt          DateTime?            @default(now())

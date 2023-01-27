@@ -270,6 +270,7 @@ export const BookingTrevelerSchema = z.object({
 export const BookingProductSchema = z.object({
   productType: ProductTypeSchema,
   hotelMealPlan: HotelMealPlanSchema.nullish(),
+  stayType: StayTypeSchema.nullish(),
   // omitted: id: z.bigint(),
   tenantId: z.bigint(),
   accountId: z.bigint(),
@@ -943,6 +944,7 @@ export const BookingProductSelectSchema: z.ZodType<PrismaClient.Prisma.BookingPr
       hotelName: z.boolean().optional(),
       hotelStarRating: z.boolean().optional(),
       hotelMealPlan: z.boolean().optional(),
+      stayType: z.boolean().optional(),
       isActive: z.boolean().optional(),
       createdAt: z.boolean().optional(),
       updatedAt: z.boolean().optional(),
@@ -3040,6 +3042,13 @@ export const BookingProductWhereInputSchema: z.ZodType<PrismaClient.Prisma.Booki
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => EnumStayTypeNullableFilterSchema),
+          z.lazy(() => StayTypeSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
         .optional()
@@ -3095,6 +3104,7 @@ export const BookingProductOrderByWithRelationInputSchema: z.ZodType<PrismaClien
       hotelName: z.lazy(() => SortOrderSchema).optional(),
       hotelStarRating: z.lazy(() => SortOrderSchema).optional(),
       hotelMealPlan: z.lazy(() => SortOrderSchema).optional(),
+      stayType: z.lazy(() => SortOrderSchema).optional(),
       isActive: z.lazy(() => SortOrderSchema).optional(),
       createdAt: z.lazy(() => SortOrderSchema).optional(),
       updatedAt: z.lazy(() => SortOrderSchema).optional()
@@ -3146,6 +3156,7 @@ export const BookingProductOrderByWithAggregationInputSchema: z.ZodType<PrismaCl
       hotelName: z.lazy(() => SortOrderSchema).optional(),
       hotelStarRating: z.lazy(() => SortOrderSchema).optional(),
       hotelMealPlan: z.lazy(() => SortOrderSchema).optional(),
+      stayType: z.lazy(() => SortOrderSchema).optional(),
       isActive: z.lazy(() => SortOrderSchema).optional(),
       createdAt: z.lazy(() => SortOrderSchema).optional(),
       updatedAt: z.lazy(() => SortOrderSchema).optional(),
@@ -3357,6 +3368,13 @@ export const BookingProductScalarWhereWithAggregatesInputSchema: z.ZodType<Prism
         .union([
           z.lazy(() => EnumHotelMealPlanNullableWithAggregatesFilterSchema),
           z.lazy(() => HotelMealPlanSchema)
+        ])
+        .optional()
+        .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => EnumStayTypeNullableWithAggregatesFilterSchema),
+          z.lazy(() => StayTypeSchema)
         ])
         .optional()
         .nullable(),
@@ -6778,6 +6796,10 @@ export const BookingProductCreateInputSchema: z.ZodType<
       .lazy(() => HotelMealPlanSchema)
       .optional()
       .nullable(),
+    stayType: z
+      .lazy(() => StayTypeSchema)
+      .optional()
+      .nullable(),
     isActive: z.boolean().optional().nullable()
     // omitted: createdAt: z.date().optional().nullable(),
     // omitted: updatedAt: z.date().optional().nullable(),
@@ -6854,6 +6876,10 @@ export const BookingProductUncheckedCreateInputSchema: z.ZodType<
     hotelStarRating: z.number().optional().nullable(),
     hotelMealPlan: z
       .lazy(() => HotelMealPlanSchema)
+      .optional()
+      .nullable(),
+    stayType: z
+      .lazy(() => StayTypeSchema)
       .optional()
       .nullable(),
     isActive: z.boolean().optional().nullable()
@@ -7041,6 +7067,13 @@ export const BookingProductUpdateInputSchema: z.ZodType<
       .union([
         z.lazy(() => HotelMealPlanSchema),
         z.lazy(() => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    stayType: z
+      .union([
+        z.lazy(() => StayTypeSchema),
+        z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
       ])
       .optional()
       .nullable(),
@@ -7237,6 +7270,13 @@ export const BookingProductUncheckedUpdateInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
+    stayType: z
+      .union([
+        z.lazy(() => StayTypeSchema),
+        z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -7313,6 +7353,10 @@ export const BookingProductCreateManyInputSchema: z.ZodType<
     hotelStarRating: z.number().optional().nullable(),
     hotelMealPlan: z
       .lazy(() => HotelMealPlanSchema)
+      .optional()
+      .nullable(),
+    stayType: z
+      .lazy(() => StayTypeSchema)
       .optional()
       .nullable(),
     isActive: z.boolean().optional().nullable()
@@ -7474,6 +7518,13 @@ export const BookingProductUpdateManyMutationInputSchema: z.ZodType<
       .union([
         z.lazy(() => HotelMealPlanSchema),
         z.lazy(() => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    stayType: z
+      .union([
+        z.lazy(() => StayTypeSchema),
+        z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
       ])
       .optional()
       .nullable(),
@@ -7661,6 +7712,13 @@ export const BookingProductUncheckedUpdateManyInputSchema: z.ZodType<
       .union([
         z.lazy(() => HotelMealPlanSchema),
         z.lazy(() => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    stayType: z
+      .union([
+        z.lazy(() => StayTypeSchema),
+        z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
       ])
       .optional()
       .nullable(),
@@ -9238,6 +9296,33 @@ export const EnumHotelMealPlanNullableFilterSchema: z.ZodType<PrismaClient.Prism
     })
     .strict()
 
+export const EnumStayTypeNullableFilterSchema: z.ZodType<PrismaClient.Prisma.EnumStayTypeNullableFilter> =
+  z
+    .object({
+      equals: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
+      in: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      notIn: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      not: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NestedEnumStayTypeNullableFilterSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
+
 export const BookingProductRoomOrderByRelationAggregateInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductRoomOrderByRelationAggregateInput> =
   z
     .object({
@@ -9286,6 +9371,7 @@ export const BookingProductCountOrderByAggregateInputSchema: z.ZodType<PrismaCli
       hotelName: z.lazy(() => SortOrderSchema).optional(),
       hotelStarRating: z.lazy(() => SortOrderSchema).optional(),
       hotelMealPlan: z.lazy(() => SortOrderSchema).optional(),
+      stayType: z.lazy(() => SortOrderSchema).optional(),
       isActive: z.lazy(() => SortOrderSchema).optional(),
       createdAt: z.lazy(() => SortOrderSchema).optional(),
       updatedAt: z.lazy(() => SortOrderSchema).optional()
@@ -9350,6 +9436,7 @@ export const BookingProductMaxOrderByAggregateInputSchema: z.ZodType<PrismaClien
       hotelName: z.lazy(() => SortOrderSchema).optional(),
       hotelStarRating: z.lazy(() => SortOrderSchema).optional(),
       hotelMealPlan: z.lazy(() => SortOrderSchema).optional(),
+      stayType: z.lazy(() => SortOrderSchema).optional(),
       isActive: z.lazy(() => SortOrderSchema).optional(),
       createdAt: z.lazy(() => SortOrderSchema).optional(),
       updatedAt: z.lazy(() => SortOrderSchema).optional()
@@ -9388,6 +9475,7 @@ export const BookingProductMinOrderByAggregateInputSchema: z.ZodType<PrismaClien
       hotelName: z.lazy(() => SortOrderSchema).optional(),
       hotelStarRating: z.lazy(() => SortOrderSchema).optional(),
       hotelMealPlan: z.lazy(() => SortOrderSchema).optional(),
+      stayType: z.lazy(() => SortOrderSchema).optional(),
       isActive: z.lazy(() => SortOrderSchema).optional(),
       createdAt: z.lazy(() => SortOrderSchema).optional(),
       updatedAt: z.lazy(() => SortOrderSchema).optional()
@@ -9475,6 +9563,36 @@ export const EnumHotelMealPlanNullableWithAggregatesFilterSchema: z.ZodType<Pris
         .lazy(() => NestedEnumHotelMealPlanNullableFilterSchema)
         .optional(),
       _max: z.lazy(() => NestedEnumHotelMealPlanNullableFilterSchema).optional()
+    })
+    .strict()
+
+export const EnumStayTypeNullableWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.EnumStayTypeNullableWithAggregatesFilter> =
+  z
+    .object({
+      equals: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
+      in: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      notIn: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      not: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NestedEnumStayTypeNullableWithAggregatesFilterSchema)
+        ])
+        .optional()
+        .nullable(),
+      _count: z.lazy(() => NestedIntNullableFilterSchema).optional(),
+      _min: z.lazy(() => NestedEnumStayTypeNullableFilterSchema).optional(),
+      _max: z.lazy(() => NestedEnumStayTypeNullableFilterSchema).optional()
     })
     .strict()
 
@@ -13793,6 +13911,16 @@ export const NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema: z.ZodTyp
     })
     .strict()
 
+export const NullableEnumStayTypeFieldUpdateOperationsInputSchema: z.ZodType<PrismaClient.Prisma.NullableEnumStayTypeFieldUpdateOperationsInput> =
+  z
+    .object({
+      set: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable()
+    })
+    .strict()
+
 export const BookingProductRoomUncheckedUpdateManyWithoutBookingProductNestedInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductRoomUncheckedUpdateManyWithoutBookingProductNestedInput> =
   z
     .object({
@@ -14546,6 +14674,33 @@ export const NestedEnumHotelMealPlanNullableFilterSchema: z.ZodType<PrismaClient
     })
     .strict()
 
+export const NestedEnumStayTypeNullableFilterSchema: z.ZodType<PrismaClient.Prisma.NestedEnumStayTypeNullableFilter> =
+  z
+    .object({
+      equals: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
+      in: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      notIn: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      not: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NestedEnumStayTypeNullableFilterSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
+
 export const NestedEnumProductTypeWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.NestedEnumProductTypeWithAggregatesFilter> =
   z
     .object({
@@ -14601,6 +14756,36 @@ export const NestedEnumHotelMealPlanNullableWithAggregatesFilterSchema: z.ZodTyp
         .lazy(() => NestedEnumHotelMealPlanNullableFilterSchema)
         .optional(),
       _max: z.lazy(() => NestedEnumHotelMealPlanNullableFilterSchema).optional()
+    })
+    .strict()
+
+export const NestedEnumStayTypeNullableWithAggregatesFilterSchema: z.ZodType<PrismaClient.Prisma.NestedEnumStayTypeNullableWithAggregatesFilter> =
+  z
+    .object({
+      equals: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
+      in: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      notIn: z
+        .lazy(() => StayTypeSchema)
+        .array()
+        .optional()
+        .nullable(),
+      not: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NestedEnumStayTypeNullableWithAggregatesFilterSchema)
+        ])
+        .optional()
+        .nullable(),
+      _count: z.lazy(() => NestedIntNullableFilterSchema).optional(),
+      _min: z.lazy(() => NestedEnumStayTypeNullableFilterSchema).optional(),
+      _max: z.lazy(() => NestedEnumStayTypeNullableFilterSchema).optional()
     })
     .strict()
 
@@ -15166,6 +15351,10 @@ export const BookingProductCreateWithoutTenantInputSchema: z.ZodType<PrismaClien
         .lazy(() => HotelMealPlanSchema)
         .optional()
         .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
       isActive: z.boolean().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       updatedAt: z.date().optional().nullable()
@@ -15243,6 +15432,10 @@ export const BookingProductUncheckedCreateWithoutTenantInputSchema: z.ZodType<Pr
       hotelStarRating: z.number().optional().nullable(),
       hotelMealPlan: z
         .lazy(() => HotelMealPlanSchema)
+        .optional()
+        .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
         .optional()
         .nullable(),
       isActive: z.boolean().optional().nullable(),
@@ -16055,6 +16248,13 @@ export const BookingProductScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => EnumStayTypeNullableFilterSchema),
+          z.lazy(() => StayTypeSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
         .optional()
@@ -16584,6 +16784,10 @@ export const BookingProductCreateWithoutAccountInputSchema: z.ZodType<PrismaClie
         .lazy(() => HotelMealPlanSchema)
         .optional()
         .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
       isActive: z.boolean().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       updatedAt: z.date().optional().nullable()
@@ -16661,6 +16865,10 @@ export const BookingProductUncheckedCreateWithoutAccountInputSchema: z.ZodType<P
       hotelStarRating: z.number().optional().nullable(),
       hotelMealPlan: z
         .lazy(() => HotelMealPlanSchema)
+        .optional()
+        .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
         .optional()
         .nullable(),
       isActive: z.boolean().optional().nullable(),
@@ -16765,6 +16973,10 @@ export const BookingProductCreateWithoutSupplierInputSchema: z.ZodType<PrismaCli
         .lazy(() => HotelMealPlanSchema)
         .optional()
         .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
       isActive: z.boolean().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       updatedAt: z.date().optional().nullable()
@@ -16842,6 +17054,10 @@ export const BookingProductUncheckedCreateWithoutSupplierInputSchema: z.ZodType<
       hotelStarRating: z.number().optional().nullable(),
       hotelMealPlan: z
         .lazy(() => HotelMealPlanSchema)
+        .optional()
+        .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
         .optional()
         .nullable(),
       isActive: z.boolean().optional().nullable(),
@@ -19570,6 +19786,10 @@ export const BookingProductCreateWithoutBookingInputSchema: z.ZodType<PrismaClie
         .lazy(() => HotelMealPlanSchema)
         .optional()
         .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
       isActive: z.boolean().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       updatedAt: z.date().optional().nullable()
@@ -19647,6 +19867,10 @@ export const BookingProductUncheckedCreateWithoutBookingInputSchema: z.ZodType<P
       hotelStarRating: z.number().optional().nullable(),
       hotelMealPlan: z
         .lazy(() => HotelMealPlanSchema)
+        .optional()
+        .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
         .optional()
         .nullable(),
       isActive: z.boolean().optional().nullable(),
@@ -24569,6 +24793,10 @@ export const BookingProductCreateWithoutRoomsInputSchema: z.ZodType<PrismaClient
         .lazy(() => HotelMealPlanSchema)
         .optional()
         .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
+        .optional()
+        .nullable(),
       isActive: z.boolean().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       updatedAt: z.date().optional().nullable()
@@ -24641,6 +24869,10 @@ export const BookingProductUncheckedCreateWithoutRoomsInputSchema: z.ZodType<Pri
       hotelStarRating: z.number().optional().nullable(),
       hotelMealPlan: z
         .lazy(() => HotelMealPlanSchema)
+        .optional()
+        .nullable(),
+      stayType: z
+        .lazy(() => StayTypeSchema)
         .optional()
         .nullable(),
       isActive: z.boolean().optional().nullable(),
@@ -24862,6 +25094,13 @@ export const BookingProductUpdateWithoutRoomsInputSchema: z.ZodType<PrismaClient
           z.lazy(
             () => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema
           )
+        ])
+        .optional()
+        .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
         ])
         .optional()
         .nullable(),
@@ -25088,6 +25327,13 @@ export const BookingProductUncheckedUpdateWithoutRoomsInputSchema: z.ZodType<Pri
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([
           z.boolean(),
@@ -25301,6 +25547,10 @@ export const BookingProductCreateManyTenantInputSchema: z.ZodType<
     hotelStarRating: z.number().optional().nullable(),
     hotelMealPlan: z
       .lazy(() => HotelMealPlanSchema)
+      .optional()
+      .nullable(),
+    stayType: z
+      .lazy(() => StayTypeSchema)
       .optional()
       .nullable(),
     isActive: z.boolean().optional().nullable()
@@ -27026,6 +27276,13 @@ export const BookingProductUpdateWithoutTenantInputSchema: z.ZodType<PrismaClien
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([
           z.boolean(),
@@ -27249,6 +27506,13 @@ export const BookingProductUncheckedUpdateWithoutTenantInputSchema: z.ZodType<Pr
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([
           z.boolean(),
@@ -27442,6 +27706,13 @@ export const BookingProductUncheckedUpdateManyWithoutBookingProductsInputSchema:
       .union([
         z.lazy(() => HotelMealPlanSchema),
         z.lazy(() => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    stayType: z
+      .union([
+        z.lazy(() => StayTypeSchema),
+        z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
       ])
       .optional()
       .nullable(),
@@ -27842,6 +28113,10 @@ export const BookingProductCreateManyAccountInputSchema: z.ZodType<
       .lazy(() => HotelMealPlanSchema)
       .optional()
       .nullable(),
+    stayType: z
+      .lazy(() => StayTypeSchema)
+      .optional()
+      .nullable(),
     isActive: z.boolean().optional().nullable()
     // omitted: createdAt: z.date().optional().nullable(),
     // omitted: updatedAt: z.date().optional().nullable(),
@@ -27911,6 +28186,10 @@ export const BookingProductCreateManySupplierInputSchema: z.ZodType<
     hotelStarRating: z.number().optional().nullable(),
     hotelMealPlan: z
       .lazy(() => HotelMealPlanSchema)
+      .optional()
+      .nullable(),
+    stayType: z
+      .lazy(() => StayTypeSchema)
       .optional()
       .nullable(),
     isActive: z.boolean().optional().nullable()
@@ -28848,6 +29127,13 @@ export const BookingProductUpdateWithoutAccountInputSchema: z.ZodType<PrismaClie
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([
           z.boolean(),
@@ -29071,6 +29357,13 @@ export const BookingProductUncheckedUpdateWithoutAccountInputSchema: z.ZodType<P
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([
           z.boolean(),
@@ -29284,6 +29577,13 @@ export const BookingProductUpdateWithoutSupplierInputSchema: z.ZodType<PrismaCli
           z.lazy(
             () => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema
           )
+        ])
+        .optional()
+        .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
         ])
         .optional()
         .nullable(),
@@ -29509,6 +29809,13 @@ export const BookingProductUncheckedUpdateWithoutSupplierInputSchema: z.ZodType<
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([
           z.boolean(),
@@ -29698,6 +30005,13 @@ export const BookingProductUncheckedUpdateManyWithoutBookingProductsSuppliedInpu
       .union([
         z.lazy(() => HotelMealPlanSchema),
         z.lazy(() => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    stayType: z
+      .union([
+        z.lazy(() => StayTypeSchema),
+        z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
       ])
       .optional()
       .nullable(),
@@ -29961,6 +30275,10 @@ export const BookingProductCreateManyBookingInputSchema: z.ZodType<
       .lazy(() => HotelMealPlanSchema)
       .optional()
       .nullable(),
+    stayType: z
+      .lazy(() => StayTypeSchema)
+      .optional()
+      .nullable(),
     isActive: z.boolean().optional().nullable()
     // omitted: createdAt: z.date().optional().nullable(),
     // omitted: updatedAt: z.date().optional().nullable(),
@@ -30182,6 +30500,13 @@ export const BookingProductUpdateWithoutBookingInputSchema: z.ZodType<PrismaClie
           z.lazy(
             () => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema
           )
+        ])
+        .optional()
+        .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
         ])
         .optional()
         .nullable(),
@@ -30408,6 +30733,13 @@ export const BookingProductUncheckedUpdateWithoutBookingInputSchema: z.ZodType<P
         ])
         .optional()
         .nullable(),
+      stayType: z
+        .union([
+          z.lazy(() => StayTypeSchema),
+          z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       isActive: z
         .union([
           z.boolean(),
@@ -30601,6 +30933,13 @@ export const BookingProductUncheckedUpdateManyWithoutProductsInputSchema: z.ZodT
       .union([
         z.lazy(() => HotelMealPlanSchema),
         z.lazy(() => NullableEnumHotelMealPlanFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    stayType: z
+      .union([
+        z.lazy(() => StayTypeSchema),
+        z.lazy(() => NullableEnumStayTypeFieldUpdateOperationsInputSchema)
       ])
       .optional()
       .nullable(),

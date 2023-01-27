@@ -13,12 +13,48 @@ CREATE TYPE "HotelMealPlan" AS ENUM ('BREAKFAST', 'HALF_BOARD', 'FULL_BOARD', 'A
 -- CreateEnum
 CREATE TYPE "StayType" AS ENUM ('HOTEL', 'RESORT', 'LODGE', 'HOUSE', 'APARTMENT');
 
--- AlterTable
-ALTER TABLE "Account" ADD COLUMN     "countryCode" VARCHAR(2),
-ADD COLUMN     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
-ADD COLUMN     "currencyCode" VARCHAR(3),
-ADD COLUMN     "locale" VARCHAR(6),
-ADD COLUMN     "updatedAt" TIMESTAMP(3);
+-- CreateTable
+CREATE TABLE "Tenant" (
+    "id" BIGSERIAL NOT NULL,
+    "name" VARCHAR(64) NOT NULL,
+    "dobName" VARCHAR(64),
+    "taxId" VARCHAR(30),
+    "email" VARCHAR(64) NOT NULL,
+    "phone" VARCHAR(32),
+    "mobilePhone" VARCHAR(64),
+    "contactPrefix" VARCHAR(6),
+    "contactFirstName" VARCHAR(32),
+    "contactMiddleName" VARCHAR(32),
+    "contactLastName" VARCHAR(32),
+    "brandUrl" TEXT,
+    "ownerUserId" TEXT,
+    "countryCode" VARCHAR(2),
+    "currencyCode" VARCHAR(3),
+    "locale" VARCHAR(6),
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "Tenant_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Account" (
+    "id" BIGSERIAL NOT NULL,
+    "tenantId" BIGINT NOT NULL,
+    "name" VARCHAR(64) NOT NULL,
+    "dobName" VARCHAR(64),
+    "taxId" VARCHAR(30),
+    "email" VARCHAR(64) NOT NULL,
+    "countryCode" VARCHAR(2),
+    "currencyCode" VARCHAR(3),
+    "locale" VARCHAR(6),
+    "isActive" BOOLEAN DEFAULT true,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "User" (
@@ -156,6 +192,7 @@ CREATE TABLE "BookingProduct" (
     "hotelName" VARCHAR(128),
     "hotelStarRating" INTEGER,
     "hotelMealPlan" "HotelMealPlan",
+    "stayType" "StayType",
     "isActive" BOOLEAN DEFAULT true,
     "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3),
@@ -190,6 +227,9 @@ CREATE UNIQUE INDEX "Booking_tenantId_accountId_customerId_key" ON "Booking"("te
 
 -- CreateIndex
 CREATE UNIQUE INDEX "BookingProduct_tenantId_accountId_bookingId_key" ON "BookingProduct"("tenantId", "accountId", "bookingId");
+
+-- AddForeignKey
+ALTER TABLE "Account" ADD CONSTRAINT "Account_tenantId_fkey" FOREIGN KEY ("tenantId") REFERENCES "Tenant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_tenantId_fkey" FOREIGN KEY ("tenantId") REFERENCES "Tenant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
