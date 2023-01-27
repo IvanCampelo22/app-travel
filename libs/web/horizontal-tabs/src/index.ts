@@ -1,1 +1,1 @@
-export * from './lib/web-horizontal-tabs'
+export * from './lib/horizontal-tabs'
