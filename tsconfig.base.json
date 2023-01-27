@@ -22,6 +22,7 @@
       "@server/core": ["libs/server/infra/core/src/index.ts"],
       "@server/database": ["libs/server/infra/database/src/index.ts"],
       "@server/tenant": ["libs/server/tenant/src/index.ts"],
+      "@viagem10-monorepo/web/filter": ["libs/web/filter/src/index.ts"],
       "@viagem10-monorepo/web/horizontal-tabs": [
         "libs/web/horizontal-tabs/src/index.ts"
       ],
