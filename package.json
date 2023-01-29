@@ -37,6 +37,7 @@
     "@prisma/client": "4.9.0",
     "@tabler/icons": "1.119.0",
     "@tanstack/react-query": "4.22.0",
+    "@types/supertest": "^2.0.12",
     "cookies-next": "2.1.1",
     "core-js": "3.27.2",
     "country-locale-map": "1.8.11",
@@ -52,6 +53,7 @@
     "reflect-metadata": "0.1.13",
     "regenerator-runtime": "0.13.11",
     "rxjs": "7.8.0",
+    "supertest": "^6.3.3",
     "tslib": "2.4.1",
     "zod": "3.20.2",
     "zustand": "4.3.2"
