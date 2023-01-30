@@ -4,7 +4,9 @@ import { createStyles, Tabs, Text } from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
   tab: {
-    color: theme.colors.gray[5]
+    color: theme.colors.gray[5],
+    width: 50,
+    marginRight: 20
   },
 
   tabActive: {

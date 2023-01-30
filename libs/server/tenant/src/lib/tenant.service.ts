@@ -24,11 +24,12 @@ export class TenantService {
   }
 
   async update(params: Prisma.TenantUpdateArgs) {
-    return await this.db.tenant.update({
+    return this.db.tenant.update({
       ...params
     })
   }
-  async deactivate(id: bigint, isActive: false) {
+
+  async deactivate(id: number, isActive: false) {
     return await this.db.tenant.update({
       where: { id },
       data: {

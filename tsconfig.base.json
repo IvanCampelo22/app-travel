@@ -22,6 +22,7 @@
       "@server/core": ["libs/server/infra/core/src/index.ts"],
       "@server/database": ["libs/server/infra/database/src/index.ts"],
       "@server/tenant": ["libs/server/tenant/src/index.ts"],
+      "@viagem10-monorepo/web/filter": ["libs/web/filter/src/index.ts"],
       "@viagem10-monorepo/web/horizontal-tabs": [
         "libs/web/horizontal-tabs/src/index.ts"
       ],
@@ -34,7 +35,9 @@
         "libs/web/customer-service-resume/src/index.ts"
       ],
       "@web/money-input": ["libs/web/money-input/src/index.ts"],
-      "@web/phone-input": ["libs/web/phone-input/src/index.ts"]
+      "@web/pagination": ["libs/web/pagination/src/index.ts"],
+      "@web/phone-input": ["libs/web/phone-input/src/index.ts"],
+      "@web/table-row": ["libs/web/table-row/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
