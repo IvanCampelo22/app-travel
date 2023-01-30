@@ -86,7 +86,6 @@ describe('Tenant Service', () => {
       expect(tenant.name).toBe('Tenant2')
     })
   })
-
   describe('deactivate', () => {
     it('should deactivate a tenant object', async () => {
       const tenantCreateArgs: Prisma.TenantCreateArgs = {
