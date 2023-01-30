@@ -1,13 +1,6 @@
 import { useState } from 'react'
 
-import {
-  Button,
-  Container,
-  createStyles,
-  Flex,
-  Group,
-  MultiSelect
-} from '@mantine/core'
+import { Button, createStyles, Flex, Group, MultiSelect } from '@mantine/core'
 
 import { DateRangePicker, DateRangePickerValue } from '@mantine/dates'
 
@@ -29,45 +22,43 @@ export function Filter() {
   ])
 
   return (
-    <Container fluid>
-      <Flex justify="space-between" wrap="wrap">
-        <MultiSelect
-          className={classes.multiSelect}
+    <Flex justify="space-between" wrap="wrap">
+      <MultiSelect
+        className={classes.multiSelect}
+        radius="md"
+        placeholder="Search"
+        searchable
+        icon={<IconSearch size={20} />}
+        data={[
+          'React',
+          'Angular',
+          'Svelte',
+          'Vue',
+          'Riot',
+          'Next.js',
+          'Blitz.js'
+        ]}
+      />
+      <Group>
+        <DateRangePicker
+          clearable={false}
+          icon={<IconCalendar size={20} />}
+          styles={(theme) => ({
+            input: {
+              fontWeight: 500,
+              minWidth: 225
+            }
+          })}
           radius="md"
-          placeholder="Search"
-          searchable
-          icon={<IconSearch size={20} />}
-          data={[
-            'React',
-            'Angular',
-            'Svelte',
-            'Vue',
-            'Riot',
-            'Next.js',
-            'Blitz.js'
-          ]}
+          inputFormat="DD MMM, YYYY"
+          value={value}
+          onChange={setValue}
         />
-        <Group>
-          <DateRangePicker
-            clearable={false}
-            icon={<IconCalendar size={20} />}
-            styles={(theme) => ({
-              input: {
-                fontWeight: 500,
-                minWidth: 225
-              }
-            })}
-            radius="md"
-            inputFormat="DD MMM, YYYY"
-            value={value}
-            onChange={setValue}
-          />
-          <Button variant="default" radius="md">
-            Filter
-          </Button>
-        </Group>
-      </Flex>
-    </Container>
+        <Button variant="default" radius="md">
+          Filter
+        </Button>
+      </Group>
+    </Flex>
   )
 }
 
