@@ -13,304 +13,343 @@ generator zod {
   useInstanceOfForDecimal = true
 }
 
-enum BookingStatus {
-  WAITING_FOR_SERVICE
-  WAITING_FOR_CUSTOMER
-  PAID
-  QUOTE_SEND
-  CANCELED
-}
-
-enum ProductType {
-  ACCOMODATION
-  FLIGHT
-  CAR
-  PACKAGE
-  EXCURSION
-  CRUISE
-  TRANSFER
-  TOUR
-  TICKET
-  EXCHANGE
-  INSURANCE
-  CONSULTANCY
-  HOLIDAY_PROPERTY
-  RECEPTIVE
-}
-
-enum RoomCategory {
-  SUITE_MASTER
-  SUITE_PREMIUM
-  SUITE_JUNIOR
-}
-
-enum HotelMealPlan {
-  BREAKFAST
-  HALF_BOARD
-  FULL_BOARD
-  ALL_INCLUSIVE
-  ALL_INCLUSIVE_PREMIUM
-}
-
-enum StayType {
-  HOTEL
-  RESORT
-  LODGE
-  HOUSE
-  APARTMENT
-}
-
 model Tenant {
   /// @zod.custom.omit([model, input])
-  id                BigInt            @id @default(autoincrement())
-  accounts          Account[]         @relation("accounts")
-  users             User[]            @relation("users")
-  customers         Customer[]        @relation("customers")
-  bookings          Booking[]         @relation("bookings")
-  bookingProducts   BookingProduct[]  @relation("bookingProducts")
-  bookingTravelers  BookingTreveler[] @relation("bookingTravelers")
-  name              String            @db.VarChar(64)
-  dobName           String?           @db.VarChar(64)
-  taxId             String?           @db.VarChar(30)
+  id                 Int               @id @default(autoincrement())
+  name               String            @db.VarChar(64)
+  dobName            String?           @db.VarChar(64)
+  taxId              String?           @db.VarChar(30)
+  brand              String?           @db.VarChar(256)
+  contactPrefix      String?           @db.VarChar(6)
+  contactFirstName   String?           @db.VarChar(32)
+  contactMiddleName  String?           @db.VarChar(32)
+  contactLastName    String?           @db.VarChar(32)
+  contactSuffix      String?           @db.VarChar(6)
+  jobTitle           String?           @db.VarChar(32)
   /// @zod.string.email()
-  email             String            @db.VarChar(64)
-  phone             String?           @db.VarChar(32)
-  mobilePhone       String?           @db.VarChar(64)
-  contactPrefix     String?           @db.VarChar(6)
-  contactFirstName  String?           @db.VarChar(32)
-  contactMiddleName String?           @db.VarChar(32)
-  contactLastName   String?           @db.VarChar(32)
-  brandUrl          String?
-  ownerUserId       String?
-  countryCode       String?           @db.VarChar(2)
-  currencyCode      String?           @db.VarChar(3)
-  locale            String?           @db.VarChar(6)
-  isActive          Boolean?          @default(true)
+  email              String            @db.VarChar(64)
+  phone              String?           @db.VarChar(32)
+  mobilePhone        String?           @db.VarChar(64)
+  fax                String?           @db.VarChar(64)
+  billingAdresses    Json?
+  shippingAdresses   Json?
+  termsAndConditions String?
+  privacyPolicy      String?
+  bankName           String?           @db.VarChar(64)
+  branch             String?
+  bankAccount        String?           @db.VarChar(64)
+  notes              String?
+  countryCode        String?           @db.VarChar(2)
+  currencyCode       String?           @db.VarChar(3)
+  locale             String?           @db.VarChar(6)
+  timeZone           String?           @db.VarChar(20)
+  referralSource     String?
+  domain             String            @db.VarChar(64)
+  siteConfig         String
   /// @zod.custom.omit([model, input])
-  createdAt         DateTime?         @default(now())
+  createdAt          DateTime?         @default(now())
   /// @zod.custom.omit([model, input])
-  updatedAt         DateTime?         @updatedAt
-}
-
-model Account {
+  createdBy          String?           @db.VarChar(32)
   /// @zod.custom.omit([model, input])
-  id                      BigInt            @id @default(autoincrement())
-  tenant                  Tenant            @relation(fields: [tenantId], references: [id], name: "accounts")
-  tenantId                BigInt
-  users                   User[]            @relation("users")
-  customers               Customer[]        @relation("customers")
-  bookings                Booking[]         @relation("bookings")
-  bookingProducts         BookingProduct[]  @relation("bookingProducts")
-  bookingProductsSupplied BookingProduct[]  @relation("bookingProductsSupplied")
-  bookingTravelers        BookingTreveler[] @relation("bookingTravelers")
-  name                    String            @db.VarChar(64)
-  dobName                 String?           @db.VarChar(64)
-  taxId                   String?           @db.VarChar(30)
-  /// @zod.string.email()
-  email                   String            @db.VarChar(64)
-  countryCode             String?           @db.VarChar(2)
-  currencyCode            String?           @db.VarChar(3)
-  locale                  String?           @db.VarChar(6)
-  isActive                Boolean?          @default(true)
+  modifiedAt         DateTime          @updatedAt
   /// @zod.custom.omit([model, input])
-  createdAt               DateTime?         @default(now())
-  /// @zod.custom.omit([model, input])
-  updatedAt               DateTime?         @updatedAt
+  modifiedBy         String?           @db.VarChar(32)
+  isActive           Boolean?          @default(true)
+  isMaster           Boolean?          @default(false)
+  users              User[]            @relation("users")
+  accounts           Account[]         @relation("accounts")
+  bookings           Booking[]         @relation("bookings")
+  bookingTravelers   BookingTraveler[] @relation("bookingTravelers")
+  bookingProducts    BookingProduct[]  @relation("bookingProducts")
 }
 
 model User {
   /// @zod.custom.omit([model, input])
-  id               BigInt            @id @default(autoincrement())
-  tenantId         BigInt
-  tenant           Tenant            @relation(fields: [tenantId], references: [id], name: "users")
-  accountId        BigInt
-  account          Account           @relation(fields: [accountId], references: [id], name: "users")
-  customers        Customer[]        @relation("customers")
-  bookings         Booking[]         @relation("bookings")
-  bookingProducts  BookingProduct[]  @relation("bookingProducts")
-  bookingTravelers BookingTreveler[] @relation("bookingTravelers")
-  firstName        String            @db.VarChar(32)
-  middleName       String            @db.VarChar(32)
-  lastName         String            @db.VarChar(32)
+  id          Int       @id @default(autoincrement())
+  /// @zod.custom.omit([model, input])
+  tenantId    Int?
+  tenant      Tenant?   @relation(fields: [tenantId], references: [id], name: "users")
+  /// @zod.custom.omit([model, input])
+  accountId   Int?
+  account     Account?  @relation(fields: [accountId], references: [id], name: "users")
+  firstName   String?   @db.VarChar(32)
+  lastName    String?   @db.VarChar(32)
+  companyName String?   @db.VarChar(32)
+  jobTitle    String?   @db.VarChar(32)
+  department  String?   @db.VarChar(32)
+  managerName String?   @db.VarChar(32)
   /// @zod.string.email()
-  email            String            @db.VarChar(64)
-  mobilePhone      String?           @db.VarChar(32)
-  adresses         Json
-  gender           String            @db.VarChar(10)
-  birthDate        DateTime
+  email       String    @db.VarChar(64)
+  phone       String?   @db.VarChar(32)
+  mobilePhone String?   @db.VarChar(32)
+  fax         String?   @db.VarChar(64)
+  adresses    Json?
+  gender      String
+  birthDate   DateTime? @db.Date
   /// @zod.custom.omit([model, input])
-  createdAt        DateTime?         @default(now())
+  createdAt   DateTime? @default(now())
   /// @zod.custom.omit([model, input])
-  updatedAt        DateTime?         @updatedAt
-
-  @@unique([tenantId, accountId])
+  createdBy   String    @db.VarChar(32)
+  /// @zod.custom.omit([model, input])
+  modifiedAt  DateTime? @updatedAt
+  /// @zod.custom.omit([model, input])
+  modifiedBy  String    @db.VarChar(32)
+  isActive    Boolean?  @default(true)
 }
 
-model Customer {
-  /// @zod.custom.omit([model, input])
-  id           BigInt    @id @default(autoincrement())
-  tenantId     BigInt
-  tenant       Tenant    @relation(fields: [tenantId], references: [id], name: "customers")
-  accountId    BigInt
-  account      Account   @relation(fields: [accountId], references: [id], name: "customers")
-  ownerId      BigInt
-  owner        User      @relation(fields: [ownerId], references: [id], name: "customers")
-  bookings     Booking[] @relation("bookings")
-  prefix       String    @db.VarChar(5)
-  firstName    String    @db.VarChar(32)
-  middleName   String    @db.VarChar(32)
-  lastName     String    @db.VarChar(32)
-  sufix        String    @db.VarChar(32)
-  /// @zod.string.email()
-  email        String    @db.VarChar(64)
-  countryCode  String?   @db.VarChar(2)
-  currencyCode String?   @db.VarChar(3)
-  locale       String?   @db.VarChar(6)
-  mobilePhone  String?   @db.VarChar(32)
-  adresses     Json
-  gender       String    @db.VarChar(10)
-  birthDate    DateTime
-  isActive     Boolean?  @default(true)
-  /// @zod.custom.omit([model, input])
-  createdAt    DateTime? @default(now())
-  /// @zod.custom.omit([model, input])
-  updatedAt    DateTime? @updatedAt
+enum AccountCategory {
+  Agency
+  InternalAgent
+  Customer
+  Supplier
+  Influencer
+}
 
-  @@unique([tenantId, accountId])
+model Account {
+  /// @zod.custom.omit([model, input])
+  id                 Int               @id @default(autoincrement())
+  /// @zod.custom.omit([model, input])
+  tenantId           Int
+  tenant             Tenant?           @relation(fields: [tenantId], references: [id], name: "accounts")
+  /// @zod.custom.omit([model, input])
+  parentId           Int?
+  parent             Account?          @relation(fields: [parentId], references: [id], name: "childAccounts")
+  /// @zod.custom.omit([model, input])
+  ownerId            Int
+  childAccounts      Account[]         @relation("childAccounts")
+  users              User[]            @relation("users")
+  name               String            @db.VarChar(64)
+  category           AccountCategory
+  dobName            String?           @db.VarChar(64)
+  taxId              String?           @db.VarChar(24)
+  ssn                String?           @db.VarChar(24)
+  brand              String?           @db.VarChar(64)
+  /// @zod.string.email()
+  email              String            @db.VarChar(64)
+  phone              String?           @db.VarChar(32)
+  mobilePhone        String?           @db.VarChar(32)
+  fax                String?           @db.VarChar(64)
+  billingAdresses    Json?
+  shippingAdresses   Json?
+  termsAndConditions String?
+  privacyPolicy      String?
+  bankName           String?           @db.VarChar(64)
+  branch             String?
+  bankAccount        String?           @db.VarChar(64)
+  notes              String?
+  countryCode        String?           @db.VarChar(2)
+  currencyCode       String?           @db.VarChar(3)
+  locale             String?           @db.VarChar(6)
+  timeZone           String?           @db.VarChar(20)
+  referralSource     String?
+  domain             String?           @db.VarChar(64)
+  siteConfig         String?
+  /// @zod.custom.omit([model, input])
+  createdAt          DateTime?         @default(now())
+  /// @zod.custom.omit([model, input])
+  createdBy          String?           @db.VarChar(32)
+  /// @zod.custom.omit([model, input])
+  modifiedAt         DateTime          @updatedAt
+  /// @zod.custom.omit([model, input])
+  modifiedBy         String?           @db.VarChar(32)
+  isActive           Boolean?          @default(true)
+  bookings           Booking[]         @relation("bookings")
+  purchasing         Booking[]         @relation("purchasing")
+  bookingTravelers   BookingTraveler[] @relation("bookingTravelers")
+  bookingProducts    BookingProduct[]  @relation("bookingProducts")
+}
+
+enum BookingStatus {
+  WaitingService
+  WaitingCustomer
+  WaitingPayment
+  Paid
+  QuoteSend
+  Canceled
+  RefundRequested
+  Refunded
 }
 
 model Booking {
   /// @zod.custom.omit([model, input])
-  id                 BigInt            @id @default(autoincrement())
-  tenantId           BigInt
-  tenant             Tenant            @relation(fields: [tenantId], references: [id], name: "bookings")
-  accountId          BigInt
-  account            Account           @relation(fields: [accountId], references: [id], name: "bookings")
-  customerId         BigInt?
-  customer           Customer?         @relation(fields: [customerId], references: [id], name: "bookings")
-  ownerId            BigInt
-  owner              User              @relation(fields: [ownerId], references: [id], name: "bookings")
-  products           BookingProduct[]  @relation("products")
-  travelers          BookingTreveler[] @relation("travelers")
-  fullName           String?           @db.VarChar(128)
+  id                 Int               @id @default(autoincrement())
+  /// @zod.custom.omit([model, input])
+  tenantId           Int
+  tenant             Tenant?           @relation(fields: [tenantId], references: [id], name: "bookings")
+  /// @zod.custom.omit([model, input])
+  accountId          Int
+  account            Account?          @relation(fields: [accountId], references: [id], name: "bookings")
+  customerId         Int
+  customer           Account?          @relation(fields: [customerId], references: [id], name: "purchasing")
+  /// @zod.custom.omit([model, input])
+  ownerId            Int?
+  customerName       String            @db.VarChar(128)
   /// @zod.string.email()
-  email              String?           @db.VarChar(64)
-  phone              String?           @db.VarChar(32)
+  customerEmail      String?           @db.VarChar(64)
+  customerPhone      String?           @db.VarChar(32)
   postalCode         String?           @db.VarChar(32)
   fromCity           String?           @db.VarChar(64)
   toCity             String?           @db.VarChar(64)
   travelDate         DateTime?
-  travelPeriod       String?           @db.VarChar(128)
+  travelPeriod       String?           @db.VarChar(12)
   adultsCount        Int?
   childrenCount      Int?
   seniorsCount       Int?
   requestDescription String?
-  locatorCode        String?
+  status             BookingStatus     @default(WaitingService)
+  locatorCode        String?           @db.VarChar(14)
   totalPrice         Decimal?          @db.Money
   totalCost          Decimal?          @db.Money
   paymentType        String?           @db.VarChar(10)
   paymentStatus      String?           @db.VarChar(10)
-  paymentTime        DateTime?
-  discountPercent    Decimal?
+  paymentDateTime    DateTime?
+  discountPercent    Decimal?          @db.Decimal(3, 1)
   discountAmount     Decimal?          @db.Money
   paymentAmount      Decimal?          @db.Money
   voucherFilePath    String?
   receiptFilePath    String?
   invoiceFilePath    String?
-  status             BookingStatus?    @default(WAITING_FOR_SERVICE)
-  isActive           Boolean?          @default(true)
   /// @zod.custom.omit([model, input])
   createdAt          DateTime?         @default(now())
   /// @zod.custom.omit([model, input])
-  updatedAt          DateTime?         @updatedAt
-
-  @@unique([tenantId, accountId, customerId])
+  createdBy          String?           @db.VarChar(32)
+  /// @zod.custom.omit([model, input])
+  modifiedAt         DateTime          @updatedAt
+  /// @zod.custom.omit([model, input])
+  modifiedBy         String?           @db.VarChar(32)
+  isActive           Boolean?          @default(true)
+  travelers          BookingTraveler[] @relation("travelers")
+  products           BookingProduct[]  @relation("products")
 }
 
-model BookingTreveler {
-  id                 BigInt    @id @default(autoincrement())
-  tenantId           BigInt
-  tenant             Tenant    @relation(fields: [tenantId], references: [id], name: "bookingTravelers")
-  accountId          BigInt
-  account            Account   @relation(fields: [accountId], references: [id], name: "bookingTravelers")
-  bookingId          BigInt
-  Booking            Booking   @relation(fields: [bookingId], references: [id], name: "travelers")
-  ownerId            BigInt
-  owner              User      @relation(fields: [ownerId], references: [id], name: "bookingTravelers")
-  firstName          String    @db.VarChar(64)
-  lastName           String    @db.VarChar(64)
-  birthDate          DateTime
-  passportNumber     String    @db.VarChar(64)
-  passportIssueDate  DateTime
-  passportExpireDate DateTime
-  /// @zod.string.email()
-  email              String?   @db.VarChar(64)
-  isActive           Boolean?  @default(true)
+model BookingTraveler {
   /// @zod.custom.omit([model, input])
+  id                 Int       @id @default(autoincrement())
+  /// @zod.custom.omit([model, input])
+  tenantId           Int
+  tenant             Tenant?   @relation(fields: [tenantId], references: [id], name: "bookingTravelers")
+  /// @zod.custom.omit([model, input])
+  bookingId          Int
+  booking            Booking?  @relation(fields: [bookingId], references: [id], name: "travelers")
+  /// @zod.custom.omit([model, input])
+  accountId          Int
+  account            Account?  @relation(fields: [accountId], references: [id], name: "bookingTravelers")
+  /// @zod.custom.omit([model, input])
+  ownerId            Int
+  firstName          String    @db.VarChar(32)
+  lastName           String    @db.VarChar(32)
+  birthDate          DateTime  @db.Date
+  passportNumber     String    @db.VarChar(64)
+  passportIssueDate  DateTime  @db.Date
+  passportExpireDate DateTime  @db.Date
+  /// @zod.string.email()
+  email              String    @db.VarChar(64)
+  phone              String?   @db.VarChar(32)
   createdAt          DateTime? @default(now())
   /// @zod.custom.omit([model, input])
-  updatedAt          DateTime? @updatedAt
+  createdBy          String?   @db.VarChar(32)
+  /// @zod.custom.omit([model, input])
+  modifiedAt         DateTime  @updatedAt
+  /// @zod.custom.omit([model, input])
+  modifiedBy         String?   @db.VarChar(32)
+  isActive           Boolean?  @default(true)
+}
+
+enum ProductCategory {
+  Accommodation
+}
+
+enum AccommodationType {
+  Hotel
+  Resort
 }
 
 model BookingProduct {
   /// @zod.custom.omit([model, input])
-  id                 BigInt               @id @default(autoincrement())
-  tenantId           BigInt
-  tenant             Tenant               @relation(fields: [tenantId], references: [id], name: "bookingProducts")
-  accountId          BigInt
-  account            Account              @relation(fields: [accountId], references: [id], name: "bookingProducts")
-  bookingId          BigInt
-  Booking            Booking              @relation(fields: [bookingId], references: [id], name: "products")
-  ownerId            BigInt
-  owner              User                 @relation(fields: [ownerId], references: [id], name: "bookingProducts")
-  supplierId         BigInt?
-  supplier           Account?             @relation(fields: [supplierId], references: [id], name: "bookingProductsSupplied")
-  rooms              BookingProductRoom[] @relation("rooms")
-  productType        ProductType
-  description        String?
-  startDate          DateTime
-  endDate            DateTime
-  fromLocation       String?              @db.VarChar(64)
-  toLocation         String               @db.VarChar(64)
-  termsAndConditions String?
-  productCost        Decimal?             @db.Money
-  tenantMarkup       Decimal?             @db.Money
-  agencyMarkup       Decimal?             @db.Money
-  agentMarkup        Decimal?             @db.Money
-  localTaxes         Decimal?             @db.Money
-  federalTaxes       Decimal?             @db.Money
-  additionalFees     Decimal?             @db.Money
-  discountPercent    Decimal?             @db.Money
-  discount           Decimal?             @db.Money
-  finalPrice         Decimal?             @db.Money
-  paymentDueDate     Decimal?             @db.Money
-  paidDate           Decimal?             @db.Money
-  paymentAmount      Decimal?             @db.Money
-  hotelName          String?              @db.VarChar(128)
-  hotelStarRating    Int?
-  hotelMealPlan      HotelMealPlan?
-  stayType           StayType?
-  isActive           Boolean?             @default(true)
+  id                          Int                  @id @default(autoincrement())
   /// @zod.custom.omit([model, input])
-  createdAt          DateTime?            @default(now())
+  tenantId                    Int
+  tenant                      Tenant?              @relation(fields: [tenantId], references: [id], name: "bookingProducts")
   /// @zod.custom.omit([model, input])
-  updatedAt          DateTime?            @updatedAt
+  bookingId                   Int
+  booking                     Booking?             @relation(fields: [bookingId], references: [id], name: "products")
+  /// @zod.custom.omit([model, input])
+  accountId                   Int
+  account                     Account?             @relation(fields: [accountId], references: [id], name: "bookingProducts")
+  /// @zod.custom.omit([model, input])
+  supplierId                  Int?
+  /// @zod.custom.omit([model, input])
+  supplierName                String?              @db.VarChar(128)
+  ownerId                     Int
+  category                    ProductCategory
+  description                 String?
+  startDate                   DateTime             @db.Date
+  endDate                     DateTime             @db.Date
+  fromLocation                String?              @db.VarChar(64)
+  toLocation                  String               @db.VarChar(64)
+  termsAndConditions          String?
+  locatorCode                 String?              @db.VarChar(14)
+  productCost                 Decimal?             @db.Money
+  tenantMarkup                Decimal?             @db.Money
+  agencyMarkup                Decimal?             @db.Money
+  agentMarkup                 Decimal?             @db.Money
+  localTaxes                  Decimal?             @db.Money
+  stateTaxes                  Decimal?             @db.Money
+  federalTaxes                Decimal?             @db.Money
+  additionalFees              Decimal?             @db.Money
+  discountPercent             Decimal?             @db.Decimal(3, 1)
+  discount                    Decimal?             @db.Money
+  finalPrice                  Decimal?             @db.Money
+  paymentDueDate              DateTime?            @db.Date
+  paidDate                    DateTime?            @db.Date
+  paymentAmount               Decimal?             @db.Money
+  voucherFilePath             String?
+  receiptFilePath             String?
+  invoiceFilePath             String?
+  status                      String?              @db.VarChar(10)
+  hotelName                   String?              @db.VarChar(128)
+  hotelStarRating             Int?
+  hotelMealPlan               String?              @db.VarChar(64)
+  accommodationType           AccommodationType?
+  bookingGroupId              Int?
+  paymentType                 String?              @db.VarChar(64)
+  paymentDescription          String?
+  creditCardType              String?              @db.VarChar(32)
+  creditCardLastFourDigits    Int?
+  creditCardAuthorizationCode String?
+  createdAt                   DateTime?            @default(now())
+  /// @zod.custom.omit([model, input])
+  createdBy                   String?              @db.VarChar(32)
+  /// @zod.custom.omit([model, input])
+  modifiedAt                  DateTime             @updatedAt
+  /// @zod.custom.omit([model, input])
+  modifiedBy                  String?              @db.VarChar(32)
+  isActive                    Boolean?             @default(true)
+  rooms                       BookingProductRoom[] @relation("rooms")
+}
 
-  @@unique([tenantId, accountId, bookingId])
+enum RoomCategory {
+  SuiteMaster
+  SuitePremium
+  SuiteJunior
 }
 
 model BookingProductRoom {
-  id               BigInt         @id @default(autoincrement())
-  bookingProductId BigInt
-  bookingProduct   BookingProduct @relation(fields: [bookingProductId], references: [id], name: "rooms")
+  /// @zod.custom.omit([model, input])
+  id               Int             @id @default(autoincrement())
+  /// @zod.custom.omit([model, input])
+  bookingProductId Int
+  bookingProduct   BookingProduct? @relation(fields: [bookingProductId], references: [id], name: "rooms")
   category         RoomCategory
   adultsCount      Int
-  minorsCount      Int
+  minorsCount      Int             @default(0)
   ageOfMinors      Int[]
-  Price            Decimal?       @db.Money
-  isActive         Boolean?       @default(true)
+  createdAt        DateTime?       @default(now())
   /// @zod.custom.omit([model, input])
-  createdAt        DateTime?      @default(now())
+  createdBy        String?         @db.VarChar(32)
   /// @zod.custom.omit([model, input])
-  updatedAt        DateTime?      @updatedAt
+  modifiedAt       DateTime        @updatedAt
+  /// @zod.custom.omit([model, input])
+  modifiedBy       String?         @db.VarChar(32)
+  isActive         Boolean?        @default(true)
 }
