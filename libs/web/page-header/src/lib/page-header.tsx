@@ -10,7 +10,7 @@ import {
 import { IconDownload, IconPlus } from '@tabler/icons'
 
 interface PageHeaderProps extends MantineStyleSystemProps, FlexProps {
-  default: string
+  default?: string
 }
 
 export function PageHeader(props: PageHeaderProps) {
