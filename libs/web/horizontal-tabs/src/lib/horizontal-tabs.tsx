@@ -1,6 +1,11 @@
 import { useState } from 'react'
 
-import { createStyles, Tabs, Text } from '@mantine/core'
+import {
+  createStyles,
+  MantineStyleSystemProps,
+  Tabs,
+  Text
+} from '@mantine/core'
 
 const useStyles = createStyles((theme) => ({
   tab: {
@@ -16,7 +21,11 @@ const useStyles = createStyles((theme) => ({
 
 const tabsMockdata = ['Listing', 'Budget', 'Sales']
 
-export function HorizontalTabs() {
+interface HorizontalTabsProps extends MantineStyleSystemProps {
+  default: string
+}
+
+export function HorizontalTabs(props: HorizontalTabsProps) {
   const { classes, cx } = useStyles()
 
   const [activeTab, setActiveTab] = useState<string | null>('Listing')
@@ -32,7 +41,12 @@ export function HorizontalTabs() {
   ))
 
   return (
-    <Tabs color="blue.8" onTabChange={setActiveTab} defaultValue="Listing">
+    <Tabs
+      {...props}
+      color="blue.8"
+      onTabChange={setActiveTab}
+      defaultValue="Listing"
+    >
       <Tabs.List>{tabs}</Tabs.List>
     </Tabs>
   )
