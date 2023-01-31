@@ -7,7 +7,7 @@ import {
 } from '@mantine/core'
 
 interface PaginationProps extends MantineStyleSystemProps {
-  default: string
+  default?: string
 }
 
 export function Pagination(props: PaginationProps) {
