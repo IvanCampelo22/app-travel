@@ -22,7 +22,7 @@ const useStyles = createStyles((theme) => ({
 const tabsMockdata = ['Listing', 'Budget', 'Sales']
 
 interface HorizontalTabsProps extends MantineStyleSystemProps {
-  default: string
+  default?: string
 }
 
 export function HorizontalTabs(props: HorizontalTabsProps) {
