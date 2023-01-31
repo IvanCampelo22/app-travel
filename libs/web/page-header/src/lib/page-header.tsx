@@ -1,10 +1,21 @@
-import { Button, Flex, Group, Title } from '@mantine/core'
+import {
+  Button,
+  Flex,
+  FlexProps,
+  Group,
+  MantineStyleSystemProps,
+  Title
+} from '@mantine/core'
 
 import { IconDownload, IconPlus } from '@tabler/icons'
 
-export function PageHeader() {
+interface PageHeaderProps extends MantineStyleSystemProps, FlexProps {
+  default: string
+}
+
+export function PageHeader(props: PageHeaderProps) {
   return (
-    <Flex justify="space-between">
+    <Flex {...props}>
       <div>
         <Title order={1} size={30} color="gray.9" weight={500}>
           Customer Service
