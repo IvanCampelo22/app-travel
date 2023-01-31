@@ -1,8 +1,18 @@
-import { Button, Flex, Group, Text } from '@mantine/core'
+import {
+  Button,
+  Flex,
+  Group,
+  MantineStyleSystemProps,
+  Text
+} from '@mantine/core'
 
-export function Pagination() {
+interface PaginationProps extends MantineStyleSystemProps {
+  default: string
+}
+
+export function Pagination(props: PaginationProps) {
   return (
-    <Flex justify="space-between" align="center">
+    <Flex {...props} justify="space-between" align="center">
       <Text weight="500" color="gray.7">
         Page 1 of 10
       </Text>
