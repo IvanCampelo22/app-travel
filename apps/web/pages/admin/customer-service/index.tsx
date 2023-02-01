@@ -1,8 +1,18 @@
-import { Box, Container, Divider, Paper, Table, Title } from '@mantine/core'
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Paper,
+  Table,
+  Title
+} from '@mantine/core'
 
-import { Filter } from '@viagem10-monorepo/web/filter'
-import { HorizontalTabs } from '@viagem10-monorepo/web/horizontal-tabs'
-import { PageHeader } from '@viagem10-monorepo/web/page-header'
+import { IconDownload, IconPlus } from '@tabler/icons'
+
+import { Filter } from '@web/filter'
+import { Header } from '@web/header'
+import { HorizontalTabs } from '@web/horizontal-tabs'
 import { Pagination } from '@web/pagination'
 import { TableRow } from '@web/table-row'
 
@@ -11,7 +21,23 @@ import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 const IndexPage: NextPageWithLayout = () => {
   return (
     <Container fluid p={20}>
-      <PageHeader mt={10} justify="space-between" />
+      <Header
+        title="Customer Serivce"
+        subtitle="View your trades and transactions."
+        mt={10}
+        justify="space-between"
+      >
+        <Button
+          leftIcon={<IconDownload size={18} />}
+          radius="md"
+          variant="default"
+        >
+          Export
+        </Button>
+        <Button color="blue.8" radius="md" leftIcon={<IconPlus size={18} />}>
+          Add
+        </Button>
+      </Header>
       <HorizontalTabs mt={60} mb={30} />
       <Filter />
       <Paper withBorder mt={20} shadow="lg">
