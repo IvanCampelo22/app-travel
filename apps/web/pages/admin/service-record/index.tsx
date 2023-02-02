@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 import {
+  Box,
   Button,
   Container,
   Divider,
@@ -27,7 +28,7 @@ const IndexPage: NextPageWithLayout = () => {
   ])
 
   return (
-    <Container fluid px={112} py={34}>
+    <Container size="xl" py="md">
       <Header
         title="Novo Atendimento"
         subtitle="12FEV20022020003 - 12/12/2022"
@@ -35,35 +36,34 @@ const IndexPage: NextPageWithLayout = () => {
       >
         <Button variant="default">Voltar</Button>
       </Header>
-      <Divider color="gray.3" mt={12} />
+      <Divider color="gray.3" mt="sm" />
       <Flex mt={36} gap="lg">
         <div>
-          <Paper withBorder p={20}>
+          <Paper withBorder p="md">
             <Header
               title="Cliente"
               subtitle="Selecione um cliente ou adicione um"
               subHead={true}
               justify="space-between"
             />
-            <Divider color="gray.3" mt={20} mb={30} />
-            <Flex justify="space-between">
+            <Divider color="gray.3" mt="lg" mb="lg" />
+            <Flex justify="space-between" gap="sm">
               <Select
                 placeholder="Selecine o cliente"
                 styles={(theme) => ({
                   root: {
                     maxWidth: '95%',
-                    width: '95%',
-                    marginRight: 5
+                    width: '95%'
                   }
                 })}
                 data={[{ value: 'one', label: 'Jay Jay Okocha' }]}
               />
               <Button variant="default">
-                <IconPlus size={20} stroke={1.5} />
+                <IconPlus size={18} stroke={1.5} />
               </Button>
             </Flex>
           </Paper>
-          <Paper withBorder mt={36} p={20}>
+          <Paper withBorder mt={36} p="md">
             <Flex direction="column" gap="lg">
               <Header
                 title="Produtos"
@@ -89,13 +89,7 @@ const IndexPage: NextPageWithLayout = () => {
               <Group grow>
                 <DateRangePicker
                   clearable={false}
-                  icon={<IconCalendar size={20} />}
-                  styles={(theme) => ({
-                    input: {
-                      fontWeight: 500,
-                      minWidth: 225
-                    }
-                  })}
+                  icon={<IconCalendar size={18} />}
                   inputFormat="DD/MM/YYYY"
                   value={value}
                   onChange={setValue}
@@ -108,23 +102,35 @@ const IndexPage: NextPageWithLayout = () => {
               <Group grow>
                 <Select
                   placeholder="Selecione tipo hospedagem"
-                  data={[{ value: 'one', label: 'Hotel' }]}
+                  data={[{ value: 'one', label: 'Meia pensão' }]}
                 />
                 <Select
                   placeholder="Selecione quantidade de quartos"
-                  data={[{ value: 'one', label: 'Nova York' }]}
+                  data={[{ value: 'one', label: '1 Quarto' }]}
                 />
               </Group>
               <RoomPrefs />
             </Flex>
           </Paper>
         </div>
-        <Paper p={20} withBorder>
-          <Flex gap="lg" direction="column">
-            <CustomerServiceResume />
-            <CustomerServiceResume />
-            <CustomerServiceResume />
-          </Flex>
+        <Paper withBorder>
+          <Box p="md">
+            <Header
+              title="Resumo do Atendimento"
+              subtitle="localizador #23ABC12"
+              subHead={true}
+            />
+            <Divider color="gray.3" mb="md" mt="sm" />
+            <Flex gap="lg" direction="column">
+              <CustomerServiceResume />
+              <CustomerServiceResume />
+              <CustomerServiceResume />
+            </Flex>
+          </Box>
+          <Divider color="gray.3" />
+          <Group position="right" p="md">
+            <Button color="blue.8">Save changes</Button>
+          </Group>
         </Paper>
       </Flex>
     </Container>
