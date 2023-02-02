@@ -1,7 +1,7 @@
 {
-  "name": "web-page-header",
+  "name": "web-childe-age",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/web/page-header/src",
+  "sourceRoot": "libs/web/childe-age/src",
   "projectType": "library",
   "tags": [],
   "targets": {
@@ -9,14 +9,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/web/page-header/**/*.{ts,tsx,js,jsx}"]
+        "lintFilePatterns": ["libs/web/childe-age/**/*.{ts,tsx,js,jsx}"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/web/page-header/jest.config.ts",
+        "jestConfig": "libs/web/childe-age/jest.config.ts",
         "passWithNoTests": true
       }
     }

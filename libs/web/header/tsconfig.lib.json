@@ -24,6 +24,6 @@
     "src/**/*.jsx",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "specs/page-header.spec.tsx"
+    "specs/header.spec.tsx"
   ]
 }

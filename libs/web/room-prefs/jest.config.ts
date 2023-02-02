@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'web-page-header',
+  displayName: 'web-room-prefs',
   preset: '../../../jest.preset.js',
   transform: {
     '^.+\\.[tj]sx?$': [
@@ -9,5 +9,5 @@ export default {
     ]
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../../coverage/libs/web/page-header'
+  coverageDirectory: '../../../coverage/libs/web/room-prefs'
 }
