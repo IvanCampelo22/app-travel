@@ -14,6 +14,10 @@ import { IconCoffee, IconHome, IconUsers } from '@tabler/icons'
 //export interface CustomerServiceResumeProps { }
 
 const useStyles = createStyles((theme) => ({
+  root: {
+    minWidth: 320
+  },
+
   iconDetails: {
     color: theme.colors.gray[6],
     width: '18px'
@@ -28,12 +32,12 @@ export function CustomerServiceResume() {
   )
 
   return (
-    <Paper p="md" withBorder>
+    <Paper className={classes.root} p="md" withBorder>
       <Flex justify="space-between" align="center">
         <Text color="blue.8" weight="500" size="lg">
           Hotel
         </Text>
-        <Badge bg="gray.2" color="gray.6" py={10} leftSection={avatar}>
+        <Badge bg="gray.2" color="gray.6" py="sm" leftSection={avatar}>
           <Text size="xs" style={{ textTransform: 'none' }}>
             Melbourn, Australia
           </Text>
@@ -50,7 +54,7 @@ export function CustomerServiceResume() {
           12/10/2022 - 15/10/2022
         </Text>
       </div>
-      <Flex mt={8} justify="space-between">
+      <Flex mt="xs" justify="space-between">
         <Group spacing="xs">
           <IconCoffee className={classes.iconDetails} />
           <Text mt={3} color="gray.6" weight="500" size="xs">
