@@ -20,7 +20,7 @@ import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 
 const IndexPage: NextPageWithLayout = () => {
   return (
-    <Container fluid p={20}>
+    <Container size="xl" py="md">
       <Header
         title="Customer Serivce"
         subtitle="View your trades and transactions."
@@ -38,10 +38,10 @@ const IndexPage: NextPageWithLayout = () => {
           Add
         </Button>
       </Header>
-      <HorizontalTabs mt={60} mb={30} />
+      <HorizontalTabs mt={60} mb="xl" />
       <Filter />
-      <Paper withBorder mt={20} shadow="lg">
-        <Box p={20}>
+      <Paper withBorder mt="lg" shadow="lg">
+        <Box p="md">
           <Title order={4} color="gray.9">
             Listing
           </Title>
@@ -65,7 +65,7 @@ const IndexPage: NextPageWithLayout = () => {
           </tbody>
         </Table>
         <Divider color="gray.3" />
-        <Pagination p={20} />
+        <Pagination p="md" />
       </Paper>
     </Container>
   )
