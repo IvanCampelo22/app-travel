@@ -7,9 +7,6 @@ export function ChildeAge() {
       description="Informe a Idade"
       placeholder="Idade"
       styles={(theme) => ({
-        root: {
-          maxWidth: 130
-        },
         label: {
           fontSize: 14,
           color: theme.colors.gray[7]
