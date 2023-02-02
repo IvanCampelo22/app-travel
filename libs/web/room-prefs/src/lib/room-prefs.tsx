@@ -58,8 +58,8 @@ export function RoomPrefs(props: RoomPrefs) {
           placeholder="Quarto"
           styles={(theme) => ({
             root: {
-              maxWidth: '70%',
-              width: '70%'
+              maxWidth: '60%',
+              width: '60%'
             },
             label: {
               fontSize: 14,
