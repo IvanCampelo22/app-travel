@@ -1,9 +1,6 @@
 import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MainModule } from './main.module'
-;(BigInt.prototype as any).toJSON = function () {
-  return this.toString()
-}
 
 async function bootstrap() {
   const app = await NestFactory.create(MainModule)

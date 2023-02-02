@@ -120,7 +120,7 @@ export const InputJsonValue: z.ZodType<PrismaClient.Prisma.InputJsonValue> =
 //------------------------------------------------------
 
 export const TenantSchema = z.object({
-  // omitted: id: z.number(),
+  id: z.number().int(),
   name: z.string(),
   dobName: z.string().nullish(),
   taxId: z.string().nullish(),
@@ -148,12 +148,12 @@ export const TenantSchema = z.object({
   locale: z.string().nullish(),
   timeZone: z.string().nullish(),
   referralSource: z.string().nullish(),
-  domain: z.string(),
-  siteConfig: z.string(),
-  // omitted: createdAt: z.date().nullish(),
-  // omitted: createdBy: z.string().nullish(),
-  // omitted: modifiedAt: z.date(),
-  // omitted: modifiedBy: z.string().nullish(),
+  domain: z.string().nullish(),
+  siteConfig: z.string().nullish(),
+  createdAt: z.date().nullish(),
+  createdBy: z.string().nullish(),
+  modifiedAt: z.date(),
+  modifiedBy: z.string().nullish(),
   isActive: z.boolean().nullish(),
   isMaster: z.boolean().nullish()
 })
@@ -163,10 +163,10 @@ export const TenantSchema = z.object({
 
 export const UserSchema = z.object({
   // omitted: id: z.number(),
-  // omitted: tenantId: z.number().nullish(),
-  // omitted: accountId: z.number().nullish(),
-  firstName: z.string().nullish(),
-  lastName: z.string().nullish(),
+  tenantId: z.number().int().nullish(),
+  accountId: z.number().int().nullish(),
+  firstName: z.string(),
+  lastName: z.string(),
   companyName: z.string().nullish(),
   jobTitle: z.string().nullish(),
   department: z.string().nullish(),
@@ -176,13 +176,14 @@ export const UserSchema = z.object({
   mobilePhone: z.string().nullish(),
   fax: z.string().nullish(),
   adresses: NullableJsonValue.optional(),
-  gender: z.string(),
+  gender: z.string().nullish(),
   birthDate: z.date().nullish(),
-  // omitted: createdAt: z.date().nullish(),
-  // omitted: createdBy: z.string(),
-  // omitted: modifiedAt: z.date().nullish(),
-  // omitted: modifiedBy: z.string(),
-  isActive: z.boolean().nullish()
+  createdAt: z.date().nullish(),
+  createdBy: z.string().nullish(),
+  modifiedAt: z.date().nullish(),
+  modifiedBy: z.string().nullish(),
+  isActive: z.boolean().nullish(),
+  isMaster: z.boolean().nullish()
 })
 
 // ACCOUNT
@@ -191,9 +192,9 @@ export const UserSchema = z.object({
 export const AccountSchema = z.object({
   category: AccountCategorySchema,
   // omitted: id: z.number(),
-  // omitted: tenantId: z.number(),
-  // omitted: parentId: z.number().nullish(),
-  // omitted: ownerId: z.number(),
+  tenantId: z.number().int(),
+  parentId: z.number().int().nullish(),
+  ownerId: z.number().int(),
   name: z.string(),
   dobName: z.string().nullish(),
   taxId: z.string().nullish(),
@@ -218,10 +219,10 @@ export const AccountSchema = z.object({
   referralSource: z.string().nullish(),
   domain: z.string().nullish(),
   siteConfig: z.string().nullish(),
-  // omitted: createdAt: z.date().nullish(),
-  // omitted: createdBy: z.string().nullish(),
-  // omitted: modifiedAt: z.date(),
-  // omitted: modifiedBy: z.string().nullish(),
+  createdAt: z.date().nullish(),
+  createdBy: z.string().nullish(),
+  modifiedAt: z.date(),
+  modifiedBy: z.string().nullish(),
   isActive: z.boolean().nullish()
 })
 
@@ -231,10 +232,10 @@ export const AccountSchema = z.object({
 export const BookingSchema = z.object({
   status: BookingStatusSchema,
   // omitted: id: z.number(),
-  // omitted: tenantId: z.number(),
-  // omitted: accountId: z.number(),
+  tenantId: z.number().int(),
+  accountId: z.number().int(),
   customerId: z.number().int(),
-  // omitted: ownerId: z.number().nullish(),
+  ownerId: z.number().int(),
   customerName: z.string(),
   customerEmail: z.string().email().nullish(),
   customerPhone: z.string().nullish(),
@@ -259,10 +260,10 @@ export const BookingSchema = z.object({
   voucherFilePath: z.string().nullish(),
   receiptFilePath: z.string().nullish(),
   invoiceFilePath: z.string().nullish(),
-  // omitted: createdAt: z.date().nullish(),
-  // omitted: createdBy: z.string().nullish(),
-  // omitted: modifiedAt: z.date(),
-  // omitted: modifiedBy: z.string().nullish(),
+  createdAt: z.date().nullish(),
+  createdBy: z.string().nullish(),
+  modifiedAt: z.date(),
+  modifiedBy: z.string().nullish(),
   isActive: z.boolean().nullish()
 })
 
@@ -271,10 +272,10 @@ export const BookingSchema = z.object({
 
 export const BookingTravelerSchema = z.object({
   // omitted: id: z.number(),
-  // omitted: tenantId: z.number(),
-  // omitted: bookingId: z.number(),
-  // omitted: accountId: z.number(),
-  // omitted: ownerId: z.number(),
+  tenantId: z.number().int(),
+  bookingId: z.number().int(),
+  accountId: z.number().int(),
+  ownerId: z.number().int(),
   firstName: z.string(),
   lastName: z.string(),
   birthDate: z.date(),
@@ -284,9 +285,9 @@ export const BookingTravelerSchema = z.object({
   email: z.string().email(),
   phone: z.string().nullish(),
   createdAt: z.date().nullish(),
-  // omitted: createdBy: z.string().nullish(),
-  // omitted: modifiedAt: z.date(),
-  // omitted: modifiedBy: z.string().nullish(),
+  createdBy: z.string().nullish(),
+  modifiedAt: z.date(),
+  modifiedBy: z.string().nullish(),
   isActive: z.boolean().nullish()
 })
 
@@ -297,11 +298,11 @@ export const BookingProductSchema = z.object({
   category: ProductCategorySchema,
   accommodationType: AccommodationTypeSchema.nullish(),
   // omitted: id: z.number(),
-  // omitted: tenantId: z.number(),
-  // omitted: bookingId: z.number(),
-  // omitted: accountId: z.number(),
-  // omitted: supplierId: z.number().nullish(),
-  // omitted: supplierName: z.string().nullish(),
+  tenantId: z.number().int(),
+  bookingId: z.number().int(),
+  accountId: z.number().int(),
+  supplierId: z.number().int().nullish(),
+  supplierName: z.string().nullish(),
   ownerId: z.number().int(),
   description: z.string().nullish(),
   startDate: z.date(),
@@ -338,9 +339,9 @@ export const BookingProductSchema = z.object({
   creditCardLastFourDigits: z.number().int().nullish(),
   creditCardAuthorizationCode: z.string().nullish(),
   createdAt: z.date().nullish(),
-  // omitted: createdBy: z.string().nullish(),
-  // omitted: modifiedAt: z.date(),
-  // omitted: modifiedBy: z.string().nullish(),
+  createdBy: z.string().nullish(),
+  modifiedAt: z.date(),
+  modifiedBy: z.string().nullish(),
   isActive: z.boolean().nullish()
 })
 
@@ -350,14 +351,14 @@ export const BookingProductSchema = z.object({
 export const BookingProductRoomSchema = z.object({
   category: RoomCategorySchema,
   // omitted: id: z.number(),
-  // omitted: bookingProductId: z.number(),
+  bookingProductId: z.number().int(),
   adultsCount: z.number().int(),
   minorsCount: z.number().int(),
   ageOfMinors: z.number().int().array(),
   createdAt: z.date().nullish(),
-  // omitted: createdBy: z.string().nullish(),
-  // omitted: modifiedAt: z.date(),
-  // omitted: modifiedBy: z.string().nullish(),
+  createdBy: z.string().nullish(),
+  modifiedAt: z.date(),
+  modifiedBy: z.string().nullish(),
   isActive: z.boolean().nullish()
 })
 
@@ -517,7 +518,8 @@ export const UserSelectSchema: z.ZodType<PrismaClient.Prisma.UserSelect> = z
     createdBy: z.boolean().optional(),
     modifiedAt: z.boolean().optional(),
     modifiedBy: z.boolean().optional(),
-    isActive: z.boolean().optional()
+    isActive: z.boolean().optional(),
+    isMaster: z.boolean().optional()
   })
   .strict()
 
@@ -541,7 +543,7 @@ export const AccountIncludeSchema: z.ZodType<PrismaClient.Prisma.AccountInclude>
       childAccounts: z
         .union([z.boolean(), z.lazy(() => AccountFindManyArgsSchema)])
         .optional(),
-      users: z
+      accountUsers: z
         .union([z.boolean(), z.lazy(() => UserFindManyArgsSchema)])
         .optional(),
       bookings: z
@@ -573,7 +575,7 @@ export const AccountCountOutputTypeSelectSchema: z.ZodType<PrismaClient.Prisma.A
   z
     .object({
       childAccounts: z.boolean().optional(),
-      users: z.boolean().optional(),
+      accountUsers: z.boolean().optional(),
       bookings: z.boolean().optional(),
       purchasing: z.boolean().optional(),
       bookingTravelers: z.boolean().optional(),
@@ -595,7 +597,7 @@ export const AccountSelectSchema: z.ZodType<PrismaClient.Prisma.AccountSelect> =
       childAccounts: z
         .union([z.boolean(), z.lazy(() => AccountFindManyArgsSchema)])
         .optional(),
-      users: z
+      accountUsers: z
         .union([z.boolean(), z.lazy(() => UserFindManyArgsSchema)])
         .optional(),
       name: z.boolean().optional(),
@@ -1089,11 +1091,13 @@ export const TenantWhereInputSchema: z.ZodType<PrismaClient.Prisma.TenantWhereIn
         .optional()
         .nullable(),
       domain: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       siteConfig: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       createdAt: z
         .union([z.lazy(() => DateTimeNullableFilterSchema), z.date()])
         .optional()
@@ -1184,13 +1188,12 @@ export const TenantOrderByWithRelationInputSchema: z.ZodType<PrismaClient.Prisma
     })
     .strict()
 
-export const TenantWhereUniqueInputSchema: z.ZodType<
-  Omit<PrismaClient.Prisma.TenantWhereUniqueInput, 'id'>
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-  })
-  .strict()
+export const TenantWhereUniqueInputSchema: z.ZodType<PrismaClient.Prisma.TenantWhereUniqueInput> =
+  z
+    .object({
+      id: z.number().int().optional()
+    })
+    .strict()
 
 export const TenantOrderByWithAggregationInputSchema: z.ZodType<PrismaClient.Prisma.TenantOrderByWithAggregationInput> =
   z
@@ -1435,11 +1438,19 @@ export const TenantScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.
         .optional()
         .nullable(),
       domain: z
-        .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-        .optional(),
+        .union([
+          z.lazy(() => StringNullableWithAggregatesFilterSchema),
+          z.string()
+        ])
+        .optional()
+        .nullable(),
       siteConfig: z
-        .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-        .optional(),
+        .union([
+          z.lazy(() => StringNullableWithAggregatesFilterSchema),
+          z.string()
+        ])
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),
@@ -1524,13 +1535,11 @@ export const UserWhereInputSchema: z.ZodType<PrismaClient.Prisma.UserWhereInput>
         .optional()
         .nullable(),
       firstName: z
-        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
-        .optional()
-        .nullable(),
+        .union([z.lazy(() => StringFilterSchema), z.string()])
+        .optional(),
       lastName: z
-        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
-        .optional()
-        .nullable(),
+        .union([z.lazy(() => StringFilterSchema), z.string()])
+        .optional(),
       companyName: z
         .union([z.lazy(() => StringNullableFilterSchema), z.string()])
         .optional()
@@ -1562,8 +1571,9 @@ export const UserWhereInputSchema: z.ZodType<PrismaClient.Prisma.UserWhereInput>
         .nullable(),
       adresses: z.lazy(() => JsonNullableFilterSchema).optional(),
       gender: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       birthDate: z
         .union([z.lazy(() => DateTimeNullableFilterSchema), z.date()])
         .optional()
@@ -1573,16 +1583,22 @@ export const UserWhereInputSchema: z.ZodType<PrismaClient.Prisma.UserWhereInput>
         .optional()
         .nullable(),
       createdBy: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       modifiedAt: z
         .union([z.lazy(() => DateTimeNullableFilterSchema), z.date()])
         .optional()
         .nullable(),
       modifiedBy: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       isActive: z
+        .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
+        .optional()
+        .nullable(),
+      isMaster: z
         .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
         .optional()
         .nullable()
@@ -1614,7 +1630,8 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<PrismaClient.Prisma.U
       createdBy: z.lazy(() => SortOrderSchema).optional(),
       modifiedAt: z.lazy(() => SortOrderSchema).optional(),
       modifiedBy: z.lazy(() => SortOrderSchema).optional(),
-      isActive: z.lazy(() => SortOrderSchema).optional()
+      isActive: z.lazy(() => SortOrderSchema).optional(),
+      isMaster: z.lazy(() => SortOrderSchema).optional()
     })
     .strict()
 
@@ -1650,6 +1667,7 @@ export const UserOrderByWithAggregationInputSchema: z.ZodType<PrismaClient.Prism
       modifiedAt: z.lazy(() => SortOrderSchema).optional(),
       modifiedBy: z.lazy(() => SortOrderSchema).optional(),
       isActive: z.lazy(() => SortOrderSchema).optional(),
+      isMaster: z.lazy(() => SortOrderSchema).optional(),
       _count: z.lazy(() => UserCountOrderByAggregateInputSchema).optional(),
       _avg: z.lazy(() => UserAvgOrderByAggregateInputSchema).optional(),
       _max: z.lazy(() => UserMaxOrderByAggregateInputSchema).optional(),
@@ -1695,19 +1713,11 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.Pr
         .optional()
         .nullable(),
       firstName: z
-        .union([
-          z.lazy(() => StringNullableWithAggregatesFilterSchema),
-          z.string()
-        ])
-        .optional()
-        .nullable(),
+        .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+        .optional(),
       lastName: z
-        .union([
-          z.lazy(() => StringNullableWithAggregatesFilterSchema),
-          z.string()
-        ])
-        .optional()
-        .nullable(),
+        .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
+        .optional(),
       companyName: z
         .union([
           z.lazy(() => StringNullableWithAggregatesFilterSchema),
@@ -1762,8 +1772,12 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.Pr
         .nullable(),
       adresses: z.lazy(() => JsonNullableWithAggregatesFilterSchema).optional(),
       gender: z
-        .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-        .optional(),
+        .union([
+          z.lazy(() => StringNullableWithAggregatesFilterSchema),
+          z.string()
+        ])
+        .optional()
+        .nullable(),
       birthDate: z
         .union([
           z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),
@@ -1779,8 +1793,12 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.Pr
         .optional()
         .nullable(),
       createdBy: z
-        .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-        .optional(),
+        .union([
+          z.lazy(() => StringNullableWithAggregatesFilterSchema),
+          z.string()
+        ])
+        .optional()
+        .nullable(),
       modifiedAt: z
         .union([
           z.lazy(() => DateTimeNullableWithAggregatesFilterSchema),
@@ -1789,9 +1807,20 @@ export const UserScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient.Pr
         .optional()
         .nullable(),
       modifiedBy: z
-        .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
-        .optional(),
+        .union([
+          z.lazy(() => StringNullableWithAggregatesFilterSchema),
+          z.string()
+        ])
+        .optional()
+        .nullable(),
       isActive: z
+        .union([
+          z.lazy(() => BoolNullableWithAggregatesFilterSchema),
+          z.boolean()
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
         .union([
           z.lazy(() => BoolNullableWithAggregatesFilterSchema),
           z.boolean()
@@ -1827,8 +1856,7 @@ export const AccountWhereInputSchema: z.ZodType<PrismaClient.Prisma.AccountWhere
           z.lazy(() => TenantRelationFilterSchema),
           z.lazy(() => TenantWhereInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       parentId: z
         .union([z.lazy(() => IntNullableFilterSchema), z.number()])
         .optional()
@@ -1842,7 +1870,7 @@ export const AccountWhereInputSchema: z.ZodType<PrismaClient.Prisma.AccountWhere
         .nullable(),
       ownerId: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
       childAccounts: z.lazy(() => AccountListRelationFilterSchema).optional(),
-      users: z.lazy(() => UserListRelationFilterSchema).optional(),
+      accountUsers: z.lazy(() => UserListRelationFilterSchema).optional(),
       name: z.union([z.lazy(() => StringFilterSchema), z.string()]).optional(),
       category: z
         .union([
@@ -1975,7 +2003,9 @@ export const AccountOrderByWithRelationInputSchema: z.ZodType<PrismaClient.Prism
       childAccounts: z
         .lazy(() => AccountOrderByRelationAggregateInputSchema)
         .optional(),
-      users: z.lazy(() => UserOrderByRelationAggregateInputSchema).optional(),
+      accountUsers: z
+        .lazy(() => UserOrderByRelationAggregateInputSchema)
+        .optional(),
       name: z.lazy(() => SortOrderSchema).optional(),
       category: z.lazy(() => SortOrderSchema).optional(),
       dobName: z.lazy(() => SortOrderSchema).optional(),
@@ -2327,8 +2357,7 @@ export const BookingWhereInputSchema: z.ZodType<PrismaClient.Prisma.BookingWhere
           z.lazy(() => TenantRelationFilterSchema),
           z.lazy(() => TenantWhereInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       accountId: z
         .union([z.lazy(() => IntFilterSchema), z.number()])
         .optional(),
@@ -2337,8 +2366,7 @@ export const BookingWhereInputSchema: z.ZodType<PrismaClient.Prisma.BookingWhere
           z.lazy(() => AccountRelationFilterSchema),
           z.lazy(() => AccountWhereInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       customerId: z
         .union([z.lazy(() => IntFilterSchema), z.number()])
         .optional(),
@@ -2347,12 +2375,8 @@ export const BookingWhereInputSchema: z.ZodType<PrismaClient.Prisma.BookingWhere
           z.lazy(() => AccountRelationFilterSchema),
           z.lazy(() => AccountWhereInputSchema)
         ])
-        .optional()
-        .nullable(),
-      ownerId: z
-        .union([z.lazy(() => IntNullableFilterSchema), z.number()])
-        .optional()
-        .nullable(),
+        .optional(),
+      ownerId: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
       customerName: z
         .union([z.lazy(() => StringFilterSchema), z.string()])
         .optional(),
@@ -2631,12 +2655,8 @@ export const BookingScalarWhereWithAggregatesInputSchema: z.ZodType<PrismaClient
         .union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()])
         .optional(),
       ownerId: z
-        .union([
-          z.lazy(() => IntNullableWithAggregatesFilterSchema),
-          z.number()
-        ])
-        .optional()
-        .nullable(),
+        .union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()])
+        .optional(),
       customerName: z
         .union([z.lazy(() => StringWithAggregatesFilterSchema), z.string()])
         .optional(),
@@ -2867,8 +2887,7 @@ export const BookingTravelerWhereInputSchema: z.ZodType<PrismaClient.Prisma.Book
           z.lazy(() => TenantRelationFilterSchema),
           z.lazy(() => TenantWhereInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       bookingId: z
         .union([z.lazy(() => IntFilterSchema), z.number()])
         .optional(),
@@ -2877,8 +2896,7 @@ export const BookingTravelerWhereInputSchema: z.ZodType<PrismaClient.Prisma.Book
           z.lazy(() => BookingRelationFilterSchema),
           z.lazy(() => BookingWhereInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       accountId: z
         .union([z.lazy(() => IntFilterSchema), z.number()])
         .optional(),
@@ -2887,8 +2905,7 @@ export const BookingTravelerWhereInputSchema: z.ZodType<PrismaClient.Prisma.Book
           z.lazy(() => AccountRelationFilterSchema),
           z.lazy(() => AccountWhereInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       ownerId: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
       firstName: z
         .union([z.lazy(() => StringFilterSchema), z.string()])
@@ -4034,1279 +4051,1410 @@ export const BookingProductRoomScalarWhereWithAggregatesInputSchema: z.ZodType<P
     })
     .strict()
 
-export const TenantCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.TenantCreateInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    name: z.string(),
-    dobName: z.string().optional().nullable(),
-    taxId: z.string().optional().nullable(),
-    brand: z.string().optional().nullable(),
-    contactPrefix: z.string().optional().nullable(),
-    contactFirstName: z.string().optional().nullable(),
-    contactMiddleName: z.string().optional().nullable(),
-    contactLastName: z.string().optional().nullable(),
-    contactSuffix: z.string().optional().nullable(),
-    jobTitle: z.string().optional().nullable(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    mobilePhone: z.string().optional().nullable(),
-    fax: z.string().optional().nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z.string().optional().nullable(),
-    privacyPolicy: z.string().optional().nullable(),
-    bankName: z.string().optional().nullable(),
-    branch: z.string().optional().nullable(),
-    bankAccount: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(),
-    countryCode: z.string().optional().nullable(),
-    currencyCode: z.string().optional().nullable(),
-    locale: z.string().optional().nullable(),
-    timeZone: z.string().optional().nullable(),
-    referralSource: z.string().optional().nullable(),
-    domain: z.string(),
-    siteConfig: z.string(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable(),
-    isMaster: z.boolean().optional().nullable(),
-    users: z
-      .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    accounts: z
-      .lazy(() => AccountCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    bookings: z
-      .lazy(() => BookingCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    bookingTravelers: z
-      .lazy(() => BookingTravelerCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    bookingProducts: z
-      .lazy(() => BookingProductCreateNestedManyWithoutTenantInputSchema)
-      .optional()
-  })
-  .strict()
+export const TenantCreateInputSchema: z.ZodType<PrismaClient.Prisma.TenantCreateInput> =
+  z
+    .object({
+      name: z.string(),
+      dobName: z.string().optional().nullable(),
+      taxId: z.string().optional().nullable(),
+      brand: z.string().optional().nullable(),
+      contactPrefix: z.string().optional().nullable(),
+      contactFirstName: z.string().optional().nullable(),
+      contactMiddleName: z.string().optional().nullable(),
+      contactLastName: z.string().optional().nullable(),
+      contactSuffix: z.string().optional().nullable(),
+      jobTitle: z.string().optional().nullable(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z.string().optional().nullable(),
+      privacyPolicy: z.string().optional().nullable(),
+      bankName: z.string().optional().nullable(),
+      branch: z.string().optional().nullable(),
+      bankAccount: z.string().optional().nullable(),
+      notes: z.string().optional().nullable(),
+      countryCode: z.string().optional().nullable(),
+      currencyCode: z.string().optional().nullable(),
+      locale: z.string().optional().nullable(),
+      timeZone: z.string().optional().nullable(),
+      referralSource: z.string().optional().nullable(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable(),
+      users: z
+        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+        .optional(),
+      accounts: z
+        .lazy(() => AccountCreateNestedManyWithoutTenantInputSchema)
+        .optional(),
+      bookings: z
+        .lazy(() => BookingCreateNestedManyWithoutTenantInputSchema)
+        .optional(),
+      bookingTravelers: z
+        .lazy(() => BookingTravelerCreateNestedManyWithoutTenantInputSchema)
+        .optional(),
+      bookingProducts: z
+        .lazy(() => BookingProductCreateNestedManyWithoutTenantInputSchema)
+        .optional()
+    })
+    .strict()
 
-export const TenantUncheckedCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.TenantUncheckedCreateInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
+export const TenantUncheckedCreateInputSchema: z.ZodType<PrismaClient.Prisma.TenantUncheckedCreateInput> =
+  z
+    .object({
+      id: z.number().int().optional(),
+      name: z.string(),
+      dobName: z.string().optional().nullable(),
+      taxId: z.string().optional().nullable(),
+      brand: z.string().optional().nullable(),
+      contactPrefix: z.string().optional().nullable(),
+      contactFirstName: z.string().optional().nullable(),
+      contactMiddleName: z.string().optional().nullable(),
+      contactLastName: z.string().optional().nullable(),
+      contactSuffix: z.string().optional().nullable(),
+      jobTitle: z.string().optional().nullable(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z.string().optional().nullable(),
+      privacyPolicy: z.string().optional().nullable(),
+      bankName: z.string().optional().nullable(),
+      branch: z.string().optional().nullable(),
+      bankAccount: z.string().optional().nullable(),
+      notes: z.string().optional().nullable(),
+      countryCode: z.string().optional().nullable(),
+      currencyCode: z.string().optional().nullable(),
+      locale: z.string().optional().nullable(),
+      timeZone: z.string().optional().nullable(),
+      referralSource: z.string().optional().nullable(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable(),
+      users: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+        .optional(),
+      accounts: z
+        .lazy(() => AccountUncheckedCreateNestedManyWithoutTenantInputSchema)
+        .optional(),
+      bookings: z
+        .lazy(() => BookingUncheckedCreateNestedManyWithoutTenantInputSchema)
+        .optional(),
+      bookingTravelers: z
+        .lazy(
+          () => BookingTravelerUncheckedCreateNestedManyWithoutTenantInputSchema
+        )
+        .optional(),
+      bookingProducts: z
+        .lazy(
+          () => BookingProductUncheckedCreateNestedManyWithoutTenantInputSchema
+        )
+        .optional()
+    })
+    .strict()
+
+export const TenantUpdateInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateInput> =
+  z
+    .object({
+      name: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      dobName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      taxId: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      brand: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactPrefix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactFirstName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactMiddleName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactLastName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactSuffix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      privacyPolicy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      branch: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankAccount: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      notes: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      countryCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      currencyCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locale: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      timeZone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      referralSource: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      domain: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      siteConfig: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      users: z
+        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+        .optional(),
+      accounts: z
+        .lazy(() => AccountUpdateManyWithoutTenantNestedInputSchema)
+        .optional(),
+      bookings: z
+        .lazy(() => BookingUpdateManyWithoutTenantNestedInputSchema)
+        .optional(),
+      bookingTravelers: z
+        .lazy(() => BookingTravelerUpdateManyWithoutTenantNestedInputSchema)
+        .optional(),
+      bookingProducts: z
+        .lazy(() => BookingProductUpdateManyWithoutTenantNestedInputSchema)
+        .optional()
+    })
+    .strict()
+
+export const TenantUncheckedUpdateInputSchema: z.ZodType<PrismaClient.Prisma.TenantUncheckedUpdateInput> =
+  z
+    .object({
+      id: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      name: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      dobName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      taxId: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      brand: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactPrefix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactFirstName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactMiddleName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactLastName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactSuffix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      privacyPolicy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      branch: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankAccount: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      notes: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      countryCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      currencyCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locale: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      timeZone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      referralSource: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      domain: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      siteConfig: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      users: z
+        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+        .optional(),
+      accounts: z
+        .lazy(() => AccountUncheckedUpdateManyWithoutTenantNestedInputSchema)
+        .optional(),
+      bookings: z
+        .lazy(() => BookingUncheckedUpdateManyWithoutTenantNestedInputSchema)
+        .optional(),
+      bookingTravelers: z
+        .lazy(
+          () => BookingTravelerUncheckedUpdateManyWithoutTenantNestedInputSchema
+        )
+        .optional(),
+      bookingProducts: z
+        .lazy(
+          () => BookingProductUncheckedUpdateManyWithoutTenantNestedInputSchema
+        )
+        .optional()
+    })
+    .strict()
+
+export const TenantCreateManyInputSchema: z.ZodType<PrismaClient.Prisma.TenantCreateManyInput> =
+  z
+    .object({
+      id: z.number().int().optional(),
+      name: z.string(),
+      dobName: z.string().optional().nullable(),
+      taxId: z.string().optional().nullable(),
+      brand: z.string().optional().nullable(),
+      contactPrefix: z.string().optional().nullable(),
+      contactFirstName: z.string().optional().nullable(),
+      contactMiddleName: z.string().optional().nullable(),
+      contactLastName: z.string().optional().nullable(),
+      contactSuffix: z.string().optional().nullable(),
+      jobTitle: z.string().optional().nullable(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z.string().optional().nullable(),
+      privacyPolicy: z.string().optional().nullable(),
+      bankName: z.string().optional().nullable(),
+      branch: z.string().optional().nullable(),
+      bankAccount: z.string().optional().nullable(),
+      notes: z.string().optional().nullable(),
+      countryCode: z.string().optional().nullable(),
+      currencyCode: z.string().optional().nullable(),
+      locale: z.string().optional().nullable(),
+      timeZone: z.string().optional().nullable(),
+      referralSource: z.string().optional().nullable(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable()
+    })
+    .strict()
+
+export const TenantUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateManyMutationInput> =
+  z
+    .object({
+      name: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      dobName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      taxId: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      brand: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactPrefix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactFirstName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactMiddleName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactLastName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactSuffix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      privacyPolicy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      branch: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankAccount: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      notes: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      countryCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      currencyCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locale: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      timeZone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      referralSource: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      domain: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      siteConfig: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
+
+export const TenantUncheckedUpdateManyInputSchema: z.ZodType<PrismaClient.Prisma.TenantUncheckedUpdateManyInput> =
+  z
+    .object({
+      id: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      name: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      dobName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      taxId: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      brand: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactPrefix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactFirstName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactMiddleName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactLastName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      contactSuffix: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      privacyPolicy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      branch: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankAccount: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      notes: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      countryCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      currencyCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locale: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      timeZone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      referralSource: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      domain: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      siteConfig: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
+
+export const UserCreateInputSchema: z.ZodType<PrismaClient.Prisma.UserCreateInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(() => TenantCreateNestedOneWithoutUsersInputSchema)
+        .optional(),
+      account: z
+        .lazy(() => AccountCreateNestedOneWithoutAccountUsersInputSchema)
+        .optional(),
+      firstName: z.string(),
+      lastName: z.string(),
+      companyName: z.string().optional().nullable(),
+      jobTitle: z.string().optional().nullable(),
+      department: z.string().optional().nullable(),
+      managerName: z.string().optional().nullable(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      gender: z.string().optional().nullable(),
+      birthDate: z.date().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional().nullable(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable()
+    })
+    .strict()
+
+export const UserUncheckedCreateInputSchema: z.ZodType<
+  Omit<PrismaClient.Prisma.UserUncheckedCreateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    name: z.string(),
-    dobName: z.string().optional().nullable(),
-    taxId: z.string().optional().nullable(),
-    brand: z.string().optional().nullable(),
-    contactPrefix: z.string().optional().nullable(),
-    contactFirstName: z.string().optional().nullable(),
-    contactMiddleName: z.string().optional().nullable(),
-    contactLastName: z.string().optional().nullable(),
-    contactSuffix: z.string().optional().nullable(),
+    tenantId: z.number().int().optional().nullable(),
+    accountId: z.number().int().optional().nullable(),
+    firstName: z.string(),
+    lastName: z.string(),
+    companyName: z.string().optional().nullable(),
     jobTitle: z.string().optional().nullable(),
+    department: z.string().optional().nullable(),
+    managerName: z.string().optional().nullable(),
     email: z.string().email(),
     phone: z.string().optional().nullable(),
     mobilePhone: z.string().optional().nullable(),
     fax: z.string().optional().nullable(),
-    billingAdresses: z
+    adresses: z
       .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
       .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z.string().optional().nullable(),
-    privacyPolicy: z.string().optional().nullable(),
-    bankName: z.string().optional().nullable(),
-    branch: z.string().optional().nullable(),
-    bankAccount: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(),
-    countryCode: z.string().optional().nullable(),
-    currencyCode: z.string().optional().nullable(),
-    locale: z.string().optional().nullable(),
-    timeZone: z.string().optional().nullable(),
-    referralSource: z.string().optional().nullable(),
-    domain: z.string(),
-    siteConfig: z.string(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable(),
-    isMaster: z.boolean().optional().nullable(),
-    users: z
-      .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    accounts: z
-      .lazy(() => AccountUncheckedCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    bookings: z
-      .lazy(() => BookingUncheckedCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    bookingTravelers: z
-      .lazy(
-        () => BookingTravelerUncheckedCreateNestedManyWithoutTenantInputSchema
-      )
-      .optional(),
-    bookingProducts: z
-      .lazy(
-        () => BookingProductUncheckedCreateNestedManyWithoutTenantInputSchema
-      )
-      .optional()
-  })
-  .strict()
-
-export const TenantUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.TenantUpdateInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    name: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dobName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    taxId: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    brand: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactPrefix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactFirstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactMiddleName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactLastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactSuffix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    jobTitle: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    privacyPolicy: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    branch: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankAccount: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    notes: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    countryCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    currencyCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locale: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    timeZone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    referralSource: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    domain: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    siteConfig: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    isMaster: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    users: z
-      .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    accounts: z
-      .lazy(() => AccountUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    bookings: z
-      .lazy(() => BookingUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    bookingTravelers: z
-      .lazy(() => BookingTravelerUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    bookingProducts: z
-      .lazy(() => BookingProductUpdateManyWithoutTenantNestedInputSchema)
-      .optional()
-  })
-  .strict()
-
-export const TenantUncheckedUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.TenantUncheckedUpdateInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    name: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dobName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    taxId: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    brand: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactPrefix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactFirstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactMiddleName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactLastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactSuffix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    jobTitle: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    privacyPolicy: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    branch: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankAccount: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    notes: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    countryCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    currencyCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locale: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    timeZone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    referralSource: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    domain: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    siteConfig: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    isMaster: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    users: z
-      .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    accounts: z
-      .lazy(() => AccountUncheckedUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    bookings: z
-      .lazy(() => BookingUncheckedUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    bookingTravelers: z
-      .lazy(
-        () => BookingTravelerUncheckedUpdateManyWithoutTenantNestedInputSchema
-      )
-      .optional(),
-    bookingProducts: z
-      .lazy(
-        () => BookingProductUncheckedUpdateManyWithoutTenantNestedInputSchema
-      )
-      .optional()
-  })
-  .strict()
-
-export const TenantCreateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.TenantCreateManyInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-    name: z.string(),
-    dobName: z.string().optional().nullable(),
-    taxId: z.string().optional().nullable(),
-    brand: z.string().optional().nullable(),
-    contactPrefix: z.string().optional().nullable(),
-    contactFirstName: z.string().optional().nullable(),
-    contactMiddleName: z.string().optional().nullable(),
-    contactLastName: z.string().optional().nullable(),
-    contactSuffix: z.string().optional().nullable(),
-    jobTitle: z.string().optional().nullable(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    mobilePhone: z.string().optional().nullable(),
-    fax: z.string().optional().nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z.string().optional().nullable(),
-    privacyPolicy: z.string().optional().nullable(),
-    bankName: z.string().optional().nullable(),
-    branch: z.string().optional().nullable(),
-    bankAccount: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(),
-    countryCode: z.string().optional().nullable(),
-    currencyCode: z.string().optional().nullable(),
-    locale: z.string().optional().nullable(),
-    timeZone: z.string().optional().nullable(),
-    referralSource: z.string().optional().nullable(),
-    domain: z.string(),
-    siteConfig: z.string(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    gender: z.string().optional().nullable(),
+    birthDate: z.date().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional().nullable(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable(),
     isMaster: z.boolean().optional().nullable()
   })
   .strict()
 
-export const TenantUpdateManyMutationInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.TenantUpdateManyMutationInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    name: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dobName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    taxId: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    brand: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactPrefix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactFirstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactMiddleName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactLastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactSuffix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    jobTitle: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    privacyPolicy: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    branch: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankAccount: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    notes: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    countryCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    currencyCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locale: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    timeZone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    referralSource: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    domain: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    siteConfig: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    isMaster: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
-
-export const TenantUncheckedUpdateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.TenantUncheckedUpdateManyInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    name: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    dobName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    taxId: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    brand: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactPrefix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactFirstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactMiddleName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactLastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    contactSuffix: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    jobTitle: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    privacyPolicy: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    branch: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankAccount: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    notes: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    countryCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    currencyCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locale: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    timeZone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    referralSource: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    domain: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    siteConfig: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    isMaster: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
-
-export const UserCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserCreateInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantCreateNestedOneWithoutUsersInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountCreateNestedOneWithoutUsersInputSchema)
-      .optional(),
-    firstName: z.string().optional().nullable(),
-    lastName: z.string().optional().nullable(),
-    companyName: z.string().optional().nullable(),
-    jobTitle: z.string().optional().nullable(),
-    department: z.string().optional().nullable(),
-    managerName: z.string().optional().nullable(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    mobilePhone: z.string().optional().nullable(),
-    fax: z.string().optional().nullable(),
-    adresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    gender: z.string(),
-    birthDate: z.date().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string(),
-    // omitted: modifiedAt: z.date().optional().nullable(),
-    // omitted: modifiedBy: z.string(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
-
-export const UserUncheckedCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserUncheckedCreateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number().optional().nullable(),
-    // omitted: accountId: z.number().optional().nullable(),
-    firstName: z.string().optional().nullable(),
-    lastName: z.string().optional().nullable(),
-    companyName: z.string().optional().nullable(),
-    jobTitle: z.string().optional().nullable(),
-    department: z.string().optional().nullable(),
-    managerName: z.string().optional().nullable(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    mobilePhone: z.string().optional().nullable(),
-    fax: z.string().optional().nullable(),
-    adresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    gender: z.string(),
-    birthDate: z.date().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string(),
-    // omitted: modifiedAt: z.date().optional().nullable(),
-    // omitted: modifiedBy: z.string(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
-
-export const UserUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserUpdateInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantUpdateOneWithoutUsersNestedInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountUpdateOneWithoutUsersNestedInputSchema)
-      .optional(),
-    firstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    lastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    companyName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    jobTitle: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    department: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    managerName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    adresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    gender: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    birthDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const UserUpdateInputSchema: z.ZodType<PrismaClient.Prisma.UserUpdateInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(() => TenantUpdateOneWithoutUsersNestedInputSchema)
+        .optional(),
+      account: z
+        .lazy(() => AccountUpdateOneWithoutAccountUsersNestedInputSchema)
+        .optional(),
+      firstName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      lastName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      companyName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      department: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      managerName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      gender: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      birthDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const UserUncheckedUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserUncheckedUpdateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.UserUncheckedUpdateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     firstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
     lastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
     companyName: z
       .union([
         z.string(),
@@ -5366,8 +5514,12 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<
       .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
       .optional(),
     gender: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     birthDate: z
       .union([
         z.date(),
@@ -5375,11 +5527,42 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
+      .union([
+        z.boolean(),
+        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    isMaster: z
       .union([
         z.boolean(),
         z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
@@ -5390,23 +5573,14 @@ export const UserUncheckedUpdateInputSchema: z.ZodType<
   .strict()
 
 export const UserCreateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserCreateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.UserCreateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number().optional().nullable(),
-    // omitted: accountId: z.number().optional().nullable(),
-    firstName: z.string().optional().nullable(),
-    lastName: z.string().optional().nullable(),
+    tenantId: z.number().int().optional().nullable(),
+    accountId: z.number().int().optional().nullable(),
+    firstName: z.string(),
+    lastName: z.string(),
     companyName: z.string().optional().nullable(),
     jobTitle: z.string().optional().nullable(),
     department: z.string().optional().nullable(),
@@ -5418,149 +5592,174 @@ export const UserCreateManyInputSchema: z.ZodType<
     adresses: z
       .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
       .optional(),
-    gender: z.string(),
+    gender: z.string().optional().nullable(),
     birthDate: z.date().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string(),
-    // omitted: modifiedAt: z.date().optional().nullable(),
-    // omitted: modifiedBy: z.string(),
-    isActive: z.boolean().optional().nullable()
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional().nullable(),
+    modifiedBy: z.string().optional().nullable(),
+    isActive: z.boolean().optional().nullable(),
+    isMaster: z.boolean().optional().nullable()
   })
   .strict()
 
-export const UserUpdateManyMutationInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserUpdateManyMutationInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    firstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    lastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    companyName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    jobTitle: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    department: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    managerName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    adresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    gender: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    birthDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const UserUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.UserUpdateManyMutationInput> =
+  z
+    .object({
+      firstName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      lastName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      companyName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      department: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      managerName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      gender: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      birthDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const UserUncheckedUpdateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserUncheckedUpdateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.UserUncheckedUpdateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     firstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
     lastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
     companyName: z
       .union([
         z.string(),
@@ -5620,8 +5819,12 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<
       .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
       .optional(),
     gender: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     birthDate: z
       .union([
         z.date(),
@@ -5629,11 +5832,42 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
+      .union([
+        z.boolean(),
+        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    isMaster: z
       .union([
         z.boolean(),
         z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
@@ -5643,98 +5877,82 @@ export const UserUncheckedUpdateManyInputSchema: z.ZodType<
   })
   .strict()
 
-export const AccountCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountCreateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-      .optional(),
-    parent: z
-      .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
-      .optional(),
-    // omitted: ownerId: z.number(),
-    childAccounts: z
-      .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
-      .optional(),
-    users: z
-      .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
-      .optional(),
-    name: z.string(),
-    category: z.lazy(() => AccountCategorySchema),
-    dobName: z.string().optional().nullable(),
-    taxId: z.string().optional().nullable(),
-    ssn: z.string().optional().nullable(),
-    brand: z.string().optional().nullable(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    mobilePhone: z.string().optional().nullable(),
-    fax: z.string().optional().nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z.string().optional().nullable(),
-    privacyPolicy: z.string().optional().nullable(),
-    bankName: z.string().optional().nullable(),
-    branch: z.string().optional().nullable(),
-    bankAccount: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(),
-    countryCode: z.string().optional().nullable(),
-    currencyCode: z.string().optional().nullable(),
-    locale: z.string().optional().nullable(),
-    timeZone: z.string().optional().nullable(),
-    referralSource: z.string().optional().nullable(),
-    domain: z.string().optional().nullable(),
-    siteConfig: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable(),
-    bookings: z
-      .lazy(() => BookingCreateNestedManyWithoutAccountInputSchema)
-      .optional(),
-    purchasing: z
-      .lazy(() => BookingCreateNestedManyWithoutCustomerInputSchema)
-      .optional(),
-    bookingTravelers: z
-      .lazy(() => BookingTravelerCreateNestedManyWithoutAccountInputSchema)
-      .optional(),
-    bookingProducts: z
-      .lazy(() => BookingProductCreateNestedManyWithoutAccountInputSchema)
-      .optional()
-  })
-  .strict()
+export const AccountCreateInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateInput> =
+  z
+    .object({
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
+      parent: z
+        .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
+        .optional(),
+      ownerId: z.number().int(),
+      childAccounts: z
+        .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
+        .optional(),
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
+        .optional(),
+      name: z.string(),
+      category: z.lazy(() => AccountCategorySchema),
+      dobName: z.string().optional().nullable(),
+      taxId: z.string().optional().nullable(),
+      ssn: z.string().optional().nullable(),
+      brand: z.string().optional().nullable(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z.string().optional().nullable(),
+      privacyPolicy: z.string().optional().nullable(),
+      bankName: z.string().optional().nullable(),
+      branch: z.string().optional().nullable(),
+      bankAccount: z.string().optional().nullable(),
+      notes: z.string().optional().nullable(),
+      countryCode: z.string().optional().nullable(),
+      currencyCode: z.string().optional().nullable(),
+      locale: z.string().optional().nullable(),
+      timeZone: z.string().optional().nullable(),
+      referralSource: z.string().optional().nullable(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      bookings: z
+        .lazy(() => BookingCreateNestedManyWithoutAccountInputSchema)
+        .optional(),
+      purchasing: z
+        .lazy(() => BookingCreateNestedManyWithoutCustomerInputSchema)
+        .optional(),
+      bookingTravelers: z
+        .lazy(() => BookingTravelerCreateNestedManyWithoutAccountInputSchema)
+        .optional(),
+      bookingProducts: z
+        .lazy(() => BookingProductCreateNestedManyWithoutAccountInputSchema)
+        .optional()
+    })
+    .strict()
 
 export const AccountUncheckedCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountUncheckedCreateInput,
-    | 'id'
-    | 'tenantId'
-    | 'parentId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.AccountUncheckedCreateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: parentId: z.number().optional().nullable(),
-    // omitted: ownerId: z.number(),
+    tenantId: z.number().int(),
+    parentId: z.number().int().optional().nullable(),
+    ownerId: z.number().int(),
     childAccounts: z
       .lazy(() => AccountUncheckedCreateNestedManyWithoutParentInputSchema)
       .optional(),
-    users: z
-      .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+    accountUsers: z
+      .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
       .optional(),
     name: z.string(),
     category: z.lazy(() => AccountCategorySchema),
@@ -5765,10 +5983,10 @@ export const AccountUncheckedCreateInputSchema: z.ZodType<
     referralSource: z.string().optional().nullable(),
     domain: z.string().optional().nullable(),
     siteConfig: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable(),
     bookings: z
       .lazy(() => BookingUncheckedCreateNestedManyWithoutAccountInputSchema)
@@ -5789,236 +6007,269 @@ export const AccountUncheckedCreateInputSchema: z.ZodType<
   })
   .strict()
 
-export const AccountUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountUpdateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
-      .optional(),
-    parent: z
-      .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
-      .optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    childAccounts: z
-      .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
-      .optional(),
-    users: z
-      .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
-      .optional(),
-    name: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    category: z
-      .union([
-        z.lazy(() => AccountCategorySchema),
-        z.lazy(() => EnumAccountCategoryFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    dobName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    taxId: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    ssn: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    brand: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    privacyPolicy: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    branch: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankAccount: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    notes: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    countryCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    currencyCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locale: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    timeZone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    referralSource: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    domain: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    siteConfig: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bookings: z
-      .lazy(() => BookingUpdateManyWithoutAccountNestedInputSchema)
-      .optional(),
-    purchasing: z
-      .lazy(() => BookingUpdateManyWithoutCustomerNestedInputSchema)
-      .optional(),
-    bookingTravelers: z
-      .lazy(() => BookingTravelerUpdateManyWithoutAccountNestedInputSchema)
-      .optional(),
-    bookingProducts: z
-      .lazy(() => BookingProductUpdateManyWithoutAccountNestedInputSchema)
-      .optional()
-  })
-  .strict()
+export const AccountUpdateInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
+        .optional(),
+      parent: z
+        .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
+        .optional(),
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      childAccounts: z
+        .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
+        .optional(),
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
+        .optional(),
+      name: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      category: z
+        .union([
+          z.lazy(() => AccountCategorySchema),
+          z.lazy(() => EnumAccountCategoryFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      dobName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      taxId: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      ssn: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      brand: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      privacyPolicy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      branch: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankAccount: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      notes: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      countryCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      currencyCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locale: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      timeZone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      referralSource: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      domain: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      siteConfig: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bookings: z
+        .lazy(() => BookingUpdateManyWithoutAccountNestedInputSchema)
+        .optional(),
+      purchasing: z
+        .lazy(() => BookingUpdateManyWithoutCustomerNestedInputSchema)
+        .optional(),
+      bookingTravelers: z
+        .lazy(() => BookingTravelerUpdateManyWithoutAccountNestedInputSchema)
+        .optional(),
+      bookingProducts: z
+        .lazy(() => BookingProductUpdateManyWithoutAccountNestedInputSchema)
+        .optional()
+    })
+    .strict()
 
 export const AccountUncheckedUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountUncheckedUpdateInput,
-    | 'id'
-    | 'tenantId'
-    | 'parentId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.AccountUncheckedUpdateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: parentId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    parentId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     childAccounts: z
       .lazy(() => AccountUncheckedUpdateManyWithoutParentNestedInputSchema)
       .optional(),
-    users: z
-      .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+    accountUsers: z
+      .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
       .optional(),
     name: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
@@ -6181,10 +6432,30 @@ export const AccountUncheckedUpdateInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -6212,23 +6483,13 @@ export const AccountUncheckedUpdateInputSchema: z.ZodType<
   .strict()
 
 export const AccountCreateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountCreateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'parentId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.AccountCreateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: parentId: z.number().optional().nullable(),
-    // omitted: ownerId: z.number(),
+    tenantId: z.number().int(),
+    parentId: z.number().int().optional().nullable(),
+    ownerId: z.number().int(),
     name: z.string(),
     category: z.lazy(() => AccountCategorySchema),
     dobName: z.string().optional().nullable(),
@@ -6258,215 +6519,248 @@ export const AccountCreateManyInputSchema: z.ZodType<
     referralSource: z.string().optional().nullable(),
     domain: z.string().optional().nullable(),
     siteConfig: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const AccountUpdateManyMutationInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountUpdateManyMutationInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    name: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    category: z
-      .union([
-        z.lazy(() => AccountCategorySchema),
-        z.lazy(() => EnumAccountCategoryFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    dobName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    taxId: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    ssn: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    brand: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    email: z
-      .union([
-        z.string().email(),
-        z.lazy(() => StringFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    mobilePhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fax: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    privacyPolicy: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    branch: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    bankAccount: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    notes: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    countryCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    currencyCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locale: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    timeZone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    referralSource: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    domain: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    siteConfig: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const AccountUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateManyMutationInput> =
+  z
+    .object({
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      name: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      category: z
+        .union([
+          z.lazy(() => AccountCategorySchema),
+          z.lazy(() => EnumAccountCategoryFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      dobName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      taxId: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      ssn: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      brand: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string().email(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      privacyPolicy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      branch: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      bankAccount: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      notes: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      countryCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      currencyCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locale: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      timeZone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      referralSource: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      domain: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      siteConfig: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const AccountUncheckedUpdateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountUncheckedUpdateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'parentId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.AccountUncheckedUpdateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: parentId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    parentId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     name: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -6628,10 +6922,30 @@ export const AccountUncheckedUpdateManyInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -6642,90 +6956,78 @@ export const AccountUncheckedUpdateManyInputSchema: z.ZodType<
   })
   .strict()
 
-export const BookingCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingCreateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema)
-      .optional(),
-    customer: z
-      .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
-      .optional(),
-    // omitted: ownerId: z.number().optional().nullable(),
-    customerName: z.string(),
-    customerEmail: z.string().email().optional().nullable(),
-    customerPhone: z.string().optional().nullable(),
-    postalCode: z.string().optional().nullable(),
-    fromCity: z.string().optional().nullable(),
-    toCity: z.string().optional().nullable(),
-    travelDate: z.date().optional().nullable(),
-    travelPeriod: z.string().optional().nullable(),
-    adultsCount: z.number().int().optional().nullable(),
-    childrenCount: z.number().int().optional().nullable(),
-    seniorsCount: z.number().int().optional().nullable(),
-    requestDescription: z.string().optional().nullable(),
-    status: z.lazy(() => BookingStatusSchema).optional(),
-    locatorCode: z.string().optional().nullable(),
-    totalPrice: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    totalCost: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    paymentType: z.string().optional().nullable(),
-    paymentStatus: z.string().optional().nullable(),
-    paymentDateTime: z.date().optional().nullable(),
-    discountPercent: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    discountAmount: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    paymentAmount: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    voucherFilePath: z.string().optional().nullable(),
-    receiptFilePath: z.string().optional().nullable(),
-    invoiceFilePath: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable(),
-    travelers: z
-      .lazy(() => BookingTravelerCreateNestedManyWithoutBookingInputSchema)
-      .optional(),
-    products: z
-      .lazy(() => BookingProductCreateNestedManyWithoutBookingInputSchema)
-      .optional()
-  })
-  .strict()
+export const BookingCreateInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateInput> =
+  z
+    .object({
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema),
+      account: z.lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema),
+      customer: z.lazy(
+        () => AccountCreateNestedOneWithoutPurchasingInputSchema
+      ),
+      ownerId: z.number().int(),
+      customerName: z.string(),
+      customerEmail: z.string().email().optional().nullable(),
+      customerPhone: z.string().optional().nullable(),
+      postalCode: z.string().optional().nullable(),
+      fromCity: z.string().optional().nullable(),
+      toCity: z.string().optional().nullable(),
+      travelDate: z.date().optional().nullable(),
+      travelPeriod: z.string().optional().nullable(),
+      adultsCount: z.number().int().optional().nullable(),
+      childrenCount: z.number().int().optional().nullable(),
+      seniorsCount: z.number().int().optional().nullable(),
+      requestDescription: z.string().optional().nullable(),
+      status: z.lazy(() => BookingStatusSchema).optional(),
+      locatorCode: z.string().optional().nullable(),
+      totalPrice: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      totalCost: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      paymentType: z.string().optional().nullable(),
+      paymentStatus: z.string().optional().nullable(),
+      paymentDateTime: z.date().optional().nullable(),
+      discountPercent: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      discountAmount: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      paymentAmount: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      voucherFilePath: z.string().optional().nullable(),
+      receiptFilePath: z.string().optional().nullable(),
+      invoiceFilePath: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      travelers: z
+        .lazy(() => BookingTravelerCreateNestedManyWithoutBookingInputSchema)
+        .optional(),
+      products: z
+        .lazy(() => BookingProductCreateNestedManyWithoutBookingInputSchema)
+        .optional()
+    })
+    .strict()
 
 export const BookingUncheckedCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingUncheckedCreateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingUncheckedCreateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: accountId: z.number(),
+    tenantId: z.number().int(),
+    accountId: z.number().int(),
     customerId: z.number().int(),
-    // omitted: ownerId: z.number().optional().nullable(),
+    ownerId: z.number().int(),
     customerName: z.string(),
     customerEmail: z.string().email().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -6760,10 +7062,10 @@ export const BookingUncheckedCreateInputSchema: z.ZodType<
     voucherFilePath: z.string().optional().nullable(),
     receiptFilePath: z.string().optional().nullable(),
     invoiceFilePath: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable(),
     travelers: z
       .lazy(
@@ -6778,237 +7080,269 @@ export const BookingUncheckedCreateInputSchema: z.ZodType<
   })
   .strict()
 
-export const BookingUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingUpdateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantUpdateOneWithoutBookingsNestedInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountUpdateOneWithoutBookingsNestedInputSchema)
-      .optional(),
-    customer: z
-      .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
-      .optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    customerName: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    customerEmail: z
-      .union([
-        z.string().email(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    customerPhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    postalCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fromCity: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    toCity: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    travelDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    travelPeriod: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    adultsCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    childrenCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    seniorsCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    requestDescription: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    status: z
-      .union([
-        z.lazy(() => BookingStatusSchema),
-        z.lazy(() => EnumBookingStatusFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    locatorCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    totalPrice: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    totalCost: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentType: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentStatus: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentDateTime: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discountPercent: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discountAmount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentAmount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    voucherFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    receiptFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    invoiceFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    travelers: z
-      .lazy(() => BookingTravelerUpdateManyWithoutBookingNestedInputSchema)
-      .optional(),
-    products: z
-      .lazy(() => BookingProductUpdateManyWithoutBookingNestedInputSchema)
-      .optional()
-  })
-  .strict()
+export const BookingUpdateInputSchema: z.ZodType<PrismaClient.Prisma.BookingUpdateInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(() => TenantUpdateOneRequiredWithoutBookingsNestedInputSchema)
+        .optional(),
+      account: z
+        .lazy(() => AccountUpdateOneRequiredWithoutBookingsNestedInputSchema)
+        .optional(),
+      customer: z
+        .lazy(() => AccountUpdateOneRequiredWithoutPurchasingNestedInputSchema)
+        .optional(),
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      customerName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      customerEmail: z
+        .union([
+          z.string().email(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      customerPhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      postalCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fromCity: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      toCity: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      travelDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      travelPeriod: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      adultsCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      childrenCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      seniorsCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      requestDescription: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      status: z
+        .union([
+          z.lazy(() => BookingStatusSchema),
+          z.lazy(() => EnumBookingStatusFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      locatorCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      totalPrice: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      totalCost: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentType: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentStatus: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentDateTime: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discountPercent: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discountAmount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentAmount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      voucherFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      receiptFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      invoiceFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      travelers: z
+        .lazy(() => BookingTravelerUpdateManyWithoutBookingNestedInputSchema)
+        .optional(),
+      products: z
+        .lazy(() => BookingProductUpdateManyWithoutBookingNestedInputSchema)
+        .optional()
+    })
+    .strict()
 
 export const BookingUncheckedUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingUncheckedUpdateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingUncheckedUpdateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     customerId: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema)
       ])
       .optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     customerName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -7179,10 +7513,30 @@ export const BookingUncheckedUpdateInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -7204,24 +7558,14 @@ export const BookingUncheckedUpdateInputSchema: z.ZodType<
   .strict()
 
 export const BookingCreateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingCreateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingCreateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: accountId: z.number(),
+    tenantId: z.number().int(),
+    accountId: z.number().int(),
     customerId: z.number().int(),
-    // omitted: ownerId: z.number().optional().nullable(),
+    ownerId: z.number().int(),
     customerName: z.string(),
     customerEmail: z.string().email().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -7256,230 +7600,262 @@ export const BookingCreateManyInputSchema: z.ZodType<
     voucherFilePath: z.string().optional().nullable(),
     receiptFilePath: z.string().optional().nullable(),
     invoiceFilePath: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const BookingUpdateManyMutationInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingUpdateManyMutationInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    customerName: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    customerEmail: z
-      .union([
-        z.string().email(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    customerPhone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    postalCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    fromCity: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    toCity: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    travelDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    travelPeriod: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    adultsCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    childrenCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    seniorsCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    requestDescription: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    status: z
-      .union([
-        z.lazy(() => BookingStatusSchema),
-        z.lazy(() => EnumBookingStatusFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    locatorCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    totalPrice: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    totalCost: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentType: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentStatus: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentDateTime: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discountPercent: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discountAmount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentAmount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    voucherFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    receiptFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    invoiceFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const BookingUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.BookingUpdateManyMutationInput> =
+  z
+    .object({
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      customerName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      customerEmail: z
+        .union([
+          z.string().email(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      customerPhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      postalCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fromCity: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      toCity: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      travelDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      travelPeriod: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      adultsCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      childrenCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      seniorsCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      requestDescription: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      status: z
+        .union([
+          z.lazy(() => BookingStatusSchema),
+          z.lazy(() => EnumBookingStatusFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      locatorCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      totalPrice: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      totalCost: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentType: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentStatus: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentDateTime: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discountPercent: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discountAmount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentAmount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      voucherFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      receiptFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      invoiceFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const BookingUncheckedUpdateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingUncheckedUpdateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingUncheckedUpdateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     customerId: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema)
       ])
       .optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     customerName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -7650,10 +8026,30 @@ export const BookingUncheckedUpdateManyInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -7664,58 +8060,42 @@ export const BookingUncheckedUpdateManyInputSchema: z.ZodType<
   })
   .strict()
 
-export const BookingTravelerCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerCreateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantCreateNestedOneWithoutBookingTravelersInputSchema)
-      .optional(),
-    booking: z
-      .lazy(() => BookingCreateNestedOneWithoutTravelersInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountCreateNestedOneWithoutBookingTravelersInputSchema)
-      .optional(),
-    // omitted: ownerId: z.number(),
-    firstName: z.string(),
-    lastName: z.string(),
-    birthDate: z.date(),
-    passportNumber: z.string(),
-    passportIssueDate: z.date(),
-    passportExpireDate: z.date(),
-    email: z.string(),
-    phone: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
+export const BookingTravelerCreateInputSchema: z.ZodType<PrismaClient.Prisma.BookingTravelerCreateInput> =
+  z
+    .object({
+      tenant: z.lazy(
+        () => TenantCreateNestedOneWithoutBookingTravelersInputSchema
+      ),
+      booking: z.lazy(() => BookingCreateNestedOneWithoutTravelersInputSchema),
+      account: z.lazy(
+        () => AccountCreateNestedOneWithoutBookingTravelersInputSchema
+      ),
+      ownerId: z.number().int(),
+      firstName: z.string(),
+      lastName: z.string(),
+      birthDate: z.date(),
+      passportNumber: z.string(),
+      passportIssueDate: z.date(),
+      passportExpireDate: z.date(),
+      email: z.string(),
+      phone: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable()
+    })
+    .strict()
 
 export const BookingTravelerUncheckedCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerUncheckedCreateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingTravelerUncheckedCreateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
+    tenantId: z.number().int(),
     bookingId: z.number(),
-    // omitted: accountId: z.number(),
-    // omitted: ownerId: z.number(),
+    accountId: z.number().int(),
+    ownerId: z.number().int(),
     firstName: z.string(),
     lastName: z.string(),
     birthDate: z.date(),
@@ -7724,94 +8104,148 @@ export const BookingTravelerUncheckedCreateInputSchema: z.ZodType<
     passportExpireDate: z.date(),
     email: z.string(),
     phone: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const BookingTravelerUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerUpdateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantUpdateOneWithoutBookingTravelersNestedInputSchema)
-      .optional(),
-    booking: z
-      .lazy(() => BookingUpdateOneWithoutTravelersNestedInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountUpdateOneWithoutBookingTravelersNestedInputSchema)
-      .optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    firstName: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    lastName: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    birthDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    passportNumber: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    passportIssueDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    passportExpireDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    email: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const BookingTravelerUpdateInputSchema: z.ZodType<PrismaClient.Prisma.BookingTravelerUpdateInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(
+          () => TenantUpdateOneRequiredWithoutBookingTravelersNestedInputSchema
+        )
+        .optional(),
+      booking: z
+        .lazy(() => BookingUpdateOneRequiredWithoutTravelersNestedInputSchema)
+        .optional(),
+      account: z
+        .lazy(
+          () => AccountUpdateOneRequiredWithoutBookingTravelersNestedInputSchema
+        )
+        .optional(),
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      firstName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      lastName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      birthDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      passportNumber: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      passportIssueDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      passportExpireDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      email: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const BookingTravelerUncheckedUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerUncheckedUpdateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingTravelerUncheckedUpdateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     bookingId: z
       .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
       .optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     firstName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -7840,10 +8274,30 @@ export const BookingTravelerUncheckedUpdateInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -7855,24 +8309,14 @@ export const BookingTravelerUncheckedUpdateInputSchema: z.ZodType<
   .strict()
 
 export const BookingTravelerCreateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerCreateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingTravelerCreateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
+    tenantId: z.number().int(),
     bookingId: z.number(),
-    // omitted: accountId: z.number(),
-    // omitted: ownerId: z.number(),
+    accountId: z.number().int(),
+    ownerId: z.number().int(),
     firstName: z.string(),
     lastName: z.string(),
     birthDate: z.date(),
@@ -7881,85 +8325,135 @@ export const BookingTravelerCreateManyInputSchema: z.ZodType<
     passportExpireDate: z.date(),
     email: z.string(),
     phone: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const BookingTravelerUpdateManyMutationInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerUpdateManyMutationInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    firstName: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    lastName: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    birthDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    passportNumber: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    passportIssueDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    passportExpireDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    email: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    phone: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const BookingTravelerUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.BookingTravelerUpdateManyMutationInput> =
+  z
+    .object({
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      firstName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      lastName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      birthDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      passportNumber: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      passportIssueDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      passportExpireDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      email: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const BookingTravelerUncheckedUpdateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerUncheckedUpdateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingTravelerUncheckedUpdateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     bookingId: z
       .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
       .optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     firstName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -7988,10 +8482,30 @@ export const BookingTravelerUncheckedUpdateManyInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -8002,122 +8516,118 @@ export const BookingTravelerUncheckedUpdateManyInputSchema: z.ZodType<
   })
   .strict()
 
-export const BookingProductCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductCreateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantCreateNestedOneWithoutBookingProductsInputSchema)
-      .optional(),
-    booking: z
-      .lazy(() => BookingCreateNestedOneWithoutProductsInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountCreateNestedOneWithoutBookingProductsInputSchema)
-      .optional(),
-    supplierId: z.number().optional().nullable(),
-    supplierName: z.string().optional().nullable(),
-    // omitted: ownerId: z.number(),
-    category: z.lazy(() => ProductCategorySchema),
-    description: z.string().optional().nullable(),
-    startDate: z.date(),
-    endDate: z.date(),
-    fromLocation: z.string().optional().nullable(),
-    toLocation: z.string(),
-    termsAndConditions: z.string().optional().nullable(),
-    locatorCode: z.string().optional().nullable(),
-    productCost: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    tenantMarkup: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    agencyMarkup: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    agentMarkup: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    localTaxes: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    stateTaxes: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    federalTaxes: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    additionalFees: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    discountPercent: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    discount: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    finalPrice: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    paymentDueDate: z.date().optional().nullable(),
-    paidDate: z.date().optional().nullable(),
-    paymentAmount: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    voucherFilePath: z.string().optional().nullable(),
-    receiptFilePath: z.string().optional().nullable(),
-    invoiceFilePath: z.string().optional().nullable(),
-    status: z.string().optional().nullable(),
-    hotelName: z.string().optional().nullable(),
-    hotelStarRating: z.number().optional().nullable(),
-    hotelMealPlan: z.string().optional().nullable(),
-    accommodationType: z
-      .lazy(() => AccommodationTypeSchema)
-      .optional()
-      .nullable(),
-    bookingGroupId: z.number().optional().nullable(),
-    paymentType: z.string().optional().nullable(),
-    paymentDescription: z.string().optional().nullable(),
-    creditCardType: z.string().optional().nullable(),
-    creditCardLastFourDigits: z.number().optional().nullable(),
-    creditCardAuthorizationCode: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable(),
-    rooms: z
-      .lazy(
-        () => BookingProductRoomCreateNestedManyWithoutBookingProductInputSchema
-      )
-      .optional()
-  })
-  .strict()
+export const BookingProductCreateInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductCreateInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(() => TenantCreateNestedOneWithoutBookingProductsInputSchema)
+        .optional(),
+      booking: z
+        .lazy(() => BookingCreateNestedOneWithoutProductsInputSchema)
+        .optional(),
+      account: z
+        .lazy(() => AccountCreateNestedOneWithoutBookingProductsInputSchema)
+        .optional(),
+      supplierId: z.number().optional().nullable(),
+      supplierName: z.string().optional().nullable(),
+      ownerId: z.number().int(),
+      category: z.lazy(() => ProductCategorySchema),
+      description: z.string().optional().nullable(),
+      startDate: z.date(),
+      endDate: z.date(),
+      fromLocation: z.string().optional().nullable(),
+      toLocation: z.string(),
+      termsAndConditions: z.string().optional().nullable(),
+      locatorCode: z.string().optional().nullable(),
+      productCost: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      tenantMarkup: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      agencyMarkup: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      agentMarkup: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      localTaxes: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      stateTaxes: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      federalTaxes: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      additionalFees: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      discountPercent: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      discount: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
+      finalPrice: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      paymentDueDate: z.date().optional().nullable(),
+      paidDate: z.date().optional().nullable(),
+      paymentAmount: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      voucherFilePath: z.string().optional().nullable(),
+      receiptFilePath: z.string().optional().nullable(),
+      invoiceFilePath: z.string().optional().nullable(),
+      status: z.string().optional().nullable(),
+      hotelName: z.string().optional().nullable(),
+      hotelStarRating: z.number().optional().nullable(),
+      hotelMealPlan: z.string().optional().nullable(),
+      accommodationType: z
+        .lazy(() => AccommodationTypeSchema)
+        .optional()
+        .nullable(),
+      bookingGroupId: z.number().optional().nullable(),
+      paymentType: z.string().optional().nullable(),
+      paymentDescription: z.string().optional().nullable(),
+      creditCardType: z.string().optional().nullable(),
+      creditCardLastFourDigits: z.number().optional().nullable(),
+      creditCardAuthorizationCode: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      rooms: z
+        .lazy(
+          () =>
+            BookingProductRoomCreateNestedManyWithoutBookingProductInputSchema
+        )
+        .optional()
+    })
+    .strict()
 
 export const BookingProductUncheckedCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductUncheckedCreateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductUncheckedCreateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
+    tenantId: z.number().int(),
     bookingId: z.number(),
-    // omitted: accountId: z.number(),
+    accountId: z.number().int(),
     supplierId: z.number().optional().nullable(),
     supplierName: z.string().optional().nullable(),
-    // omitted: ownerId: z.number(),
+    ownerId: z.number().int(),
     category: z.lazy(() => ProductCategorySchema),
     description: z.string().optional().nullable(),
     startDate: z.date(),
@@ -8181,10 +8691,10 @@ export const BookingProductUncheckedCreateInputSchema: z.ZodType<
     creditCardType: z.string().optional().nullable(),
     creditCardLastFourDigits: z.number().optional().nullable(),
     creditCardAuthorizationCode: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable(),
     rooms: z
       .lazy(
@@ -8195,317 +8705,351 @@ export const BookingProductUncheckedCreateInputSchema: z.ZodType<
   })
   .strict()
 
-export const BookingProductUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductUpdateInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    tenant: z
-      .lazy(() => TenantUpdateOneWithoutBookingProductsNestedInputSchema)
-      .optional(),
-    booking: z
-      .lazy(() => BookingUpdateOneWithoutProductsNestedInputSchema)
-      .optional(),
-    account: z
-      .lazy(() => AccountUpdateOneWithoutBookingProductsNestedInputSchema)
-      .optional(),
-    supplierId: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    supplierName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    category: z
-      .union([
-        z.lazy(() => ProductCategorySchema),
-        z.lazy(() => EnumProductCategoryFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    description: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    startDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    endDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    fromLocation: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    toLocation: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locatorCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    productCost: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    tenantMarkup: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    agencyMarkup: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    agentMarkup: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    localTaxes: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    stateTaxes: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    federalTaxes: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    additionalFees: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discountPercent: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    finalPrice: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentDueDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paidDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentAmount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    voucherFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    receiptFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    invoiceFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    status: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    hotelName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    hotelStarRating: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    hotelMealPlan: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    accommodationType: z
-      .union([
-        z.lazy(() => AccommodationTypeSchema),
-        z.lazy(
-          () => NullableEnumAccommodationTypeFieldUpdateOperationsInputSchema
+export const BookingProductUpdateInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductUpdateInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(() => TenantUpdateOneWithoutBookingProductsNestedInputSchema)
+        .optional(),
+      booking: z
+        .lazy(() => BookingUpdateOneWithoutProductsNestedInputSchema)
+        .optional(),
+      account: z
+        .lazy(() => AccountUpdateOneWithoutBookingProductsNestedInputSchema)
+        .optional(),
+      supplierId: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      supplierName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      category: z
+        .union([
+          z.lazy(() => ProductCategorySchema),
+          z.lazy(() => EnumProductCategoryFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      description: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      startDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      endDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      fromLocation: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      toLocation: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locatorCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      productCost: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      tenantMarkup: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      agencyMarkup: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      agentMarkup: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      localTaxes: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      stateTaxes: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      federalTaxes: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      additionalFees: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discountPercent: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      finalPrice: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentDueDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paidDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentAmount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      voucherFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      receiptFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      invoiceFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      status: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      hotelName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      hotelStarRating: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      hotelMealPlan: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      accommodationType: z
+        .union([
+          z.lazy(() => AccommodationTypeSchema),
+          z.lazy(
+            () => NullableEnumAccommodationTypeFieldUpdateOperationsInputSchema
+          )
+        ])
+        .optional()
+        .nullable(),
+      bookingGroupId: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentType: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentDescription: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      creditCardType: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      creditCardLastFourDigits: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      creditCardAuthorizationCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      rooms: z
+        .lazy(
+          () =>
+            BookingProductRoomUpdateManyWithoutBookingProductNestedInputSchema
         )
-      ])
-      .optional()
-      .nullable(),
-    bookingGroupId: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentType: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentDescription: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    creditCardType: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    creditCardLastFourDigits: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    creditCardAuthorizationCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    rooms: z
-      .lazy(
-        () => BookingProductRoomUpdateManyWithoutBookingProductNestedInputSchema
-      )
-      .optional()
-  })
-  .strict()
+        .optional()
+    })
+    .strict()
 
 export const BookingProductUncheckedUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductUncheckedUpdateInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductUncheckedUpdateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     bookingId: z
       .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
       .optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     supplierId: z
       .union([
         z.number(),
@@ -8520,7 +9064,12 @@ export const BookingProductUncheckedUpdateInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     category: z
       .union([
         z.lazy(() => ProductCategorySchema),
@@ -8762,10 +9311,30 @@ export const BookingProductUncheckedUpdateInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -8783,26 +9352,16 @@ export const BookingProductUncheckedUpdateInputSchema: z.ZodType<
   .strict()
 
 export const BookingProductCreateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductCreateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductCreateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
+    tenantId: z.number().int(),
     bookingId: z.number(),
-    // omitted: accountId: z.number(),
+    accountId: z.number().int(),
     supplierId: z.number().optional().nullable(),
     supplierName: z.string().optional().nullable(),
-    // omitted: ownerId: z.number(),
+    ownerId: z.number().int(),
     category: z.lazy(() => ProductCategorySchema),
     description: z.string().optional().nullable(),
     startDate: z.date(),
@@ -8866,311 +9425,344 @@ export const BookingProductCreateManyInputSchema: z.ZodType<
     creditCardType: z.string().optional().nullable(),
     creditCardLastFourDigits: z.number().optional().nullable(),
     creditCardAuthorizationCode: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const BookingProductUpdateManyMutationInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductUpdateManyMutationInput,
-    'ownerId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    supplierId: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    supplierName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    category: z
-      .union([
-        z.lazy(() => ProductCategorySchema),
-        z.lazy(() => EnumProductCategoryFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    description: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    startDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    endDate: z
-      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
-      .optional(),
-    fromLocation: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    toLocation: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
-    termsAndConditions: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    locatorCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    productCost: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    tenantMarkup: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    agencyMarkup: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    agentMarkup: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    localTaxes: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    stateTaxes: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    federalTaxes: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    additionalFees: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discountPercent: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    discount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    finalPrice: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentDueDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paidDate: z
-      .union([
-        z.date(),
-        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentAmount: z
-      .union([
-        z.instanceof(PrismaClient.Prisma.Decimal),
-        z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    voucherFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    receiptFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    invoiceFilePath: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    status: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    hotelName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    hotelStarRating: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    hotelMealPlan: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    accommodationType: z
-      .union([
-        z.lazy(() => AccommodationTypeSchema),
-        z.lazy(
-          () => NullableEnumAccommodationTypeFieldUpdateOperationsInputSchema
-        )
-      ])
-      .optional()
-      .nullable(),
-    bookingGroupId: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentType: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    paymentDescription: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    creditCardType: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    creditCardLastFourDigits: z
-      .union([
-        z.number(),
-        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    creditCardAuthorizationCode: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const BookingProductUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductUpdateManyMutationInput> =
+  z
+    .object({
+      supplierId: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      supplierName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      ownerId: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      category: z
+        .union([
+          z.lazy(() => ProductCategorySchema),
+          z.lazy(() => EnumProductCategoryFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      description: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      startDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      endDate: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      fromLocation: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      toLocation: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      termsAndConditions: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      locatorCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      productCost: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      tenantMarkup: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      agencyMarkup: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      agentMarkup: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      localTaxes: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      stateTaxes: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      federalTaxes: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      additionalFees: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discountPercent: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      discount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      finalPrice: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentDueDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paidDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentAmount: z
+        .union([
+          z.instanceof(PrismaClient.Prisma.Decimal),
+          z.lazy(() => NullableDecimalFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      voucherFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      receiptFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      invoiceFilePath: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      status: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      hotelName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      hotelStarRating: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      hotelMealPlan: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      accommodationType: z
+        .union([
+          z.lazy(() => AccommodationTypeSchema),
+          z.lazy(
+            () => NullableEnumAccommodationTypeFieldUpdateOperationsInputSchema
+          )
+        ])
+        .optional()
+        .nullable(),
+      bookingGroupId: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentType: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      paymentDescription: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      creditCardType: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      creditCardLastFourDigits: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      creditCardAuthorizationCode: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const BookingProductUncheckedUpdateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductUncheckedUpdateManyInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductUncheckedUpdateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     bookingId: z
       .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
       .optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     supplierId: z
       .union([
         z.number(),
@@ -9185,7 +9777,12 @@ export const BookingProductUncheckedUpdateManyInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     category: z
       .union([
         z.lazy(() => ProductCategorySchema),
@@ -9427,10 +10024,30 @@ export const BookingProductUncheckedUpdateManyInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -9441,38 +10058,31 @@ export const BookingProductUncheckedUpdateManyInputSchema: z.ZodType<
   })
   .strict()
 
-export const BookingProductRoomCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductRoomCreateInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    bookingProduct: z
-      .lazy(() => BookingProductCreateNestedOneWithoutRoomsInputSchema)
-      .optional(),
-    category: z.lazy(() => RoomCategorySchema),
-    adultsCount: z.number().int(),
-    minorsCount: z.number().optional(),
-    ageOfMinors: z
-      .union([
-        z.lazy(() => BookingProductRoomCreateageOfMinorsInputSchema),
-        z.number().array()
-      ])
-      .optional(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
+export const BookingProductRoomCreateInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductRoomCreateInput> =
+  z
+    .object({
+      bookingProduct: z
+        .lazy(() => BookingProductCreateNestedOneWithoutRoomsInputSchema)
+        .optional(),
+      category: z.lazy(() => RoomCategorySchema),
+      adultsCount: z.number().int(),
+      minorsCount: z.number().optional(),
+      ageOfMinors: z
+        .union([
+          z.lazy(() => BookingProductRoomCreateageOfMinorsInputSchema),
+          z.number().array()
+        ])
+        .optional(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable()
+    })
+    .strict()
 
 export const BookingProductRoomUncheckedCreateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductRoomUncheckedCreateInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductRoomUncheckedCreateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
@@ -9486,64 +10096,80 @@ export const BookingProductRoomUncheckedCreateInputSchema: z.ZodType<
         z.number().array()
       ])
       .optional(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const BookingProductRoomUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductRoomUpdateInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    bookingProduct: z
-      .lazy(() => BookingProductUpdateOneWithoutRoomsNestedInputSchema)
-      .optional(),
-    category: z
-      .union([
-        z.lazy(() => RoomCategorySchema),
-        z.lazy(() => EnumRoomCategoryFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    adultsCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    minorsCount: z
-      .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-      .optional(),
-    ageOfMinors: z
-      .union([
-        z.lazy(() => BookingProductRoomUpdateageOfMinorsInputSchema),
-        z.number().array()
-      ])
-      .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const BookingProductRoomUpdateInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductRoomUpdateInput> =
+  z
+    .object({
+      bookingProduct: z
+        .lazy(() => BookingProductUpdateOneWithoutRoomsNestedInputSchema)
+        .optional(),
+      category: z
+        .union([
+          z.lazy(() => RoomCategorySchema),
+          z.lazy(() => EnumRoomCategoryFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      adultsCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      minorsCount: z
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
+      ageOfMinors: z
+        .union([
+          z.lazy(() => BookingProductRoomUpdateageOfMinorsInputSchema),
+          z.number().array()
+        ])
+        .optional(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const BookingProductRoomUncheckedUpdateInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductRoomUncheckedUpdateInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductRoomUncheckedUpdateInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
@@ -9571,10 +10197,30 @@ export const BookingProductRoomUncheckedUpdateInputSchema: z.ZodType<
         z.number().array()
       ])
       .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -9586,10 +10232,7 @@ export const BookingProductRoomUncheckedUpdateInputSchema: z.ZodType<
   .strict()
 
 export const BookingProductRoomCreateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductRoomCreateManyInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductRoomCreateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
@@ -9603,61 +10246,77 @@ export const BookingProductRoomCreateManyInputSchema: z.ZodType<
         z.number().array()
       ])
       .optional(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const BookingProductRoomUpdateManyMutationInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductRoomUpdateManyMutationInput,
-    'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    category: z
-      .union([
-        z.lazy(() => RoomCategorySchema),
-        z.lazy(() => EnumRoomCategoryFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    adultsCount: z
-      .union([
-        z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema)
-      ])
-      .optional(),
-    minorsCount: z
-      .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-      .optional(),
-    ageOfMinors: z
-      .union([
-        z.lazy(() => BookingProductRoomUpdateageOfMinorsInputSchema),
-        z.number().array()
-      ])
-      .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    isActive: z
-      .union([
-        z.boolean(),
-        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable()
-  })
-  .strict()
+export const BookingProductRoomUpdateManyMutationInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductRoomUpdateManyMutationInput> =
+  z
+    .object({
+      category: z
+        .union([
+          z.lazy(() => RoomCategorySchema),
+          z.lazy(() => EnumRoomCategoryFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      adultsCount: z
+        .union([
+          z.number().int(),
+          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      minorsCount: z
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
+      ageOfMinors: z
+        .union([
+          z.lazy(() => BookingProductRoomUpdateageOfMinorsInputSchema),
+          z.number().array()
+        ])
+        .optional(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
 
 export const BookingProductRoomUncheckedUpdateManyInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductRoomUncheckedUpdateManyInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductRoomUncheckedUpdateManyInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
@@ -9685,10 +10344,30 @@ export const BookingProductRoomUncheckedUpdateManyInputSchema: z.ZodType<
         z.number().array()
       ])
       .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -10217,14 +10896,8 @@ export const IntNullableFilterSchema: z.ZodType<PrismaClient.Prisma.IntNullableF
 export const TenantRelationFilterSchema: z.ZodType<PrismaClient.Prisma.TenantRelationFilter> =
   z
     .object({
-      is: z
-        .lazy(() => TenantWhereInputSchema)
-        .optional()
-        .nullable(),
-      isNot: z
-        .lazy(() => TenantWhereInputSchema)
-        .optional()
-        .nullable()
+      is: z.lazy(() => TenantWhereInputSchema).optional(),
+      isNot: z.lazy(() => TenantWhereInputSchema).optional()
     })
     .strict()
 
@@ -10265,7 +10938,8 @@ export const UserCountOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma
       createdBy: z.lazy(() => SortOrderSchema).optional(),
       modifiedAt: z.lazy(() => SortOrderSchema).optional(),
       modifiedBy: z.lazy(() => SortOrderSchema).optional(),
-      isActive: z.lazy(() => SortOrderSchema).optional()
+      isActive: z.lazy(() => SortOrderSchema).optional(),
+      isMaster: z.lazy(() => SortOrderSchema).optional()
     })
     .strict()
 
@@ -10300,7 +10974,8 @@ export const UserMaxOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.U
       createdBy: z.lazy(() => SortOrderSchema).optional(),
       modifiedAt: z.lazy(() => SortOrderSchema).optional(),
       modifiedBy: z.lazy(() => SortOrderSchema).optional(),
-      isActive: z.lazy(() => SortOrderSchema).optional()
+      isActive: z.lazy(() => SortOrderSchema).optional(),
+      isMaster: z.lazy(() => SortOrderSchema).optional()
     })
     .strict()
 
@@ -10326,7 +11001,8 @@ export const UserMinOrderByAggregateInputSchema: z.ZodType<PrismaClient.Prisma.U
       createdBy: z.lazy(() => SortOrderSchema).optional(),
       modifiedAt: z.lazy(() => SortOrderSchema).optional(),
       modifiedBy: z.lazy(() => SortOrderSchema).optional(),
-      isActive: z.lazy(() => SortOrderSchema).optional()
+      isActive: z.lazy(() => SortOrderSchema).optional(),
+      isMaster: z.lazy(() => SortOrderSchema).optional()
     })
     .strict()
 
@@ -10815,14 +11491,8 @@ export const DecimalNullableWithAggregatesFilterSchema: z.ZodType<PrismaClient.P
 export const BookingRelationFilterSchema: z.ZodType<PrismaClient.Prisma.BookingRelationFilter> =
   z
     .object({
-      is: z
-        .lazy(() => BookingWhereInputSchema)
-        .optional()
-        .nullable(),
-      isNot: z
-        .lazy(() => BookingWhereInputSchema)
-        .optional()
-        .nullable()
+      is: z.lazy(() => BookingWhereInputSchema).optional(),
+      isNot: z.lazy(() => BookingWhereInputSchema).optional()
     })
     .strict()
 
@@ -12599,17 +13269,17 @@ export const TenantCreateNestedOneWithoutUsersInputSchema: z.ZodType<PrismaClien
     })
     .strict()
 
-export const AccountCreateNestedOneWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateNestedOneWithoutUsersInput> =
+export const AccountCreateNestedOneWithoutAccountUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateNestedOneWithoutAccountUsersInput> =
   z
     .object({
       create: z
         .union([
-          z.lazy(() => AccountCreateWithoutUsersInputSchema),
-          z.lazy(() => AccountUncheckedCreateWithoutUsersInputSchema)
+          z.lazy(() => AccountCreateWithoutAccountUsersInputSchema),
+          z.lazy(() => AccountUncheckedCreateWithoutAccountUsersInputSchema)
         ])
         .optional(),
       connectOrCreate: z
-        .lazy(() => AccountCreateOrConnectWithoutUsersInputSchema)
+        .lazy(() => AccountCreateOrConnectWithoutAccountUsersInputSchema)
         .optional(),
       connect: z.lazy(() => AccountWhereUniqueInputSchema).optional()
     })
@@ -12640,26 +13310,28 @@ export const TenantUpdateOneWithoutUsersNestedInputSchema: z.ZodType<PrismaClien
     })
     .strict()
 
-export const AccountUpdateOneWithoutUsersNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneWithoutUsersNestedInput> =
+export const AccountUpdateOneWithoutAccountUsersNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneWithoutAccountUsersNestedInput> =
   z
     .object({
       create: z
         .union([
-          z.lazy(() => AccountCreateWithoutUsersInputSchema),
-          z.lazy(() => AccountUncheckedCreateWithoutUsersInputSchema)
+          z.lazy(() => AccountCreateWithoutAccountUsersInputSchema),
+          z.lazy(() => AccountUncheckedCreateWithoutAccountUsersInputSchema)
         ])
         .optional(),
       connectOrCreate: z
-        .lazy(() => AccountCreateOrConnectWithoutUsersInputSchema)
+        .lazy(() => AccountCreateOrConnectWithoutAccountUsersInputSchema)
         .optional(),
-      upsert: z.lazy(() => AccountUpsertWithoutUsersInputSchema).optional(),
+      upsert: z
+        .lazy(() => AccountUpsertWithoutAccountUsersInputSchema)
+        .optional(),
       disconnect: z.boolean().optional(),
       delete: z.boolean().optional(),
       connect: z.lazy(() => AccountWhereUniqueInputSchema).optional(),
       update: z
         .union([
-          z.lazy(() => AccountUpdateWithoutUsersInputSchema),
-          z.lazy(() => AccountUncheckedUpdateWithoutUsersInputSchema)
+          z.lazy(() => AccountUpdateWithoutAccountUsersInputSchema),
+          z.lazy(() => AccountUncheckedUpdateWithoutAccountUsersInputSchema)
         ])
         .optional()
     })
@@ -12732,6 +13404,35 @@ export const AccountCreateNestedManyWithoutParentInputSchema: z.ZodType<PrismaCl
         .union([
           z.lazy(() => AccountWhereUniqueInputSchema),
           z.lazy(() => AccountWhereUniqueInputSchema).array()
+        ])
+        .optional()
+    })
+    .strict()
+
+export const UserCreateNestedManyWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserCreateNestedManyWithoutAccountInput> =
+  z
+    .object({
+      create: z
+        .union([
+          z.lazy(() => UserCreateWithoutAccountInputSchema),
+          z.lazy(() => UserCreateWithoutAccountInputSchema).array(),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema),
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      createMany: z
+        .lazy(() => UserCreateManyAccountInputEnvelopeSchema)
+        .optional(),
+      connect: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
         ])
         .optional()
     })
@@ -12890,6 +13591,35 @@ export const AccountUncheckedCreateNestedManyWithoutParentInputSchema: z.ZodType
     })
     .strict()
 
+export const UserUncheckedCreateNestedManyWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserUncheckedCreateNestedManyWithoutAccountInput> =
+  z
+    .object({
+      create: z
+        .union([
+          z.lazy(() => UserCreateWithoutAccountInputSchema),
+          z.lazy(() => UserCreateWithoutAccountInputSchema).array(),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema),
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      createMany: z
+        .lazy(() => UserCreateManyAccountInputEnvelopeSchema)
+        .optional(),
+      connect: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional()
+    })
+    .strict()
+
 export const BookingUncheckedCreateNestedManyWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.BookingUncheckedCreateNestedManyWithoutAccountInput> =
   z
     .object({
@@ -13014,7 +13744,7 @@ export const BookingProductUncheckedCreateNestedManyWithoutAccountInputSchema: z
     })
     .strict()
 
-export const TenantUpdateOneWithoutAccountsNestedInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateOneWithoutAccountsNestedInput> =
+export const TenantUpdateOneRequiredWithoutAccountsNestedInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateOneRequiredWithoutAccountsNestedInput> =
   z
     .object({
       create: z
@@ -13027,8 +13757,6 @@ export const TenantUpdateOneWithoutAccountsNestedInputSchema: z.ZodType<PrismaCl
         .lazy(() => TenantCreateOrConnectWithoutAccountsInputSchema)
         .optional(),
       upsert: z.lazy(() => TenantUpsertWithoutAccountsInputSchema).optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => TenantWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -13138,6 +13866,81 @@ export const AccountUpdateManyWithoutParentNestedInputSchema: z.ZodType<PrismaCl
         .union([
           z.lazy(() => AccountScalarWhereInputSchema),
           z.lazy(() => AccountScalarWhereInputSchema).array()
+        ])
+        .optional()
+    })
+    .strict()
+
+export const UserUpdateManyWithoutAccountNestedInputSchema: z.ZodType<PrismaClient.Prisma.UserUpdateManyWithoutAccountNestedInput> =
+  z
+    .object({
+      create: z
+        .union([
+          z.lazy(() => UserCreateWithoutAccountInputSchema),
+          z.lazy(() => UserCreateWithoutAccountInputSchema).array(),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema),
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      upsert: z
+        .union([
+          z.lazy(() => UserUpsertWithWhereUniqueWithoutAccountInputSchema),
+          z
+            .lazy(() => UserUpsertWithWhereUniqueWithoutAccountInputSchema)
+            .array()
+        ])
+        .optional(),
+      createMany: z
+        .lazy(() => UserCreateManyAccountInputEnvelopeSchema)
+        .optional(),
+      set: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      disconnect: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      delete: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      connect: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      update: z
+        .union([
+          z.lazy(() => UserUpdateWithWhereUniqueWithoutAccountInputSchema),
+          z
+            .lazy(() => UserUpdateWithWhereUniqueWithoutAccountInputSchema)
+            .array()
+        ])
+        .optional(),
+      updateMany: z
+        .union([
+          z.lazy(() => UserUpdateManyWithWhereWithoutAccountInputSchema),
+          z.lazy(() => UserUpdateManyWithWhereWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      deleteMany: z
+        .union([
+          z.lazy(() => UserScalarWhereInputSchema),
+          z.lazy(() => UserScalarWhereInputSchema).array()
         ])
         .optional()
     })
@@ -13564,6 +14367,81 @@ export const AccountUncheckedUpdateManyWithoutParentNestedInputSchema: z.ZodType
         .union([
           z.lazy(() => AccountScalarWhereInputSchema),
           z.lazy(() => AccountScalarWhereInputSchema).array()
+        ])
+        .optional()
+    })
+    .strict()
+
+export const UserUncheckedUpdateManyWithoutAccountNestedInputSchema: z.ZodType<PrismaClient.Prisma.UserUncheckedUpdateManyWithoutAccountNestedInput> =
+  z
+    .object({
+      create: z
+        .union([
+          z.lazy(() => UserCreateWithoutAccountInputSchema),
+          z.lazy(() => UserCreateWithoutAccountInputSchema).array(),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema),
+          z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      connectOrCreate: z
+        .union([
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema),
+          z.lazy(() => UserCreateOrConnectWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      upsert: z
+        .union([
+          z.lazy(() => UserUpsertWithWhereUniqueWithoutAccountInputSchema),
+          z
+            .lazy(() => UserUpsertWithWhereUniqueWithoutAccountInputSchema)
+            .array()
+        ])
+        .optional(),
+      createMany: z
+        .lazy(() => UserCreateManyAccountInputEnvelopeSchema)
+        .optional(),
+      set: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      disconnect: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      delete: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      connect: z
+        .union([
+          z.lazy(() => UserWhereUniqueInputSchema),
+          z.lazy(() => UserWhereUniqueInputSchema).array()
+        ])
+        .optional(),
+      update: z
+        .union([
+          z.lazy(() => UserUpdateWithWhereUniqueWithoutAccountInputSchema),
+          z
+            .lazy(() => UserUpdateWithWhereUniqueWithoutAccountInputSchema)
+            .array()
+        ])
+        .optional(),
+      updateMany: z
+        .union([
+          z.lazy(() => UserUpdateManyWithWhereWithoutAccountInputSchema),
+          z.lazy(() => UserUpdateManyWithWhereWithoutAccountInputSchema).array()
+        ])
+        .optional(),
+      deleteMany: z
+        .union([
+          z.lazy(() => UserScalarWhereInputSchema),
+          z.lazy(() => UserScalarWhereInputSchema).array()
         ])
         .optional()
     })
@@ -14091,7 +14969,7 @@ export const BookingProductUncheckedCreateNestedManyWithoutBookingInputSchema: z
     })
     .strict()
 
-export const TenantUpdateOneWithoutBookingsNestedInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateOneWithoutBookingsNestedInput> =
+export const TenantUpdateOneRequiredWithoutBookingsNestedInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateOneRequiredWithoutBookingsNestedInput> =
   z
     .object({
       create: z
@@ -14104,8 +14982,6 @@ export const TenantUpdateOneWithoutBookingsNestedInputSchema: z.ZodType<PrismaCl
         .lazy(() => TenantCreateOrConnectWithoutBookingsInputSchema)
         .optional(),
       upsert: z.lazy(() => TenantUpsertWithoutBookingsInputSchema).optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => TenantWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -14116,7 +14992,7 @@ export const TenantUpdateOneWithoutBookingsNestedInputSchema: z.ZodType<PrismaCl
     })
     .strict()
 
-export const AccountUpdateOneWithoutBookingsNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneWithoutBookingsNestedInput> =
+export const AccountUpdateOneRequiredWithoutBookingsNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneRequiredWithoutBookingsNestedInput> =
   z
     .object({
       create: z
@@ -14129,8 +15005,6 @@ export const AccountUpdateOneWithoutBookingsNestedInputSchema: z.ZodType<PrismaC
         .lazy(() => AccountCreateOrConnectWithoutBookingsInputSchema)
         .optional(),
       upsert: z.lazy(() => AccountUpsertWithoutBookingsInputSchema).optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => AccountWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -14141,7 +15015,7 @@ export const AccountUpdateOneWithoutBookingsNestedInputSchema: z.ZodType<PrismaC
     })
     .strict()
 
-export const AccountUpdateOneWithoutPurchasingNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneWithoutPurchasingNestedInput> =
+export const AccountUpdateOneRequiredWithoutPurchasingNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneRequiredWithoutPurchasingNestedInput> =
   z
     .object({
       create: z
@@ -14156,8 +15030,6 @@ export const AccountUpdateOneWithoutPurchasingNestedInputSchema: z.ZodType<Prism
       upsert: z
         .lazy(() => AccountUpsertWithoutPurchasingInputSchema)
         .optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => AccountWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -14610,7 +15482,7 @@ export const AccountCreateNestedOneWithoutBookingTravelersInputSchema: z.ZodType
     })
     .strict()
 
-export const TenantUpdateOneWithoutBookingTravelersNestedInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateOneWithoutBookingTravelersNestedInput> =
+export const TenantUpdateOneRequiredWithoutBookingTravelersNestedInputSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateOneRequiredWithoutBookingTravelersNestedInput> =
   z
     .object({
       create: z
@@ -14625,8 +15497,6 @@ export const TenantUpdateOneWithoutBookingTravelersNestedInputSchema: z.ZodType<
       upsert: z
         .lazy(() => TenantUpsertWithoutBookingTravelersInputSchema)
         .optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => TenantWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -14637,7 +15507,7 @@ export const TenantUpdateOneWithoutBookingTravelersNestedInputSchema: z.ZodType<
     })
     .strict()
 
-export const BookingUpdateOneWithoutTravelersNestedInputSchema: z.ZodType<PrismaClient.Prisma.BookingUpdateOneWithoutTravelersNestedInput> =
+export const BookingUpdateOneRequiredWithoutTravelersNestedInputSchema: z.ZodType<PrismaClient.Prisma.BookingUpdateOneRequiredWithoutTravelersNestedInput> =
   z
     .object({
       create: z
@@ -14650,8 +15520,6 @@ export const BookingUpdateOneWithoutTravelersNestedInputSchema: z.ZodType<Prisma
         .lazy(() => BookingCreateOrConnectWithoutTravelersInputSchema)
         .optional(),
       upsert: z.lazy(() => BookingUpsertWithoutTravelersInputSchema).optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => BookingWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -14662,7 +15530,7 @@ export const BookingUpdateOneWithoutTravelersNestedInputSchema: z.ZodType<Prisma
     })
     .strict()
 
-export const AccountUpdateOneWithoutBookingTravelersNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneWithoutBookingTravelersNestedInput> =
+export const AccountUpdateOneRequiredWithoutBookingTravelersNestedInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateOneRequiredWithoutBookingTravelersNestedInput> =
   z
     .object({
       create: z
@@ -14677,8 +15545,6 @@ export const AccountUpdateOneWithoutBookingTravelersNestedInputSchema: z.ZodType
       upsert: z
         .lazy(() => AccountUpsertWithoutBookingTravelersInputSchema)
         .optional(),
-      disconnect: z.boolean().optional(),
-      delete: z.boolean().optional(),
       connect: z.lazy(() => AccountWhereUniqueInputSchema).optional(),
       update: z
         .union([
@@ -15879,10 +16745,10 @@ export const UserCreateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.U
   z
     .object({
       account: z
-        .lazy(() => AccountCreateNestedOneWithoutUsersInputSchema)
+        .lazy(() => AccountCreateNestedOneWithoutAccountUsersInputSchema)
         .optional(),
-      firstName: z.string().optional().nullable(),
-      lastName: z.string().optional().nullable(),
+      firstName: z.string(),
+      lastName: z.string(),
       companyName: z.string().optional().nullable(),
       jobTitle: z.string().optional().nullable(),
       department: z.string().optional().nullable(),
@@ -15894,13 +16760,14 @@ export const UserCreateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.U
       adresses: z
         .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
         .optional(),
-      gender: z.string(),
+      gender: z.string().optional().nullable(),
       birthDate: z.date().optional().nullable(),
       createdAt: z.date().optional().nullable(),
-      createdBy: z.string(),
+      createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional().nullable(),
-      modifiedBy: z.string(),
-      isActive: z.boolean().optional().nullable()
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable()
     })
     .strict()
 
@@ -15909,8 +16776,8 @@ export const UserUncheckedCreateWithoutTenantInputSchema: z.ZodType<PrismaClient
     .object({
       id: z.number().optional(),
       accountId: z.number().optional().nullable(),
-      firstName: z.string().optional().nullable(),
-      lastName: z.string().optional().nullable(),
+      firstName: z.string(),
+      lastName: z.string(),
       companyName: z.string().optional().nullable(),
       jobTitle: z.string().optional().nullable(),
       department: z.string().optional().nullable(),
@@ -15922,13 +16789,14 @@ export const UserUncheckedCreateWithoutTenantInputSchema: z.ZodType<PrismaClient
       adresses: z
         .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
         .optional(),
-      gender: z.string(),
+      gender: z.string().optional().nullable(),
       birthDate: z.date().optional().nullable(),
       createdAt: z.date().optional().nullable(),
-      createdBy: z.string(),
+      createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional().nullable(),
-      modifiedBy: z.string(),
-      isActive: z.boolean().optional().nullable()
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable()
     })
     .strict()
 
@@ -15961,8 +16829,8 @@ export const AccountCreateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prism
       childAccounts: z
         .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -16022,8 +16890,8 @@ export const AccountUncheckedCreateWithoutTenantInputSchema: z.ZodType<PrismaCli
       childAccounts: z
         .lazy(() => AccountUncheckedCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -16101,13 +16969,11 @@ export const AccountCreateManyTenantInputEnvelopeSchema: z.ZodType<PrismaClient.
 export const BookingCreateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateWithoutTenantInput> =
   z
     .object({
-      account: z
-        .lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema)
-        .optional(),
-      customer: z
-        .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
-        .optional(),
-      ownerId: z.number().optional().nullable(),
+      account: z.lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema),
+      customer: z.lazy(
+        () => AccountCreateNestedOneWithoutPurchasingInputSchema
+      ),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -16168,7 +17034,7 @@ export const BookingUncheckedCreateWithoutTenantInputSchema: z.ZodType<PrismaCli
       id: z.number().optional(),
       accountId: z.number(),
       customerId: z.number(),
-      ownerId: z.number().optional().nullable(),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -16250,12 +17116,10 @@ export const BookingCreateManyTenantInputEnvelopeSchema: z.ZodType<PrismaClient.
 export const BookingTravelerCreateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.BookingTravelerCreateWithoutTenantInput> =
   z
     .object({
-      booking: z
-        .lazy(() => BookingCreateNestedOneWithoutTravelersInputSchema)
-        .optional(),
-      account: z
-        .lazy(() => AccountCreateNestedOneWithoutBookingTravelersInputSchema)
-        .optional(),
+      booking: z.lazy(() => BookingCreateNestedOneWithoutTravelersInputSchema),
+      account: z.lazy(
+        () => AccountCreateNestedOneWithoutBookingTravelersInputSchema
+      ),
       ownerId: z.number(),
       firstName: z.string(),
       lastName: z.string(),
@@ -16593,13 +17457,11 @@ export const UserScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma.UserScala
         .optional()
         .nullable(),
       firstName: z
-        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
-        .optional()
-        .nullable(),
+        .union([z.lazy(() => StringFilterSchema), z.string()])
+        .optional(),
       lastName: z
-        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
-        .optional()
-        .nullable(),
+        .union([z.lazy(() => StringFilterSchema), z.string()])
+        .optional(),
       companyName: z
         .union([z.lazy(() => StringNullableFilterSchema), z.string()])
         .optional()
@@ -16631,8 +17493,9 @@ export const UserScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma.UserScala
         .nullable(),
       adresses: z.lazy(() => JsonNullableFilterSchema).optional(),
       gender: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       birthDate: z
         .union([z.lazy(() => DateTimeNullableFilterSchema), z.date()])
         .optional()
@@ -16642,16 +17505,22 @@ export const UserScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma.UserScala
         .optional()
         .nullable(),
       createdBy: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       modifiedAt: z
         .union([z.lazy(() => DateTimeNullableFilterSchema), z.date()])
         .optional()
         .nullable(),
       modifiedBy: z
-        .union([z.lazy(() => StringFilterSchema), z.string()])
-        .optional(),
+        .union([z.lazy(() => StringNullableFilterSchema), z.string()])
+        .optional()
+        .nullable(),
       isActive: z
+        .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
+        .optional()
+        .nullable(),
+      isMaster: z
         .union([z.lazy(() => BoolNullableFilterSchema), z.boolean()])
         .optional()
         .nullable()
@@ -16897,10 +17766,7 @@ export const BookingScalarWhereInputSchema: z.ZodType<PrismaClient.Prisma.Bookin
       customerId: z
         .union([z.lazy(() => IntFilterSchema), z.number()])
         .optional(),
-      ownerId: z
-        .union([z.lazy(() => IntNullableFilterSchema), z.number()])
-        .optional()
-        .nullable(),
+      ownerId: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
       customerName: z
         .union([z.lazy(() => StringFilterSchema), z.string()])
         .optional(),
@@ -17466,8 +18332,8 @@ export const TenantCreateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -17524,8 +18390,8 @@ export const TenantUncheckedCreateWithoutUsersInputSchema: z.ZodType<PrismaClien
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -17562,12 +18428,10 @@ export const TenantCreateOrConnectWithoutUsersInputSchema: z.ZodType<PrismaClien
     })
     .strict()
 
-export const AccountCreateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutUsersInput> =
+export const AccountCreateWithoutAccountUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutAccountUsersInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-        .optional(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
       parent: z
         .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
         .optional(),
@@ -17624,7 +18488,7 @@ export const AccountCreateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma
     })
     .strict()
 
-export const AccountUncheckedCreateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUncheckedCreateWithoutUsersInput> =
+export const AccountUncheckedCreateWithoutAccountUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUncheckedCreateWithoutAccountUsersInput> =
   z
     .object({
       id: z.number().optional(),
@@ -17688,13 +18552,13 @@ export const AccountUncheckedCreateWithoutUsersInputSchema: z.ZodType<PrismaClie
     })
     .strict()
 
-export const AccountCreateOrConnectWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateOrConnectWithoutUsersInput> =
+export const AccountCreateOrConnectWithoutAccountUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateOrConnectWithoutAccountUsersInput> =
   z
     .object({
       where: z.lazy(() => AccountWhereUniqueInputSchema),
       create: z.union([
-        z.lazy(() => AccountCreateWithoutUsersInputSchema),
-        z.lazy(() => AccountUncheckedCreateWithoutUsersInputSchema)
+        z.lazy(() => AccountCreateWithoutAccountUsersInputSchema),
+        z.lazy(() => AccountUncheckedCreateWithoutAccountUsersInputSchema)
       ])
     })
     .strict()
@@ -17898,15 +18762,17 @@ export const TenantUpdateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -18151,15 +19017,17 @@ export const TenantUncheckedUpdateWithoutUsersInputSchema: z.ZodType<PrismaClien
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -18220,25 +19088,25 @@ export const TenantUncheckedUpdateWithoutUsersInputSchema: z.ZodType<PrismaClien
     })
     .strict()
 
-export const AccountUpsertWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpsertWithoutUsersInput> =
+export const AccountUpsertWithoutAccountUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpsertWithoutAccountUsersInput> =
   z
     .object({
       update: z.union([
-        z.lazy(() => AccountUpdateWithoutUsersInputSchema),
-        z.lazy(() => AccountUncheckedUpdateWithoutUsersInputSchema)
+        z.lazy(() => AccountUpdateWithoutAccountUsersInputSchema),
+        z.lazy(() => AccountUncheckedUpdateWithoutAccountUsersInputSchema)
       ]),
       create: z.union([
-        z.lazy(() => AccountCreateWithoutUsersInputSchema),
-        z.lazy(() => AccountUncheckedCreateWithoutUsersInputSchema)
+        z.lazy(() => AccountCreateWithoutAccountUsersInputSchema),
+        z.lazy(() => AccountUncheckedCreateWithoutAccountUsersInputSchema)
       ])
     })
     .strict()
 
-export const AccountUpdateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateWithoutUsersInput> =
+export const AccountUpdateWithoutAccountUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUpdateWithoutAccountUsersInput> =
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
         .optional(),
       parent: z
         .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
@@ -18462,7 +19330,7 @@ export const AccountUpdateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma
     })
     .strict()
 
-export const AccountUncheckedUpdateWithoutUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUncheckedUpdateWithoutUsersInput> =
+export const AccountUncheckedUpdateWithoutAccountUsersInputSchema: z.ZodType<PrismaClient.Prisma.AccountUncheckedUpdateWithoutAccountUsersInput> =
   z
     .object({
       id: z
@@ -18736,8 +19604,8 @@ export const TenantCreateWithoutAccountsInputSchema: z.ZodType<PrismaClient.Pris
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -18794,8 +19662,8 @@ export const TenantUncheckedCreateWithoutAccountsInputSchema: z.ZodType<PrismaCl
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -18835,15 +19703,13 @@ export const TenantCreateOrConnectWithoutAccountsInputSchema: z.ZodType<PrismaCl
 export const AccountCreateWithoutChildAccountsInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutChildAccountsInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-        .optional(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
       parent: z
         .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
         .optional(),
       ownerId: z.number(),
-      users: z
-        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -18901,8 +19767,8 @@ export const AccountUncheckedCreateWithoutChildAccountsInputSchema: z.ZodType<Pr
       tenantId: z.number(),
       parentId: z.number().optional().nullable(),
       ownerId: z.number(),
-      users: z
-        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -18972,15 +19838,13 @@ export const AccountCreateOrConnectWithoutChildAccountsInputSchema: z.ZodType<Pr
 export const AccountCreateWithoutParentInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutParentInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-        .optional(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
       ownerId: z.number(),
       childAccounts: z
         .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -19040,8 +19904,8 @@ export const AccountUncheckedCreateWithoutParentInputSchema: z.ZodType<PrismaCli
       childAccounts: z
         .lazy(() => AccountUncheckedCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -19116,16 +19980,92 @@ export const AccountCreateManyParentInputEnvelopeSchema: z.ZodType<PrismaClient.
     })
     .strict()
 
-export const BookingCreateWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateWithoutAccountInput> =
+export const UserCreateWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserCreateWithoutAccountInput> =
   z
     .object({
       tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema)
+        .lazy(() => TenantCreateNestedOneWithoutUsersInputSchema)
         .optional(),
-      customer: z
-        .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
+      firstName: z.string(),
+      lastName: z.string(),
+      companyName: z.string().optional().nullable(),
+      jobTitle: z.string().optional().nullable(),
+      department: z.string().optional().nullable(),
+      managerName: z.string().optional().nullable(),
+      email: z.string(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
         .optional(),
-      ownerId: z.number().optional().nullable(),
+      gender: z.string().optional().nullable(),
+      birthDate: z.date().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional().nullable(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable()
+    })
+    .strict()
+
+export const UserUncheckedCreateWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserUncheckedCreateWithoutAccountInput> =
+  z
+    .object({
+      id: z.number().optional(),
+      tenantId: z.number().optional().nullable(),
+      firstName: z.string(),
+      lastName: z.string(),
+      companyName: z.string().optional().nullable(),
+      jobTitle: z.string().optional().nullable(),
+      department: z.string().optional().nullable(),
+      managerName: z.string().optional().nullable(),
+      email: z.string(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      gender: z.string().optional().nullable(),
+      birthDate: z.date().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional().nullable(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable()
+    })
+    .strict()
+
+export const UserCreateOrConnectWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserCreateOrConnectWithoutAccountInput> =
+  z
+    .object({
+      where: z.lazy(() => UserWhereUniqueInputSchema),
+      create: z.union([
+        z.lazy(() => UserCreateWithoutAccountInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema)
+      ])
+    })
+    .strict()
+
+export const UserCreateManyAccountInputEnvelopeSchema: z.ZodType<PrismaClient.Prisma.UserCreateManyAccountInputEnvelope> =
+  z
+    .object({
+      data: z.lazy(() => UserCreateManyAccountInputSchema).array(),
+      skipDuplicates: z.boolean().optional()
+    })
+    .strict()
+
+export const BookingCreateWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateWithoutAccountInput> =
+  z
+    .object({
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema),
+      customer: z.lazy(
+        () => AccountCreateNestedOneWithoutPurchasingInputSchema
+      ),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -19186,7 +20126,7 @@ export const BookingUncheckedCreateWithoutAccountInputSchema: z.ZodType<PrismaCl
       id: z.number().optional(),
       tenantId: z.number(),
       customerId: z.number(),
-      ownerId: z.number().optional().nullable(),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -19268,13 +20208,9 @@ export const BookingCreateManyAccountInputEnvelopeSchema: z.ZodType<PrismaClient
 export const BookingCreateWithoutCustomerInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateWithoutCustomerInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema)
-        .optional(),
-      account: z
-        .lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema)
-        .optional(),
-      ownerId: z.number().optional().nullable(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema),
+      account: z.lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -19335,7 +20271,7 @@ export const BookingUncheckedCreateWithoutCustomerInputSchema: z.ZodType<PrismaC
       id: z.number().optional(),
       tenantId: z.number(),
       accountId: z.number(),
-      ownerId: z.number().optional().nullable(),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -19417,12 +20353,10 @@ export const BookingCreateManyCustomerInputEnvelopeSchema: z.ZodType<PrismaClien
 export const BookingTravelerCreateWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.BookingTravelerCreateWithoutAccountInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutBookingTravelersInputSchema)
-        .optional(),
-      booking: z
-        .lazy(() => BookingCreateNestedOneWithoutTravelersInputSchema)
-        .optional(),
+      tenant: z.lazy(
+        () => TenantCreateNestedOneWithoutBookingTravelersInputSchema
+      ),
+      booking: z.lazy(() => BookingCreateNestedOneWithoutTravelersInputSchema),
       ownerId: z.number(),
       firstName: z.string(),
       lastName: z.string(),
@@ -19893,15 +20827,17 @@ export const TenantUpdateWithoutAccountsInputSchema: z.ZodType<PrismaClient.Pris
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -20146,15 +21082,17 @@ export const TenantUncheckedUpdateWithoutAccountsInputSchema: z.ZodType<PrismaCl
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -20233,7 +21171,7 @@ export const AccountUpdateWithoutChildAccountsInputSchema: z.ZodType<PrismaClien
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
         .optional(),
       parent: z
         .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
@@ -20241,8 +21179,8 @@ export const AccountUpdateWithoutChildAccountsInputSchema: z.ZodType<PrismaClien
       ownerId: z
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
-      users: z
-        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -20476,8 +21414,8 @@ export const AccountUncheckedUpdateWithoutChildAccountsInputSchema: z.ZodType<Pr
       ownerId: z
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -20734,6 +21672,43 @@ export const AccountUpdateManyWithWhereWithoutParentInputSchema: z.ZodType<Prism
     })
     .strict()
 
+export const UserUpsertWithWhereUniqueWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserUpsertWithWhereUniqueWithoutAccountInput> =
+  z
+    .object({
+      where: z.lazy(() => UserWhereUniqueInputSchema),
+      update: z.union([
+        z.lazy(() => UserUpdateWithoutAccountInputSchema),
+        z.lazy(() => UserUncheckedUpdateWithoutAccountInputSchema)
+      ]),
+      create: z.union([
+        z.lazy(() => UserCreateWithoutAccountInputSchema),
+        z.lazy(() => UserUncheckedCreateWithoutAccountInputSchema)
+      ])
+    })
+    .strict()
+
+export const UserUpdateWithWhereUniqueWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserUpdateWithWhereUniqueWithoutAccountInput> =
+  z
+    .object({
+      where: z.lazy(() => UserWhereUniqueInputSchema),
+      data: z.union([
+        z.lazy(() => UserUpdateWithoutAccountInputSchema),
+        z.lazy(() => UserUncheckedUpdateWithoutAccountInputSchema)
+      ])
+    })
+    .strict()
+
+export const UserUpdateManyWithWhereWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserUpdateManyWithWhereWithoutAccountInput> =
+  z
+    .object({
+      where: z.lazy(() => UserScalarWhereInputSchema),
+      data: z.union([
+        z.lazy(() => UserUpdateManyMutationInputSchema),
+        z.lazy(() => UserUncheckedUpdateManyWithoutAccountUsersInputSchema)
+      ])
+    })
+    .strict()
+
 export const BookingUpsertWithWhereUniqueWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.BookingUpsertWithWhereUniqueWithoutAccountInput> =
   z
     .object({
@@ -20922,8 +21897,8 @@ export const TenantCreateWithoutBookingsInputSchema: z.ZodType<PrismaClient.Pris
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -20980,8 +21955,8 @@ export const TenantUncheckedCreateWithoutBookingsInputSchema: z.ZodType<PrismaCl
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -21021,9 +21996,7 @@ export const TenantCreateOrConnectWithoutBookingsInputSchema: z.ZodType<PrismaCl
 export const AccountCreateWithoutBookingsInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutBookingsInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-        .optional(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
       parent: z
         .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
         .optional(),
@@ -21031,8 +22004,8 @@ export const AccountCreateWithoutBookingsInputSchema: z.ZodType<PrismaClient.Pri
       childAccounts: z
         .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -21090,8 +22063,8 @@ export const AccountUncheckedCreateWithoutBookingsInputSchema: z.ZodType<PrismaC
       childAccounts: z
         .lazy(() => AccountUncheckedCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -21158,9 +22131,7 @@ export const AccountCreateOrConnectWithoutBookingsInputSchema: z.ZodType<PrismaC
 export const AccountCreateWithoutPurchasingInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutPurchasingInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-        .optional(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
       parent: z
         .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
         .optional(),
@@ -21168,8 +22139,8 @@ export const AccountCreateWithoutPurchasingInputSchema: z.ZodType<PrismaClient.P
       childAccounts: z
         .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -21227,8 +22198,8 @@ export const AccountUncheckedCreateWithoutPurchasingInputSchema: z.ZodType<Prism
       childAccounts: z
         .lazy(() => AccountUncheckedCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -21295,12 +22266,12 @@ export const AccountCreateOrConnectWithoutPurchasingInputSchema: z.ZodType<Prism
 export const BookingTravelerCreateWithoutBookingInputSchema: z.ZodType<PrismaClient.Prisma.BookingTravelerCreateWithoutBookingInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutBookingTravelersInputSchema)
-        .optional(),
-      account: z
-        .lazy(() => AccountCreateNestedOneWithoutBookingTravelersInputSchema)
-        .optional(),
+      tenant: z.lazy(
+        () => TenantCreateNestedOneWithoutBookingTravelersInputSchema
+      ),
+      account: z.lazy(
+        () => AccountCreateNestedOneWithoutBookingTravelersInputSchema
+      ),
       ownerId: z.number(),
       firstName: z.string(),
       lastName: z.string(),
@@ -21771,15 +22742,17 @@ export const TenantUpdateWithoutBookingsInputSchema: z.ZodType<PrismaClient.Pris
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -22024,15 +22997,17 @@ export const TenantUncheckedUpdateWithoutBookingsInputSchema: z.ZodType<PrismaCl
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -22111,7 +23086,7 @@ export const AccountUpdateWithoutBookingsInputSchema: z.ZodType<PrismaClient.Pri
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
         .optional(),
       parent: z
         .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
@@ -22122,8 +23097,8 @@ export const AccountUpdateWithoutBookingsInputSchema: z.ZodType<PrismaClient.Pri
       childAccounts: z
         .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -22357,8 +23332,8 @@ export const AccountUncheckedUpdateWithoutBookingsInputSchema: z.ZodType<PrismaC
       childAccounts: z
         .lazy(() => AccountUncheckedUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -22593,7 +23568,7 @@ export const AccountUpdateWithoutPurchasingInputSchema: z.ZodType<PrismaClient.P
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
         .optional(),
       parent: z
         .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
@@ -22604,8 +23579,8 @@ export const AccountUpdateWithoutPurchasingInputSchema: z.ZodType<PrismaClient.P
       childAccounts: z
         .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -22839,8 +23814,8 @@ export const AccountUncheckedUpdateWithoutPurchasingInputSchema: z.ZodType<Prism
       childAccounts: z
         .lazy(() => AccountUncheckedUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -23169,8 +24144,8 @@ export const TenantCreateWithoutBookingTravelersInputSchema: z.ZodType<PrismaCli
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -23227,8 +24202,8 @@ export const TenantUncheckedCreateWithoutBookingTravelersInputSchema: z.ZodType<
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -23266,16 +24241,12 @@ export const TenantCreateOrConnectWithoutBookingTravelersInputSchema: z.ZodType<
 export const BookingCreateWithoutTravelersInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateWithoutTravelersInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema)
-        .optional(),
-      account: z
-        .lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema)
-        .optional(),
-      customer: z
-        .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
-        .optional(),
-      ownerId: z.number().optional().nullable(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema),
+      account: z.lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema),
+      customer: z.lazy(
+        () => AccountCreateNestedOneWithoutPurchasingInputSchema
+      ),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -23334,7 +24305,7 @@ export const BookingUncheckedCreateWithoutTravelersInputSchema: z.ZodType<Prisma
       tenantId: z.number(),
       accountId: z.number(),
       customerId: z.number(),
-      ownerId: z.number().optional().nullable(),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -23402,9 +24373,7 @@ export const BookingCreateOrConnectWithoutTravelersInputSchema: z.ZodType<Prisma
 export const AccountCreateWithoutBookingTravelersInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutBookingTravelersInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-        .optional(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
       parent: z
         .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
         .optional(),
@@ -23412,8 +24381,8 @@ export const AccountCreateWithoutBookingTravelersInputSchema: z.ZodType<PrismaCl
       childAccounts: z
         .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -23471,8 +24440,8 @@ export const AccountUncheckedCreateWithoutBookingTravelersInputSchema: z.ZodType
       childAccounts: z
         .lazy(() => AccountUncheckedCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -23732,15 +24701,17 @@ export const TenantUpdateWithoutBookingTravelersInputSchema: z.ZodType<PrismaCli
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -23985,15 +24956,17 @@ export const TenantUncheckedUpdateWithoutBookingTravelersInputSchema: z.ZodType<
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -24070,21 +25043,17 @@ export const BookingUpdateWithoutTravelersInputSchema: z.ZodType<PrismaClient.Pr
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       account: z
-        .lazy(() => AccountUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       customer: z
-        .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -24314,12 +25283,8 @@ export const BookingUncheckedUpdateWithoutTravelersInputSchema: z.ZodType<Prisma
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -24553,7 +25518,7 @@ export const AccountUpdateWithoutBookingTravelersInputSchema: z.ZodType<PrismaCl
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
         .optional(),
       parent: z
         .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
@@ -24564,8 +25529,8 @@ export const AccountUpdateWithoutBookingTravelersInputSchema: z.ZodType<PrismaCl
       childAccounts: z
         .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -24799,8 +25764,8 @@ export const AccountUncheckedUpdateWithoutBookingTravelersInputSchema: z.ZodType
       childAccounts: z
         .lazy(() => AccountUncheckedUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -25048,8 +26013,8 @@ export const TenantCreateWithoutBookingProductsInputSchema: z.ZodType<PrismaClie
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -25106,8 +26071,8 @@ export const TenantUncheckedCreateWithoutBookingProductsInputSchema: z.ZodType<P
       locale: z.string().optional().nullable(),
       timeZone: z.string().optional().nullable(),
       referralSource: z.string().optional().nullable(),
-      domain: z.string(),
-      siteConfig: z.string(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
       createdAt: z.date().optional().nullable(),
       createdBy: z.string().optional().nullable(),
       modifiedAt: z.date().optional(),
@@ -25145,16 +26110,12 @@ export const TenantCreateOrConnectWithoutBookingProductsInputSchema: z.ZodType<P
 export const BookingCreateWithoutProductsInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateWithoutProductsInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema)
-        .optional(),
-      account: z
-        .lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema)
-        .optional(),
-      customer: z
-        .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
-        .optional(),
-      ownerId: z.number().optional().nullable(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema),
+      account: z.lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema),
+      customer: z.lazy(
+        () => AccountCreateNestedOneWithoutPurchasingInputSchema
+      ),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -25213,7 +26174,7 @@ export const BookingUncheckedCreateWithoutProductsInputSchema: z.ZodType<PrismaC
       tenantId: z.number(),
       accountId: z.number(),
       customerId: z.number(),
-      ownerId: z.number().optional().nullable(),
+      ownerId: z.number(),
       customerName: z.string(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -25282,9 +26243,7 @@ export const BookingCreateOrConnectWithoutProductsInputSchema: z.ZodType<PrismaC
 export const AccountCreateWithoutBookingProductsInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateWithoutBookingProductsInput> =
   z
     .object({
-      tenant: z
-        .lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema)
-        .optional(),
+      tenant: z.lazy(() => TenantCreateNestedOneWithoutAccountsInputSchema),
       parent: z
         .lazy(() => AccountCreateNestedOneWithoutChildAccountsInputSchema)
         .optional(),
@@ -25292,8 +26251,8 @@ export const AccountCreateWithoutBookingProductsInputSchema: z.ZodType<PrismaCli
       childAccounts: z
         .lazy(() => AccountCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -25351,8 +26310,8 @@ export const AccountUncheckedCreateWithoutBookingProductsInputSchema: z.ZodType<
       childAccounts: z
         .lazy(() => AccountUncheckedCreateNestedManyWithoutParentInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedCreateNestedManyWithoutTenantInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedCreateNestedManyWithoutAccountInputSchema)
         .optional(),
       name: z.string(),
       category: z.lazy(() => AccountCategorySchema),
@@ -25678,15 +26637,17 @@ export const TenantUpdateWithoutBookingProductsInputSchema: z.ZodType<PrismaClie
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -25931,15 +26892,17 @@ export const TenantUncheckedUpdateWithoutBookingProductsInputSchema: z.ZodType<P
       domain: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       siteConfig: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       createdAt: z
         .union([
           z.date(),
@@ -26016,21 +26979,17 @@ export const BookingUpdateWithoutProductsInputSchema: z.ZodType<PrismaClient.Pri
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       account: z
-        .lazy(() => AccountUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       customer: z
-        .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -26260,12 +27219,8 @@ export const BookingUncheckedUpdateWithoutProductsInputSchema: z.ZodType<PrismaC
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -26500,7 +27455,7 @@ export const AccountUpdateWithoutBookingProductsInputSchema: z.ZodType<PrismaCli
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
         .optional(),
       parent: z
         .lazy(() => AccountUpdateOneWithoutChildAccountsNestedInputSchema)
@@ -26511,8 +27466,8 @@ export const AccountUpdateWithoutBookingProductsInputSchema: z.ZodType<PrismaCli
       childAccounts: z
         .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -26746,8 +27701,8 @@ export const AccountUncheckedUpdateWithoutBookingProductsInputSchema: z.ZodType<
       childAccounts: z
         .lazy(() => AccountUncheckedUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -27913,269 +28868,263 @@ export const BookingProductUncheckedUpdateWithoutRoomsInputSchema: z.ZodType<Pri
     })
     .strict()
 
-export const UserCreateManyTenantInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserCreateManyTenantInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-    accountId: z.number().optional().nullable(),
-    firstName: z.string().optional().nullable(),
-    lastName: z.string().optional().nullable(),
-    companyName: z.string().optional().nullable(),
-    jobTitle: z.string().optional().nullable(),
-    department: z.string().optional().nullable(),
-    managerName: z.string().optional().nullable(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    mobilePhone: z.string().optional().nullable(),
-    fax: z.string().optional().nullable(),
-    adresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    gender: z.string(),
-    birthDate: z.date().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string(),
-    // omitted: modifiedAt: z.date().optional().nullable(),
-    // omitted: modifiedBy: z.string(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
+export const UserCreateManyTenantInputSchema: z.ZodType<PrismaClient.Prisma.UserCreateManyTenantInput> =
+  z
+    .object({
+      id: z.number().int().optional(),
+      accountId: z.number().optional().nullable(),
+      firstName: z.string(),
+      lastName: z.string(),
+      companyName: z.string().optional().nullable(),
+      jobTitle: z.string().optional().nullable(),
+      department: z.string().optional().nullable(),
+      managerName: z.string().optional().nullable(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      gender: z.string().optional().nullable(),
+      birthDate: z.date().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional().nullable(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable(),
+      isMaster: z.boolean().optional().nullable()
+    })
+    .strict()
 
-export const AccountCreateManyTenantInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountCreateManyTenantInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-    parentId: z.number().optional().nullable(),
-    ownerId: z.number(),
-    name: z.string(),
-    category: z.lazy(() => AccountCategorySchema),
-    dobName: z.string().optional().nullable(),
-    taxId: z.string().optional().nullable(),
-    ssn: z.string().optional().nullable(),
-    brand: z.string().optional().nullable(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    mobilePhone: z.string().optional().nullable(),
-    fax: z.string().optional().nullable(),
-    billingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    shippingAdresses: z
-      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
-      .optional(),
-    termsAndConditions: z.string().optional().nullable(),
-    privacyPolicy: z.string().optional().nullable(),
-    bankName: z.string().optional().nullable(),
-    branch: z.string().optional().nullable(),
-    bankAccount: z.string().optional().nullable(),
-    notes: z.string().optional().nullable(),
-    countryCode: z.string().optional().nullable(),
-    currencyCode: z.string().optional().nullable(),
-    locale: z.string().optional().nullable(),
-    timeZone: z.string().optional().nullable(),
-    referralSource: z.string().optional().nullable(),
-    domain: z.string().optional().nullable(),
-    siteConfig: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
+export const AccountCreateManyTenantInputSchema: z.ZodType<PrismaClient.Prisma.AccountCreateManyTenantInput> =
+  z
+    .object({
+      id: z.number().int().optional(),
+      parentId: z.number().optional().nullable(),
+      ownerId: z.number(),
+      name: z.string(),
+      category: z.lazy(() => AccountCategorySchema),
+      dobName: z.string().optional().nullable(),
+      taxId: z.string().optional().nullable(),
+      ssn: z.string().optional().nullable(),
+      brand: z.string().optional().nullable(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      mobilePhone: z.string().optional().nullable(),
+      fax: z.string().optional().nullable(),
+      billingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      shippingAdresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      termsAndConditions: z.string().optional().nullable(),
+      privacyPolicy: z.string().optional().nullable(),
+      bankName: z.string().optional().nullable(),
+      branch: z.string().optional().nullable(),
+      bankAccount: z.string().optional().nullable(),
+      notes: z.string().optional().nullable(),
+      countryCode: z.string().optional().nullable(),
+      currencyCode: z.string().optional().nullable(),
+      locale: z.string().optional().nullable(),
+      timeZone: z.string().optional().nullable(),
+      referralSource: z.string().optional().nullable(),
+      domain: z.string().optional().nullable(),
+      siteConfig: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable()
+    })
+    .strict()
 
-export const BookingCreateManyTenantInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingCreateManyTenantInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-    accountId: z.number(),
-    customerId: z.number(),
-    ownerId: z.number().optional().nullable(),
-    customerName: z.string(),
-    customerEmail: z.string().optional().nullable(),
-    customerPhone: z.string().optional().nullable(),
-    postalCode: z.string().optional().nullable(),
-    fromCity: z.string().optional().nullable(),
-    toCity: z.string().optional().nullable(),
-    travelDate: z.date().optional().nullable(),
-    travelPeriod: z.string().optional().nullable(),
-    adultsCount: z.number().optional().nullable(),
-    childrenCount: z.number().optional().nullable(),
-    seniorsCount: z.number().optional().nullable(),
-    requestDescription: z.string().optional().nullable(),
-    status: z.lazy(() => BookingStatusSchema).optional(),
-    locatorCode: z.string().optional().nullable(),
-    totalPrice: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    totalCost: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    paymentType: z.string().optional().nullable(),
-    paymentStatus: z.string().optional().nullable(),
-    paymentDateTime: z.date().optional().nullable(),
-    discountPercent: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    discountAmount: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    paymentAmount: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    voucherFilePath: z.string().optional().nullable(),
-    receiptFilePath: z.string().optional().nullable(),
-    invoiceFilePath: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
+export const BookingCreateManyTenantInputSchema: z.ZodType<PrismaClient.Prisma.BookingCreateManyTenantInput> =
+  z
+    .object({
+      id: z.number().int().optional(),
+      accountId: z.number(),
+      customerId: z.number(),
+      ownerId: z.number(),
+      customerName: z.string(),
+      customerEmail: z.string().optional().nullable(),
+      customerPhone: z.string().optional().nullable(),
+      postalCode: z.string().optional().nullable(),
+      fromCity: z.string().optional().nullable(),
+      toCity: z.string().optional().nullable(),
+      travelDate: z.date().optional().nullable(),
+      travelPeriod: z.string().optional().nullable(),
+      adultsCount: z.number().optional().nullable(),
+      childrenCount: z.number().optional().nullable(),
+      seniorsCount: z.number().optional().nullable(),
+      requestDescription: z.string().optional().nullable(),
+      status: z.lazy(() => BookingStatusSchema).optional(),
+      locatorCode: z.string().optional().nullable(),
+      totalPrice: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      totalCost: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      paymentType: z.string().optional().nullable(),
+      paymentStatus: z.string().optional().nullable(),
+      paymentDateTime: z.date().optional().nullable(),
+      discountPercent: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      discountAmount: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      paymentAmount: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      voucherFilePath: z.string().optional().nullable(),
+      receiptFilePath: z.string().optional().nullable(),
+      invoiceFilePath: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable()
+    })
+    .strict()
 
-export const BookingTravelerCreateManyTenantInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerCreateManyTenantInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-    bookingId: z.number(),
-    accountId: z.number(),
-    ownerId: z.number(),
-    firstName: z.string(),
-    lastName: z.string(),
-    birthDate: z.date(),
-    passportNumber: z.string(),
-    passportIssueDate: z.date(),
-    passportExpireDate: z.date(),
-    email: z.string().email(),
-    phone: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
+export const BookingTravelerCreateManyTenantInputSchema: z.ZodType<PrismaClient.Prisma.BookingTravelerCreateManyTenantInput> =
+  z
+    .object({
+      id: z.number().int().optional(),
+      bookingId: z.number(),
+      accountId: z.number(),
+      ownerId: z.number(),
+      firstName: z.string(),
+      lastName: z.string(),
+      birthDate: z.date(),
+      passportNumber: z.string(),
+      passportIssueDate: z.date(),
+      passportExpireDate: z.date(),
+      email: z.string().email(),
+      phone: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable()
+    })
+    .strict()
 
-export const BookingProductCreateManyTenantInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductCreateManyTenantInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
-> = z
-  .object({
-    // omitted: id: z.number().optional(),
-    bookingId: z.number(),
-    accountId: z.number(),
-    supplierId: z.number().optional().nullable(),
-    supplierName: z.string().optional().nullable(),
-    ownerId: z.number(),
-    category: z.lazy(() => ProductCategorySchema),
-    description: z.string().optional().nullable(),
-    startDate: z.date(),
-    endDate: z.date(),
-    fromLocation: z.string().optional().nullable(),
-    toLocation: z.string(),
-    termsAndConditions: z.string().optional().nullable(),
-    locatorCode: z.string().optional().nullable(),
-    productCost: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    tenantMarkup: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    agencyMarkup: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    agentMarkup: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    localTaxes: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    stateTaxes: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    federalTaxes: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    additionalFees: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    discountPercent: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    discount: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    finalPrice: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
-    paymentDueDate: z.date().optional().nullable(),
-    paidDate: z.date().optional().nullable(),
-    paymentAmount: z
-      .instanceof(PrismaClient.Prisma.Decimal)
-      .optional()
-      .nullable(),
-    voucherFilePath: z.string().optional().nullable(),
-    receiptFilePath: z.string().optional().nullable(),
-    invoiceFilePath: z.string().optional().nullable(),
-    status: z.string().optional().nullable(),
-    hotelName: z.string().optional().nullable(),
-    hotelStarRating: z.number().optional().nullable(),
-    hotelMealPlan: z.string().optional().nullable(),
-    accommodationType: z
-      .lazy(() => AccommodationTypeSchema)
-      .optional()
-      .nullable(),
-    bookingGroupId: z.number().optional().nullable(),
-    paymentType: z.string().optional().nullable(),
-    paymentDescription: z.string().optional().nullable(),
-    creditCardType: z.string().optional().nullable(),
-    creditCardLastFourDigits: z.number().optional().nullable(),
-    creditCardAuthorizationCode: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
-    isActive: z.boolean().optional().nullable()
-  })
-  .strict()
+export const BookingProductCreateManyTenantInputSchema: z.ZodType<PrismaClient.Prisma.BookingProductCreateManyTenantInput> =
+  z
+    .object({
+      id: z.number().int().optional(),
+      bookingId: z.number(),
+      accountId: z.number(),
+      supplierId: z.number().optional().nullable(),
+      supplierName: z.string().optional().nullable(),
+      ownerId: z.number(),
+      category: z.lazy(() => ProductCategorySchema),
+      description: z.string().optional().nullable(),
+      startDate: z.date(),
+      endDate: z.date(),
+      fromLocation: z.string().optional().nullable(),
+      toLocation: z.string(),
+      termsAndConditions: z.string().optional().nullable(),
+      locatorCode: z.string().optional().nullable(),
+      productCost: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      tenantMarkup: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      agencyMarkup: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      agentMarkup: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      localTaxes: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      stateTaxes: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      federalTaxes: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      additionalFees: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      discountPercent: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      discount: z.instanceof(PrismaClient.Prisma.Decimal).optional().nullable(),
+      finalPrice: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      paymentDueDate: z.date().optional().nullable(),
+      paidDate: z.date().optional().nullable(),
+      paymentAmount: z
+        .instanceof(PrismaClient.Prisma.Decimal)
+        .optional()
+        .nullable(),
+      voucherFilePath: z.string().optional().nullable(),
+      receiptFilePath: z.string().optional().nullable(),
+      invoiceFilePath: z.string().optional().nullable(),
+      status: z.string().optional().nullable(),
+      hotelName: z.string().optional().nullable(),
+      hotelStarRating: z.number().optional().nullable(),
+      hotelMealPlan: z.string().optional().nullable(),
+      accommodationType: z
+        .lazy(() => AccommodationTypeSchema)
+        .optional()
+        .nullable(),
+      bookingGroupId: z.number().optional().nullable(),
+      paymentType: z.string().optional().nullable(),
+      paymentDescription: z.string().optional().nullable(),
+      creditCardType: z.string().optional().nullable(),
+      creditCardLastFourDigits: z.number().optional().nullable(),
+      creditCardAuthorizationCode: z.string().optional().nullable(),
+      createdAt: z.date().optional().nullable(),
+      createdBy: z.string().optional().nullable(),
+      modifiedAt: z.date().optional(),
+      modifiedBy: z.string().optional().nullable(),
+      isActive: z.boolean().optional().nullable()
+    })
+    .strict()
 
 export const UserUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.UserUpdateWithoutTenantInput> =
   z
     .object({
       account: z
-        .lazy(() => AccountUpdateOneWithoutUsersNestedInputSchema)
+        .lazy(() => AccountUpdateOneWithoutAccountUsersNestedInputSchema)
         .optional(),
       firstName: z
         .union([
           z.string(),
-          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       lastName: z
         .union([
           z.string(),
-          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       companyName: z
         .union([
           z.string(),
@@ -28237,9 +29186,10 @@ export const UserUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.U
       gender: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       birthDate: z
         .union([
           z.date(),
@@ -28257,9 +29207,10 @@ export const UserUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.U
       createdBy: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       modifiedAt: z
         .union([
           z.date(),
@@ -28270,10 +29221,18 @@ export const UserUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prisma.U
       modifiedBy: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
         .union([
           z.boolean(),
           z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
@@ -28299,17 +29258,15 @@ export const UserUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient
       firstName: z
         .union([
           z.string(),
-          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       lastName: z
         .union([
           z.string(),
-          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
         ])
-        .optional()
-        .nullable(),
+        .optional(),
       companyName: z
         .union([
           z.string(),
@@ -28371,9 +29328,10 @@ export const UserUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient
       gender: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       birthDate: z
         .union([
           z.date(),
@@ -28391,9 +29349,10 @@ export const UserUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient
       createdBy: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       modifiedAt: z
         .union([
           z.date(),
@@ -28404,10 +29363,18 @@ export const UserUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient
       modifiedBy: z
         .union([
           z.string(),
-          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
         .union([
           z.boolean(),
           z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
@@ -28418,28 +29385,23 @@ export const UserUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient
     .strict()
 
 export const UserUncheckedUpdateManyWithoutUsersInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.UserUncheckedUpdateManyWithoutUsersInput,
-    'id' | 'accountId' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.UserUncheckedUpdateManyWithoutUsersInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     firstName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
     lastName: z
-      .union([
-        z.string(),
-        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
-      ])
-      .optional()
-      .nullable(),
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
     companyName: z
       .union([
         z.string(),
@@ -28499,8 +29461,12 @@ export const UserUncheckedUpdateManyWithoutUsersInputSchema: z.ZodType<
       .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
       .optional(),
     gender: z
-      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
-      .optional(),
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     birthDate: z
       .union([
         z.date(),
@@ -28508,11 +29474,42 @@ export const UserUncheckedUpdateManyWithoutUsersInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
+      .union([
+        z.boolean(),
+        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    isMaster: z
       .union([
         z.boolean(),
         z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
@@ -28534,8 +29531,8 @@ export const AccountUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prism
       childAccounts: z
         .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -28769,8 +29766,8 @@ export const AccountUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaCli
       childAccounts: z
         .lazy(() => AccountUncheckedUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -28991,21 +29988,23 @@ export const AccountUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaCli
     .strict()
 
 export const AccountUncheckedUpdateManyWithoutAccountsInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountUncheckedUpdateManyWithoutAccountsInput,
-    | 'id'
-    | 'parentId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.AccountUncheckedUpdateManyWithoutAccountsInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: parentId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    parentId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     name: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -29167,10 +30166,30 @@ export const AccountUncheckedUpdateManyWithoutAccountsInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -29185,18 +30204,14 @@ export const BookingUpdateWithoutTenantInputSchema: z.ZodType<PrismaClient.Prism
   z
     .object({
       account: z
-        .lazy(() => AccountUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       customer: z
-        .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -29426,12 +30441,8 @@ export const BookingUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaCli
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -29654,27 +30665,28 @@ export const BookingUncheckedUpdateWithoutTenantInputSchema: z.ZodType<PrismaCli
     .strict()
 
 export const BookingUncheckedUpdateManyWithoutBookingsInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingUncheckedUpdateManyWithoutBookingsInput,
-    | 'id'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingUncheckedUpdateManyWithoutBookingsInput, 'id'>
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     customerId: z
       .union([
         z.number().int(),
         z.lazy(() => IntFieldUpdateOperationsInputSchema)
       ])
       .optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     customerName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -29845,10 +30857,30 @@ export const BookingUncheckedUpdateManyWithoutBookingsInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -29863,10 +30895,12 @@ export const BookingTravelerUpdateWithoutTenantInputSchema: z.ZodType<PrismaClie
   z
     .object({
       booking: z
-        .lazy(() => BookingUpdateOneWithoutTravelersNestedInputSchema)
+        .lazy(() => BookingUpdateOneRequiredWithoutTravelersNestedInputSchema)
         .optional(),
       account: z
-        .lazy(() => AccountUpdateOneWithoutBookingTravelersNestedInputSchema)
+        .lazy(
+          () => AccountUpdateOneRequiredWithoutBookingTravelersNestedInputSchema
+        )
         .optional(),
       ownerId: z
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
@@ -30061,13 +31095,7 @@ export const BookingTravelerUncheckedUpdateWithoutTenantInputSchema: z.ZodType<P
 export const BookingTravelerUncheckedUpdateManyWithoutBookingTravelersInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.BookingTravelerUncheckedUpdateManyWithoutBookingTravelersInput,
-    | 'id'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
@@ -30075,8 +31103,18 @@ export const BookingTravelerUncheckedUpdateManyWithoutBookingTravelersInputSchem
     bookingId: z
       .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
       .optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     firstName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -30105,10 +31143,30 @@ export const BookingTravelerUncheckedUpdateManyWithoutBookingTravelersInputSchem
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -30763,13 +31821,7 @@ export const BookingProductUncheckedUpdateWithoutTenantInputSchema: z.ZodType<Pr
 export const BookingProductUncheckedUpdateManyWithoutBookingProductsInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.BookingProductUncheckedUpdateManyWithoutBookingProductsInput,
-    | 'id'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
@@ -30777,7 +31829,12 @@ export const BookingProductUncheckedUpdateManyWithoutBookingProductsInputSchema:
     bookingId: z
       .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
       .optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     supplierId: z
       .union([
         z.number(),
@@ -30792,7 +31849,12 @@ export const BookingProductUncheckedUpdateManyWithoutBookingProductsInputSchema:
       ])
       .optional()
       .nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     category: z
       .union([
         z.lazy(() => ProductCategorySchema),
@@ -31034,10 +32096,30 @@ export const BookingProductUncheckedUpdateManyWithoutBookingProductsInputSchema:
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -31049,21 +32131,12 @@ export const BookingProductUncheckedUpdateManyWithoutBookingProductsInputSchema:
   .strict()
 
 export const AccountCreateManyParentInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.AccountCreateManyParentInput,
-    | 'id'
-    | 'tenantId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.AccountCreateManyParentInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: ownerId: z.number(),
+    tenantId: z.number().int(),
+    ownerId: z.number().int(),
     name: z.string(),
     category: z.lazy(() => AccountCategorySchema),
     dobName: z.string().optional().nullable(),
@@ -31093,31 +32166,52 @@ export const AccountCreateManyParentInputSchema: z.ZodType<
     referralSource: z.string().optional().nullable(),
     domain: z.string().optional().nullable(),
     siteConfig: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
-export const BookingCreateManyAccountInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingCreateManyAccountInput,
-    | 'id'
-    | 'tenantId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+export const UserCreateManyAccountInputSchema: z.ZodType<
+  Omit<PrismaClient.Prisma.UserCreateManyAccountInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
+    tenantId: z.number().int().optional().nullable(),
+    firstName: z.string(),
+    lastName: z.string(),
+    companyName: z.string().optional().nullable(),
+    jobTitle: z.string().optional().nullable(),
+    department: z.string().optional().nullable(),
+    managerName: z.string().optional().nullable(),
+    email: z.string().email(),
+    phone: z.string().optional().nullable(),
+    mobilePhone: z.string().optional().nullable(),
+    fax: z.string().optional().nullable(),
+    adresses: z
+      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+      .optional(),
+    gender: z.string().optional().nullable(),
+    birthDate: z.date().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional().nullable(),
+    modifiedBy: z.string().optional().nullable(),
+    isActive: z.boolean().optional().nullable(),
+    isMaster: z.boolean().optional().nullable()
+  })
+  .strict()
+
+export const BookingCreateManyAccountInputSchema: z.ZodType<
+  Omit<PrismaClient.Prisma.BookingCreateManyAccountInput, 'id'>
+> = z
+  .object({
+    // omitted: id: z.number().optional(),
+    tenantId: z.number().int(),
     customerId: z.number(),
-    // omitted: ownerId: z.number().optional().nullable(),
+    ownerId: z.number().int(),
     customerName: z.string(),
     customerEmail: z.string().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -31152,32 +32246,22 @@ export const BookingCreateManyAccountInputSchema: z.ZodType<
     voucherFilePath: z.string().optional().nullable(),
     receiptFilePath: z.string().optional().nullable(),
     invoiceFilePath: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
 export const BookingCreateManyCustomerInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingCreateManyCustomerInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingCreateManyCustomerInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: accountId: z.number(),
-    // omitted: ownerId: z.number().optional().nullable(),
+    tenantId: z.number().int(),
+    accountId: z.number().int(),
+    ownerId: z.number().int(),
     customerName: z.string(),
     customerEmail: z.string().email().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -31212,31 +32296,22 @@ export const BookingCreateManyCustomerInputSchema: z.ZodType<
     voucherFilePath: z.string().optional().nullable(),
     receiptFilePath: z.string().optional().nullable(),
     invoiceFilePath: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
 export const BookingTravelerCreateManyAccountInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerCreateManyAccountInput,
-    | 'id'
-    | 'tenantId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingTravelerCreateManyAccountInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
+    tenantId: z.number().int(),
     bookingId: z.number(),
-    // omitted: ownerId: z.number(),
+    ownerId: z.number().int(),
     firstName: z.string(),
     lastName: z.string(),
     birthDate: z.date(),
@@ -31245,33 +32320,24 @@ export const BookingTravelerCreateManyAccountInputSchema: z.ZodType<
     passportExpireDate: z.date(),
     email: z.string().email(),
     phone: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
 export const BookingProductCreateManyAccountInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductCreateManyAccountInput,
-    | 'id'
-    | 'tenantId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductCreateManyAccountInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
+    tenantId: z.number().int(),
     bookingId: z.number(),
     supplierId: z.number().optional().nullable(),
     supplierName: z.string().optional().nullable(),
-    // omitted: ownerId: z.number(),
+    ownerId: z.number().int(),
     category: z.lazy(() => ProductCategorySchema),
     description: z.string().optional().nullable(),
     startDate: z.date(),
@@ -31335,10 +32401,10 @@ export const BookingProductCreateManyAccountInputSchema: z.ZodType<
     creditCardType: z.string().optional().nullable(),
     creditCardLastFourDigits: z.number().optional().nullable(),
     creditCardAuthorizationCode: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
@@ -31347,7 +32413,7 @@ export const AccountUpdateWithoutParentInputSchema: z.ZodType<PrismaClient.Prism
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutAccountsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutAccountsNestedInputSchema)
         .optional(),
       ownerId: z
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
@@ -31355,8 +32421,8 @@ export const AccountUpdateWithoutParentInputSchema: z.ZodType<PrismaClient.Prism
       childAccounts: z
         .lazy(() => AccountUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -31586,8 +32652,8 @@ export const AccountUncheckedUpdateWithoutParentInputSchema: z.ZodType<PrismaCli
       childAccounts: z
         .lazy(() => AccountUncheckedUpdateManyWithoutParentNestedInputSchema)
         .optional(),
-      users: z
-        .lazy(() => UserUncheckedUpdateManyWithoutTenantNestedInputSchema)
+      accountUsers: z
+        .lazy(() => UserUncheckedUpdateManyWithoutAccountNestedInputSchema)
         .optional(),
       name: z
         .union([
@@ -31810,19 +32876,23 @@ export const AccountUncheckedUpdateWithoutParentInputSchema: z.ZodType<PrismaCli
 export const AccountUncheckedUpdateManyWithoutChildAccountsInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.AccountUncheckedUpdateManyWithoutChildAccountsInput,
-    | 'id'
-    | 'tenantId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     name: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -31984,11 +33054,446 @@ export const AccountUncheckedUpdateManyWithoutChildAccountsInputSchema: z.ZodTyp
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
+      .union([
+        z.boolean(),
+        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable()
+  })
+  .strict()
+
+export const UserUpdateWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserUpdateWithoutAccountInput> =
+  z
+    .object({
+      tenant: z
+        .lazy(() => TenantUpdateOneWithoutUsersNestedInputSchema)
+        .optional(),
+      firstName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      lastName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      companyName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      department: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      managerName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      gender: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      birthDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
+
+export const UserUncheckedUpdateWithoutAccountInputSchema: z.ZodType<PrismaClient.Prisma.UserUncheckedUpdateWithoutAccountInput> =
+  z
+    .object({
+      id: z
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
+      tenantId: z
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      firstName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      lastName: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      companyName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      jobTitle: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      department: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      managerName: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      email: z
+        .union([
+          z.string(),
+          z.lazy(() => StringFieldUpdateOperationsInputSchema)
+        ])
+        .optional(),
+      phone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      mobilePhone: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      fax: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      adresses: z
+        .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+        .optional(),
+      gender: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      birthDate: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      createdBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedAt: z
+        .union([
+          z.date(),
+          z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      modifiedBy: z
+        .union([
+          z.string(),
+          z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isActive: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
+      isMaster: z
+        .union([
+          z.boolean(),
+          z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable()
+    })
+    .strict()
+
+export const UserUncheckedUpdateManyWithoutAccountUsersInputSchema: z.ZodType<
+  Omit<
+    PrismaClient.Prisma.UserUncheckedUpdateManyWithoutAccountUsersInput,
+    'id'
+  >
+> = z
+  .object({
+    // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    firstName: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    lastName: z
+      .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
+      .optional(),
+    companyName: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    jobTitle: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    department: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    managerName: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    email: z
+      .union([
+        z.string().email(),
+        z.lazy(() => StringFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    phone: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    mobilePhone: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    fax: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    adresses: z
+      .union([z.lazy(() => NullableJsonNullValueInputSchema), InputJsonValue])
+      .optional(),
+    gender: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    birthDate: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    isActive: z
+      .union([
+        z.boolean(),
+        z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    isMaster: z
       .union([
         z.boolean(),
         z.lazy(() => NullableBoolFieldUpdateOperationsInputSchema)
@@ -32002,18 +33507,14 @@ export const BookingUpdateWithoutAccountInputSchema: z.ZodType<PrismaClient.Pris
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       customer: z
-        .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -32243,12 +33744,8 @@ export const BookingUncheckedUpdateWithoutAccountInputSchema: z.ZodType<PrismaCl
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -32474,18 +33971,14 @@ export const BookingUpdateWithoutCustomerInputSchema: z.ZodType<PrismaClient.Pri
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => TenantUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       account: z
-        .lazy(() => AccountUpdateOneWithoutBookingsNestedInputSchema)
+        .lazy(() => AccountUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -32715,12 +34208,8 @@ export const BookingUncheckedUpdateWithoutCustomerInputSchema: z.ZodType<PrismaC
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
       ownerId: z
-        .union([
-          z.number(),
-          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
-        ])
-        .optional()
-        .nullable(),
+        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
+        .optional(),
       customerName: z
         .union([
           z.string(),
@@ -32945,21 +34434,29 @@ export const BookingUncheckedUpdateWithoutCustomerInputSchema: z.ZodType<PrismaC
 export const BookingUncheckedUpdateManyWithoutPurchasingInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.BookingUncheckedUpdateManyWithoutPurchasingInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => NullableIntFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     customerName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -33130,10 +34627,30 @@ export const BookingUncheckedUpdateManyWithoutPurchasingInputSchema: z.ZodType<
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -33148,10 +34665,12 @@ export const BookingTravelerUpdateWithoutAccountInputSchema: z.ZodType<PrismaCli
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutBookingTravelersNestedInputSchema)
+        .lazy(
+          () => TenantUpdateOneRequiredWithoutBookingTravelersNestedInputSchema
+        )
         .optional(),
       booking: z
-        .lazy(() => BookingUpdateOneWithoutTravelersNestedInputSchema)
+        .lazy(() => BookingUpdateOneRequiredWithoutTravelersNestedInputSchema)
         .optional(),
       ownerId: z
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
@@ -33985,23 +35504,13 @@ export const BookingProductUncheckedUpdateWithoutAccountInputSchema: z.ZodType<P
     .strict()
 
 export const BookingTravelerCreateManyBookingInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingTravelerCreateManyBookingInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingTravelerCreateManyBookingInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: accountId: z.number(),
-    // omitted: ownerId: z.number(),
+    tenantId: z.number().int(),
+    accountId: z.number().int(),
+    ownerId: z.number().int(),
     firstName: z.string(),
     lastName: z.string(),
     birthDate: z.date(),
@@ -34010,34 +35519,24 @@ export const BookingTravelerCreateManyBookingInputSchema: z.ZodType<
     passportExpireDate: z.date(),
     email: z.string(),
     phone: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
 
 export const BookingProductCreateManyBookingInputSchema: z.ZodType<
-  Omit<
-    PrismaClient.Prisma.BookingProductCreateManyBookingInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
-  >
+  Omit<PrismaClient.Prisma.BookingProductCreateManyBookingInput, 'id'>
 > = z
   .object({
     // omitted: id: z.number().optional(),
-    // omitted: tenantId: z.number(),
-    // omitted: accountId: z.number(),
+    tenantId: z.number().int(),
+    accountId: z.number().int(),
     supplierId: z.number().optional().nullable(),
     supplierName: z.string().optional().nullable(),
-    // omitted: ownerId: z.number(),
+    ownerId: z.number().int(),
     category: z.lazy(() => ProductCategorySchema),
     description: z.string().optional().nullable(),
     startDate: z.date(),
@@ -34101,10 +35600,10 @@ export const BookingProductCreateManyBookingInputSchema: z.ZodType<
     creditCardType: z.string().optional().nullable(),
     creditCardLastFourDigits: z.number().optional().nullable(),
     creditCardAuthorizationCode: z.string().optional().nullable(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
@@ -34113,10 +35612,14 @@ export const BookingTravelerUpdateWithoutBookingInputSchema: z.ZodType<PrismaCli
   z
     .object({
       tenant: z
-        .lazy(() => TenantUpdateOneWithoutBookingTravelersNestedInputSchema)
+        .lazy(
+          () => TenantUpdateOneRequiredWithoutBookingTravelersNestedInputSchema
+        )
         .optional(),
       account: z
-        .lazy(() => AccountUpdateOneWithoutBookingTravelersNestedInputSchema)
+        .lazy(
+          () => AccountUpdateOneRequiredWithoutBookingTravelersNestedInputSchema
+        )
         .optional(),
       ownerId: z
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
@@ -34311,21 +35814,29 @@ export const BookingTravelerUncheckedUpdateWithoutBookingInputSchema: z.ZodType<
 export const BookingTravelerUncheckedUpdateManyWithoutTravelersInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.BookingTravelerUncheckedUpdateManyWithoutTravelersInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     firstName: z
       .union([z.string(), z.lazy(() => StringFieldUpdateOperationsInputSchema)])
       .optional(),
@@ -34354,10 +35865,30 @@ export const BookingTravelerUncheckedUpdateManyWithoutTravelersInputSchema: z.Zo
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -35012,20 +36543,23 @@ export const BookingProductUncheckedUpdateWithoutBookingInputSchema: z.ZodType<P
 export const BookingProductUncheckedUpdateManyWithoutProductsInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.BookingProductUncheckedUpdateManyWithoutProductsInput,
-    | 'id'
-    | 'tenantId'
-    | 'accountId'
-    | 'ownerId'
-    | 'createdAt'
-    | 'createdBy'
-    | 'modifiedAt'
-    | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
     // omitted: id: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: tenantId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: accountId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    tenantId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
+    accountId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     supplierId: z
       .union([
         z.number(),
@@ -35040,7 +36574,12 @@ export const BookingProductUncheckedUpdateManyWithoutProductsInputSchema: z.ZodT
       ])
       .optional()
       .nullable(),
-    // omitted: ownerId: z.union([ z.number(),z.lazy(() => IntFieldUpdateOperationsInputSchema) ]).optional(),
+    ownerId: z
+      .union([
+        z.number().int(),
+        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+      ])
+      .optional(),
     category: z
       .union([
         z.lazy(() => ProductCategorySchema),
@@ -35282,10 +36821,30 @@ export const BookingProductUncheckedUpdateManyWithoutProductsInputSchema: z.ZodT
       ])
       .optional()
       .nullable(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -35299,7 +36858,7 @@ export const BookingProductUncheckedUpdateManyWithoutProductsInputSchema: z.ZodT
 export const BookingProductRoomCreateManyBookingProductInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.BookingProductRoomCreateManyBookingProductInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
@@ -35313,10 +36872,10 @@ export const BookingProductRoomCreateManyBookingProductInputSchema: z.ZodType<
         z.number().array()
       ])
       .optional(),
-    // omitted: createdAt: z.date().optional().nullable(),
-    // omitted: createdBy: z.string().optional().nullable(),
-    // omitted: modifiedAt: z.date().optional(),
-    // omitted: modifiedBy: z.string().optional().nullable(),
+    createdAt: z.date().optional().nullable(),
+    createdBy: z.string().optional().nullable(),
+    modifiedAt: z.date().optional(),
+    modifiedBy: z.string().optional().nullable(),
     isActive: z.boolean().optional().nullable()
   })
   .strict()
@@ -35443,7 +37002,7 @@ export const BookingProductRoomUncheckedUpdateWithoutBookingProductInputSchema: 
 export const BookingProductRoomUncheckedUpdateManyWithoutRoomsInputSchema: z.ZodType<
   Omit<
     PrismaClient.Prisma.BookingProductRoomUncheckedUpdateManyWithoutRoomsInput,
-    'id' | 'createdAt' | 'createdBy' | 'modifiedAt' | 'modifiedBy'
+    'id'
   >
 > = z
   .object({
@@ -35469,10 +37028,30 @@ export const BookingProductRoomUncheckedUpdateManyWithoutRoomsInputSchema: z.Zod
         z.number().array()
       ])
       .optional(),
-    // omitted: createdAt: z.union([ z.date(),z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: createdBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
-    // omitted: modifiedAt: z.union([ z.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
-    // omitted: modifiedBy: z.union([ z.string(),z.lazy(() => NullableStringFieldUpdateOperationsInputSchema) ]).optional().nullable(),
+    createdAt: z
+      .union([
+        z.date(),
+        z.lazy(() => NullableDateTimeFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    createdBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
+    modifiedAt: z
+      .union([z.date(), z.lazy(() => DateTimeFieldUpdateOperationsInputSchema)])
+      .optional(),
+    modifiedBy: z
+      .union([
+        z.string(),
+        z.lazy(() => NullableStringFieldUpdateOperationsInputSchema)
+      ])
+      .optional()
+      .nullable(),
     isActive: z
       .union([
         z.boolean(),
@@ -36271,52 +37850,39 @@ export const BookingProductRoomFindUniqueOrThrowArgsSchema: z.ZodType<PrismaClie
     })
     .strict()
 
-export const TenantCreateArgsSchema: z.ZodType<
-  Omit<PrismaClient.Prisma.TenantCreateArgs, 'data'> & {
-    data:
-      | z.infer<typeof TenantCreateInputSchema>
-      | z.infer<typeof TenantUncheckedCreateInputSchema>
-  }
-> = z
-  .object({
-    select: TenantSelectSchema.optional(),
-    include: TenantIncludeSchema.optional(),
-    data: z.union([TenantCreateInputSchema, TenantUncheckedCreateInputSchema])
-  })
-  .strict()
+export const TenantCreateArgsSchema: z.ZodType<PrismaClient.Prisma.TenantCreateArgs> =
+  z
+    .object({
+      select: TenantSelectSchema.optional(),
+      include: TenantIncludeSchema.optional(),
+      data: z.union([TenantCreateInputSchema, TenantUncheckedCreateInputSchema])
+    })
+    .strict()
 
-export const TenantUpsertArgsSchema: z.ZodType<
-  Omit<PrismaClient.Prisma.TenantUpsertArgs, 'create' | 'update'> & {
-    create:
-      | z.infer<typeof TenantCreateInputSchema>
-      | z.infer<typeof TenantUncheckedCreateInputSchema>
-    update:
-      | z.infer<typeof TenantUpdateInputSchema>
-      | z.infer<typeof TenantUncheckedUpdateInputSchema>
-  }
-> = z
-  .object({
-    select: TenantSelectSchema.optional(),
-    include: TenantIncludeSchema.optional(),
-    where: TenantWhereUniqueInputSchema,
-    create: z.union([
-      TenantCreateInputSchema,
-      TenantUncheckedCreateInputSchema
-    ]),
-    update: z.union([TenantUpdateInputSchema, TenantUncheckedUpdateInputSchema])
-  })
-  .strict()
+export const TenantUpsertArgsSchema: z.ZodType<PrismaClient.Prisma.TenantUpsertArgs> =
+  z
+    .object({
+      select: TenantSelectSchema.optional(),
+      include: TenantIncludeSchema.optional(),
+      where: TenantWhereUniqueInputSchema,
+      create: z.union([
+        TenantCreateInputSchema,
+        TenantUncheckedCreateInputSchema
+      ]),
+      update: z.union([
+        TenantUpdateInputSchema,
+        TenantUncheckedUpdateInputSchema
+      ])
+    })
+    .strict()
 
-export const TenantCreateManyArgsSchema: z.ZodType<
-  Omit<PrismaClient.Prisma.TenantCreateManyArgs, 'data'> & {
-    data: z.infer<typeof TenantCreateManyInputSchema>[]
-  }
-> = z
-  .object({
-    data: TenantCreateManyInputSchema.array(),
-    skipDuplicates: z.boolean().optional()
-  })
-  .strict()
+export const TenantCreateManyArgsSchema: z.ZodType<PrismaClient.Prisma.TenantCreateManyArgs> =
+  z
+    .object({
+      data: TenantCreateManyInputSchema.array(),
+      skipDuplicates: z.boolean().optional()
+    })
+    .strict()
 
 export const TenantDeleteArgsSchema: z.ZodType<PrismaClient.Prisma.TenantDeleteArgs> =
   z
@@ -36327,36 +37893,29 @@ export const TenantDeleteArgsSchema: z.ZodType<PrismaClient.Prisma.TenantDeleteA
     })
     .strict()
 
-export const TenantUpdateArgsSchema: z.ZodType<
-  Omit<PrismaClient.Prisma.TenantUpdateArgs, 'data'> & {
-    data:
-      | z.infer<typeof TenantUpdateInputSchema>
-      | z.infer<typeof TenantUncheckedUpdateInputSchema>
-  }
-> = z
-  .object({
-    select: TenantSelectSchema.optional(),
-    include: TenantIncludeSchema.optional(),
-    data: z.union([TenantUpdateInputSchema, TenantUncheckedUpdateInputSchema]),
-    where: TenantWhereUniqueInputSchema
-  })
-  .strict()
+export const TenantUpdateArgsSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateArgs> =
+  z
+    .object({
+      select: TenantSelectSchema.optional(),
+      include: TenantIncludeSchema.optional(),
+      data: z.union([
+        TenantUpdateInputSchema,
+        TenantUncheckedUpdateInputSchema
+      ]),
+      where: TenantWhereUniqueInputSchema
+    })
+    .strict()
 
-export const TenantUpdateManyArgsSchema: z.ZodType<
-  Omit<PrismaClient.Prisma.TenantUpdateManyArgs, 'data'> & {
-    data:
-      | z.infer<typeof TenantUpdateManyMutationInputSchema>
-      | z.infer<typeof TenantUncheckedUpdateManyInputSchema>
-  }
-> = z
-  .object({
-    data: z.union([
-      TenantUpdateManyMutationInputSchema,
-      TenantUncheckedUpdateManyInputSchema
-    ]),
-    where: TenantWhereInputSchema.optional()
-  })
-  .strict()
+export const TenantUpdateManyArgsSchema: z.ZodType<PrismaClient.Prisma.TenantUpdateManyArgs> =
+  z
+    .object({
+      data: z.union([
+        TenantUpdateManyMutationInputSchema,
+        TenantUncheckedUpdateManyInputSchema
+      ]),
+      where: TenantWhereInputSchema.optional()
+    })
+    .strict()
 
 export const TenantDeleteManyArgsSchema: z.ZodType<PrismaClient.Prisma.TenantDeleteManyArgs> =
   z

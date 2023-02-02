@@ -55,9 +55,9 @@ export class DatabaseService
         }
       })
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ;(this as any).$on('error', (e: any) => {
-        this.logger.error(`target: ${e.target}, message: ${e.message}`)
-      })
+      // ;(this as any).$on('error', (e: any) => {
+      //   this.logger.error(`target: ${e.target}, message: ${e.message}`)
+      // })
       await this.$connect()
       setInterval(
         () =>

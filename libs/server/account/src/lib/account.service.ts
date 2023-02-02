@@ -1,39 +1,35 @@
 import { AccountCreateArgsSchema } from '@common/schemas'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { DatabaseService } from '@server/database'
-import { ZodError } from 'zod'
+import { UserService } from '@server/user'
 
 @Injectable()
 export class AccountService {
-  constructor(private readonly db: DatabaseService) {}
+  constructor(
+    private readonly db: DatabaseService,
+    private readonly userService: UserService
+  ) {}
 
   async create(input: Prisma.AccountCreateArgs) {
-    try {
-      AccountCreateArgsSchema.parse(input)
-    } catch (error) {
-      const { issues } = error as ZodError
-      throw new BadRequestException(issues, 'Validation Failed')
-    }
-
+    AccountCreateArgsSchema.parse(input)
     return this.db.account.create({ ...input })
   }
 
   async findMany() {
-    return await this.db.account.findMany()
+    return this.db.account.findMany()
   }
 
-  async update(params: Prisma.AccountUpdateArgs) {
-    return await this.db.account.update({
-      ...params
-    })
+  async update(input: Prisma.AccountUpdateArgs) {
+    return this.db.account.update(input)
   }
-  async deactivate(id: bigint, isActive: false) {
-    return await this.db.account.update({
+
+  async destroy(id: number) {
+    const account = await this.db.account.update({
       where: { id },
-      data: {
-        isActive
-      }
+      data: { isActive: false }
     })
+    await this.userService.destroy(id)
+    return account
   }
 }

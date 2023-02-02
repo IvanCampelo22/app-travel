@@ -1,40 +1,41 @@
 import { TenantCreateArgsSchema } from '@common/schemas'
-import { BadRequestException, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { DatabaseService } from '@server/database'
-import { ZodError } from 'zod'
+import { UserService } from '@server/user'
 
 @Injectable()
 export class TenantService {
-  constructor(private readonly db: DatabaseService) {}
+  constructor(
+    private readonly db: DatabaseService,
+    private readonly userService: UserService
+  ) {}
 
   async create(input: Prisma.TenantCreateArgs) {
-    try {
-      TenantCreateArgsSchema.parse(input)
-    } catch (error) {
-      const { issues } = error as ZodError
-      throw new BadRequestException(issues, 'Validation Failed')
-    }
-
-    return this.db.tenant.create({ ...input })
+    TenantCreateArgsSchema.parse(input)
+    return this.db.tenant.create(input)
   }
 
   async findMany() {
-    return await this.db.tenant.findMany()
+    return this.db.tenant.findMany()
   }
 
-  async update(params: Prisma.TenantUpdateArgs) {
-    return this.db.tenant.update({
-      ...params
-    })
+  async find(where: Prisma.TenantWhereInput) {
+    return this.db.tenant.findFirst({ where })
   }
 
-  async deactivate(id: number, isActive: false) {
-    return await this.db.tenant.update({
+  async update(input: Prisma.TenantUpdateArgs) {
+    return this.db.tenant.update(input)
+  }
+
+  async destroy(id: number) {
+    const tenant = await this.db.tenant.update({
       where: { id },
-      data: {
-        isActive
-      }
+      data: { isActive: false }
     })
+
+    await this.userService.destroy(tenant.id)
+
+    return tenant
   }
 }
