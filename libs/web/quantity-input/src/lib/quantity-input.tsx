@@ -7,7 +7,7 @@ import {
   NumberInputHandlers,
   Text
 } from '@mantine/core'
-import { IconMinus, IconPlus } from '@tabler/icons'
+import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { useRef, useState } from 'react'
 
 const useStyles = createStyles((theme) => ({

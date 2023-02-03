@@ -13,7 +13,7 @@ import {
 
 import { DateRangePicker, DateRangePickerValue } from '@mantine/dates'
 
-import { IconCalendar, IconPlus } from '@tabler/icons'
+import { IconCalendar, IconPlus } from '@tabler/icons-react'
 
 import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 

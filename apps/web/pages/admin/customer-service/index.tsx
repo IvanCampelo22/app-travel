@@ -8,7 +8,7 @@ import {
   Title
 } from '@mantine/core'
 
-import { IconDownload, IconPlus } from '@tabler/icons'
+import { IconDownload, IconPlus } from '@tabler/icons-react'
 
 import { Filter } from '@web/filter'
 import { Header } from '@web/header'

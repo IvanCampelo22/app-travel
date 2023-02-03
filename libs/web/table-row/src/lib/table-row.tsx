@@ -8,7 +8,7 @@ import {
   Text
 } from '@mantine/core'
 
-import { IconEdit, IconTrash } from '@tabler/icons'
+import { IconEdit, IconTrash } from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
   dot: {
