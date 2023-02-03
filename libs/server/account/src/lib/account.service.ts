@@ -1,4 +1,4 @@
-import { AccountCreateArgsSchema } from '@common/schemas'
+import { AccountCreateArgsSchema } from '@common/validation'
 import { Injectable } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import { DatabaseService } from '@server/database'

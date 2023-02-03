@@ -4,6 +4,17 @@
   "sourceRoot": "libs/server/infra/core/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/server/infra/core",
+        "tsConfig": "libs/server/infra/core/tsconfig.lib.json",
+        "packageJson": "libs/server/infra/core/package.json",
+        "main": "libs/server/infra/core/src/index.ts",
+        "assets": ["libs/server/infra/core/*.md"]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
