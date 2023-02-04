@@ -4,7 +4,7 @@ import { Button, createStyles, Flex, Group, MultiSelect } from '@mantine/core'
 
 import { DateRangePicker, DateRangePickerValue } from '@mantine/dates'
 
-import { IconCalendar, IconSearch } from '@tabler/icons'
+import { IconCalendar, IconSearch } from '@tabler/icons-react'
 
 const useStyles = createStyles((theme) => ({
   multiSelect: {

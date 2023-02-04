@@ -9,7 +9,7 @@ import {
   Text
 } from '@mantine/core'
 
-import { IconCoffee, IconHome, IconUsers } from '@tabler/icons'
+import { IconCoffee, IconHome, IconUsers } from '@tabler/icons-react'
 
 //export interface CustomerServiceResumeProps { }
 

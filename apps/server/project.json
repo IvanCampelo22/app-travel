@@ -12,7 +12,8 @@
         "compiler": "tsc",
         "outputPath": "dist/apps/server",
         "main": "apps/server/src/main.ts",
-        "tsConfig": "apps/server/tsconfig.app.json"
+        "tsConfig": "apps/server/tsconfig.app.json",
+        "noResolve": false
       },
       "configurations": {
         "production": {

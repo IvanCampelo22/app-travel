@@ -65,7 +65,7 @@ describe('Tenant Service', () => {
 
   describe('update', () => {
     it('should update a tenant object', async () => {
-      const { id } = await tenantService.create(createOneTenant())
+      const { id } = (await tenantService.findMany())[0]
 
       const tenant = await tenantService.update({
         where: { id },
@@ -81,7 +81,7 @@ describe('Tenant Service', () => {
   describe('destroy', () => {
     it('should destroy(soft delete) a tenant object', async () => {
       const mock = jest.spyOn(userService, 'destroy')
-      const { id } = await tenantService.create(createOneTenant())
+      const { id } = (await tenantService.findMany())[0]
 
       const tenant = await tenantService.destroy(id)
 

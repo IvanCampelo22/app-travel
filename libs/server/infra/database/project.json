@@ -4,6 +4,17 @@
   "sourceRoot": "libs/server/infra/database/src",
   "projectType": "library",
   "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/server/infra/database",
+        "tsConfig": "libs/server/infra/database/tsconfig.lib.json",
+        "packageJson": "libs/server/infra/database/package.json",
+        "main": "libs/server/infra/database/src/index.ts",
+        "assets": ["libs/server/infra/database/*.md"]
+      }
+    },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
