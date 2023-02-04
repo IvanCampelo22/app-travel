@@ -24,6 +24,13 @@ export class UserService {
     return this.db.user.update(input)
   }
 
+  async getLoggedUser(externalId: string) {
+    return this.db.user.findFirst({
+      where: { externalId },
+      include: { account: true }
+    })
+  }
+
   async destroy(id: number) {
     return this.db.user.updateMany({
       where: { OR: [{ tenantId: id }, { accountId: id }] },

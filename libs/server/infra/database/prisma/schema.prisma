@@ -65,6 +65,7 @@ model User {
   tenant      Tenant?   @relation(fields: [tenantId], references: [id], name: "users")
   accountId   Int?
   account     Account?  @relation(fields: [accountId], references: [id], name: "accountUsers")
+  externalId  String
   firstName   String    @db.VarChar(32)
   lastName    String    @db.VarChar(32)
   companyName String?   @db.VarChar(32)
@@ -160,10 +161,10 @@ model Booking {
   tenant             Tenant            @relation(fields: [tenantId], references: [id], name: "bookings")
   accountId          Int
   account            Account           @relation(fields: [accountId], references: [id], name: "bookings")
-  customerId         Int
-  customer           Account           @relation(fields: [customerId], references: [id], name: "purchasing")
+  customerId         Int?
+  customer           Account?          @relation(fields: [customerId], references: [id], name: "purchasing")
   ownerId            Int
-  customerName       String            @db.VarChar(128)
+  customerName       String?           @db.VarChar(128)
   /// @zod.string.email()
   customerEmail      String?           @db.VarChar(64)
   customerPhone      String?           @db.VarChar(32)
@@ -176,7 +177,7 @@ model Booking {
   childrenCount      Int?
   seniorsCount       Int?
   requestDescription String?
-  status             BookingStatus     @default(WaitingService)
+  status             BookingStatus?    @default(WaitingService)
   locatorCode        String?           @db.VarChar(14)
   totalPrice         Decimal?          @db.Money
   totalCost          Decimal?          @db.Money
@@ -191,7 +192,7 @@ model Booking {
   invoiceFilePath    String?
   createdAt          DateTime?         @default(now())
   createdBy          String?           @db.VarChar(32)
-  modifiedAt         DateTime          @updatedAt
+  modifiedAt         DateTime?         @updatedAt
   modifiedBy         String?           @db.VarChar(32)
   isActive           Boolean?          @default(true)
   travelers          BookingTraveler[] @relation("travelers")

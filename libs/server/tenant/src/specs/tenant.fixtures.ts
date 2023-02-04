@@ -13,7 +13,8 @@ const createOneTenant = (): Prisma.TenantCreateArgs => {
               firstName: faker.name.firstName(),
               lastName: faker.name.lastName(),
               email: faker.internet.email(),
-              isMaster: true
+              isMaster: true,
+              externalId: faker.database.mongodbObjectId()
             }
           ]
         }
