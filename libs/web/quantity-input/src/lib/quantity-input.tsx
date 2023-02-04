@@ -79,6 +79,7 @@ export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
         </ActionIcon>
 
         <NumberInput
+          data-testid="input"
           variant="unstyled"
           min={min}
           max={max}
