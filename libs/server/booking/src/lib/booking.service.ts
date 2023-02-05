@@ -1,4 +1,5 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
 
@@ -19,5 +20,24 @@ export class BookingService {
       }
     })
     return booking
+  }
+
+  async find(where: Prisma.BookingWhereInput) {
+    return this.db.booking.findFirst({ where })
+  }
+
+  async findMany() {
+    return this.db.booking.findMany()
+  }
+
+  async update(input: Prisma.BookingUpdateArgs) {
+    const { id } = input.where
+    const booking = await this.find({ id })
+    const newProducts = input.data.products?.createMany?.data
+
+    if (!booking?.modifiedAt && !newProducts)
+      throw new BadRequestException('Product list is required')
+
+    return this.db.booking.update(input)
   }
 }

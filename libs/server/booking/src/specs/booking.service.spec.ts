@@ -3,6 +3,7 @@ import {
   Account,
   AccountCategory,
   BookingStatus,
+  Prisma,
   Tenant,
   User
 } from '@prisma/client'
@@ -10,6 +11,7 @@ import { AccountModule, AccountService } from '@server/account'
 import { createOneAccount } from '@server/account/fixtures'
 import { BookingModule } from './../lib/booking.module'
 import { BookingService } from './../lib/booking.service'
+import { updateOneBooking } from './booking.fixtures'
 
 import { CoreModule } from '@server/core'
 import {
@@ -85,6 +87,16 @@ describe('Booking Service', () => {
       expect(booking.createdAt).toBeDefined()
 
       jest.clearAllMocks()
+    })
+
+    describe('', () => {
+      it('should ', async () => {
+        const booking = updateOneBooking(12)
+        const productArray = booking.data.products?.createMany
+          ?.data as Array<Prisma.BookingProductCreateManyBookingInput>
+
+        expect(productArray).toEqual('')
+      })
     })
   })
 })
