@@ -29,6 +29,7 @@
       "@web/auth": ["libs/web/auth/src/index.ts"],
       "@web/base-ui": ["libs/web/base-ui/src/index.ts"],
       "@web/childe-age": ["libs/web/childe-age/src/index.ts"],
+      "@web/navbar-links-group": ["libs/web/navbar-links-group/src/index.ts"],
       "@web/customer-service-resume": [
         "libs/web/customer-service-resume/src/index.ts"
       ],
