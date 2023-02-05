@@ -36,10 +36,12 @@
       "@web/header": ["libs/web/header/src/index.ts"],
       "@web/horizontal-tabs": ["libs/web/horizontal-tabs/src/index.ts"],
       "@web/money-input": ["libs/web/money-input/src/index.ts"],
+      "@web/navbar-links-group": ["libs/web/navbar-links-group/src/index.ts"],
       "@web/pagination": ["libs/web/pagination/src/index.ts"],
       "@web/phone-input": ["libs/web/phone-input/src/index.ts"],
       "@web/quantity-input": ["libs/web/quantity-input/src/index.ts"],
       "@web/room-prefs": ["libs/web/room-prefs/src/index.ts"],
+      "@web/side-navbar": ["libs/web/side-navbar/src/index.ts"],
       "@web/table-row": ["libs/web/table-row/src/index.ts"]
     }
   },
