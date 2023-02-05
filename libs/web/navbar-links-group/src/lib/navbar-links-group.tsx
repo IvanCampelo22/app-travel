@@ -9,8 +9,7 @@ import {
 import {
   IconCalendarStats,
   IconChevronLeft,
-  IconChevronRight,
-  TablerIcon
+  IconChevronRight
 } from '@tabler/icons-react'
 import { useState } from 'react'
 
@@ -63,7 +62,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface LinksGroupProps {
-  icon: TablerIcon
+  icon: React.ElementType
   label: string
   initiallyOpened?: boolean
   links?: { label: string; link: string }[]
@@ -99,7 +98,7 @@ export function LinksGroup({
       >
         <Group position="apart" spacing={0}>
           <Box sx={{ display: 'flex', alignItems: 'center', color: 'gray' }}>
-            <Icon size={20} />
+            <Icon />
             <Box ml="md">{label}</Box>
           </Box>
           {hasLinks && (
