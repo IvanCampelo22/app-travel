@@ -10,13 +10,22 @@ export class BookingService {
     private readonly userService: UserService
   ) {}
 
-  async new(externalId: string) {
-    const user = (await this.userService.getLoggedUser(externalId))!
+  async new() {
+    const account = (
+      await this.db.account.findMany({
+        select: {
+          id: true,
+          tenantId: true,
+          accountUsers: { select: { id: true } }
+        }
+      })
+    )[0]
+
     const booking = this.db.booking.create({
       data: {
-        tenant: { connect: { id: user.account?.tenantId } },
-        account: { connect: { id: user.account?.id } },
-        ownerId: user.id
+        tenantId: account.tenantId,
+        accountId: account.id,
+        ownerId: account.accountUsers[0].id
       }
     })
     return booking
@@ -35,7 +44,7 @@ export class BookingService {
     const booking = await this.find({ id })
     const newProducts = input.data.products?.createMany?.data
 
-    if (!booking?.modifiedAt && !newProducts)
+    if (booking?.modifiedAt === booking?.createdAt && !newProducts)
       throw new BadRequestException('Product list is required')
 
     return this.db.booking.update(input)

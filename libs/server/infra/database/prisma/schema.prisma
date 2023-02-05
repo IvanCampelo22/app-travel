@@ -56,6 +56,8 @@ model Tenant {
   bookings           Booking[]         @relation("bookings")
   bookingTravelers   BookingTraveler[] @relation("bookingTravelers")
   bookingProducts    BookingProduct[]  @relation("bookingProducts")
+
+  @@unique([email])
 }
 
 model User {
@@ -86,6 +88,8 @@ model User {
   modifiedBy  String?   @db.VarChar(32)
   isActive    Boolean?  @default(true)
   isMaster    Boolean?  @default(false)
+
+  @@unique([email])
 }
 
 enum AccountCategory {
@@ -141,6 +145,8 @@ model Account {
   purchasing         Booking[]         @relation("purchasing")
   bookingTravelers   BookingTraveler[] @relation("bookingTravelers")
   bookingProducts    BookingProduct[]  @relation("bookingProducts")
+
+  @@unique([name])
 }
 
 enum BookingStatus {

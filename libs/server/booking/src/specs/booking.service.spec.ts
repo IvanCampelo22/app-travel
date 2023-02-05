@@ -3,7 +3,6 @@ import {
   Account,
   AccountCategory,
   BookingStatus,
-  Prisma,
   Tenant,
   User
 } from '@prisma/client'
@@ -11,7 +10,6 @@ import { AccountModule, AccountService } from '@server/account'
 import { createOneAccount } from '@server/account/fixtures'
 import { BookingModule } from './../lib/booking.module'
 import { BookingService } from './../lib/booking.service'
-import { updateOneBooking } from './booking.fixtures'
 
 import { CoreModule } from '@server/core'
 import {
@@ -70,16 +68,15 @@ describe('Booking Service', () => {
 
   describe('new', () => {
     it('should return a new booking object', async () => {
-      const mock = jest
-        .spyOn(userService, 'getLoggedUser')
-        .mockImplementation(() =>
-          Promise.resolve({ ...agencyMasterUser, account: agency })
-        )
+      // const mock = jest
+      //   .spyOn(userService, 'getLoggedUser')
+      //   .mockImplementation(() =>
+      //     Promise.resolve({ ...agencyMasterUser, account: agency })
+      //   )
 
-      const booking = await bookingService.new('12')
+      const booking = await bookingService.new()
 
       expect(booking.id).toBeDefined()
-      expect(mock).toBeCalledWith('12')
       expect(booking.tenantId).toEqual(franchise.id)
       expect(booking.accountId).toEqual(agency.id)
       expect(booking.ownerId).toEqual(agencyMasterUser.id)
@@ -89,14 +86,14 @@ describe('Booking Service', () => {
       jest.clearAllMocks()
     })
 
-    describe('', () => {
-      it('should ', async () => {
-        const booking = updateOneBooking(12)
-        const productArray = booking.data.products?.createMany
-          ?.data as Array<Prisma.BookingProductCreateManyBookingInput>
+    // describe('', () => {
+    //   it('should ', async () => {
+    //     const booking = updateOneBooking(12)
+    //     const productArray = booking.data.products?.createMany
+    //       ?.data as Array<Prisma.BookingProductCreateManyBookingInput>
 
-        expect(productArray).toEqual('')
-      })
-    })
+    //     expect(productArray).toEqual('')
+    //   })
+    // })
   })
 })

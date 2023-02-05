@@ -1535,9 +1535,13 @@ export const TenantOrderByWithRelationInputSchema: z.ZodType<Prisma.TenantOrderB
 export const TenantWhereUniqueInputSchema: z.ZodType<Prisma.TenantWhereUniqueInput> =
   z
     .object({
-      id: z.number().optional()
+      id: z.number().optional(),
+      email: z.string().optional()
     })
     .strict()
+    .refine((data) => !!data.id || !!data.email, {
+      message: 'At least one field must be provided @ TenantWhereUniqueInput'
+    })
 
 export const TenantOrderByWithAggregationInputSchema: z.ZodType<Prisma.TenantOrderByWithAggregationInput> =
   z
@@ -1988,9 +1992,13 @@ export const UserOrderByWithRelationInputSchema: z.ZodType<Prisma.UserOrderByWit
 export const UserWhereUniqueInputSchema: z.ZodType<Prisma.UserWhereUniqueInput> =
   z
     .object({
-      id: z.number().optional()
+      id: z.number().optional(),
+      email: z.string().optional()
     })
     .strict()
+    .refine((data) => !!data.id || !!data.email, {
+      message: 'At least one field must be provided @ UserWhereUniqueInput'
+    })
 
 export const UserOrderByWithAggregationInputSchema: z.ZodType<Prisma.UserOrderByWithAggregationInput> =
   z
@@ -2406,9 +2414,13 @@ export const AccountOrderByWithRelationInputSchema: z.ZodType<Prisma.AccountOrde
 export const AccountWhereUniqueInputSchema: z.ZodType<Prisma.AccountWhereUniqueInput> =
   z
     .object({
-      id: z.number().optional()
+      id: z.number().optional(),
+      name: z.string().optional()
     })
     .strict()
+    .refine((data) => !!data.id || !!data.name, {
+      message: 'At least one field must be provided @ AccountWhereUniqueInput'
+    })
 
 export const AccountOrderByWithAggregationInputSchema: z.ZodType<Prisma.AccountOrderByWithAggregationInput> =
   z
