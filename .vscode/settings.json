@@ -83,5 +83,6 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma",
     "editor.codeActionsOnSave": ["source.formatDocument"]
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

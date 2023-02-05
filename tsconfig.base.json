@@ -20,10 +20,8 @@
       "@common/validation": ["libs/common/validation/src/index.ts"],
       "@server/account": ["libs/server/account/src/index.ts"],
       "@server/account/fixtures": ["libs/server/account/src/specs/index.ts"],
-
       "@server/booking": ["libs/server/booking/src/index.ts"],
       "@server/booking/fixtures": ["libs/server/booking/src/specs/index.ts"],
-
       "@server/core": ["libs/server/infra/core/src/index.ts"],
       "@server/database": ["libs/server/infra/database/src/index.ts"],
       "@server/tenant": ["libs/server/tenant/src/index.ts"],
