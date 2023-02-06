@@ -1,5 +1,5 @@
 
-import { QueryClient, QueryClientProvider, useMutation, useQuery } from 'react-query'
+import { QueryClient, QueryClientProvider, useMutation, useQuery } from '@tanstack/react-query'
 
 import { useForm, zodResolver } from '@mantine/form'
 
@@ -32,7 +32,7 @@ const queryClient = new QueryClient()
 
 const IndexPage: NextPageWithLayout = () => {
 
-  const { data } = useQuery('newBooking', () =>
+  const { data } = useQuery(['newBooking'], () =>
     fetch('http://localhost:3000/api/bookings/new')
       .then(res =>
         res.json()
@@ -58,8 +58,7 @@ const IndexPage: NextPageWithLayout = () => {
             startDate: new Date(),
             endDate: new Date(),
             hotelName: '',
-            hotelMealPlan: '',
-
+            hotelMealPlan: ''
           }]
         }
       }
