@@ -1,4 +1,3 @@
-import { useState } from 'react'
 
 import { QueryClient, QueryClientProvider, useMutation, useQuery } from 'react-query'
 
@@ -15,7 +14,7 @@ import {
   Select
 } from '@mantine/core'
 
-import { DateRangePicker, DateRangePickerValue } from '@mantine/dates'
+import { DateRangePicker } from '@mantine/dates'
 
 import { IconCalendar, IconPlus } from '@tabler/icons-react'
 
@@ -38,11 +37,15 @@ const IndexPage: NextPageWithLayout = () => {
       .then(res =>
         res.json()
       )
+      .catch(() => alert('Erro ao criar booking')), {
+    staleTime: Infinity
+  }
   )
 
   const bookingUpdate: Prisma.BookingUpdateArgs = {
     ...data,
     data: {
+      customerName: 'Rafael',
       products: {
         createMany: {
           data: [{
@@ -55,17 +58,13 @@ const IndexPage: NextPageWithLayout = () => {
             startDate: new Date(),
             endDate: new Date(),
             hotelName: '',
-            hotelMealPlan: ''
+            hotelMealPlan: '',
+
           }]
         }
       }
     }
   }
-
-  const [value, setValue] = useState<DateRangePickerValue>([
-    new Date(2021, 11, 1),
-    new Date(2021, 11, 5)
-  ])
 
   const form = useForm({
     validate: zodResolver(BookingUpdateArgsSchema),
@@ -73,13 +72,13 @@ const IndexPage: NextPageWithLayout = () => {
   })
 
   const mutation = useMutation(() => {
-    return fetch(`http://localhost:3000/api/bookings/${1}`, {
+    return fetch(`http://localhost:3000/api/bookings/${data.id}`, {
       method: 'PATCH',
       body: JSON.stringify(form.values),
       headers: { 'Content-type': 'application/json;charset=UTF-8' }
     })
-      .then(response => response.json())
-      .then(json => console.log(json));
+      .then(() => { form.setValues(bookingUpdate); alert('Novo Produto Adicionado') })
+      .catch(() => alert('Erro ao adicionar produto'))
   })
 
   return (
@@ -111,7 +110,8 @@ const IndexPage: NextPageWithLayout = () => {
                     width: '95%'
                   }
                 })}
-                data={[{ value: 'one', label: 'Jay Jay Okocha' }]}
+                data={[{ value: 'Jay Jay Okocha', label: 'Jay Jay Okocha' }]}
+                {...form.getInputProps('data.customerName')}
               />
               <Button variant="default">
                 <IconPlus size={18} stroke={1.5} />
@@ -129,16 +129,19 @@ const IndexPage: NextPageWithLayout = () => {
               <Divider color="gray.3" />
               <Select
                 placeholder="Selecione o produto"
-                data={[{ value: 'one', label: 'Hospedagem' }]}
+                data={[{ value: 'Accommodation', label: 'Hospedagem' }]}
+                {...form.getInputProps('data.products.createMany.data.0.category')}
               />
               <Group grow>
                 <Select
                   placeholder="Selecione tipo hospedagem"
-                  data={[{ value: 'one', label: 'Hotel' }]}
+                  data={[{ value: 'Hotel', label: 'Hotel' }]}
+                  {...form.getInputProps('data.products.createMany.data.0.accommodationType')}
                 />
                 <Select
                   placeholder="Selecione a cidade"
-                  data={[{ value: 'one', label: 'Nova York' }]}
+                  data={[{ value: 'Nova York', label: 'Nova York' }]}
+                  {...form.getInputProps('data.products.createMany.data.0.toLocation')}
                 />
               </Group>
               <Group grow>
@@ -146,22 +149,24 @@ const IndexPage: NextPageWithLayout = () => {
                   clearable={false}
                   icon={<IconCalendar size={18} />}
                   inputFormat="DD/MM/YYYY"
-                  value={value}
-                  onChange={setValue}
+                  placeholder="Data de ida e volta"
+                  onChange={(e) => { form.setFieldValue('data.products.createMany.data.0.startDate', e[0]); form.setFieldValue('data.products.createMany.data.0.endDate', e[1]) }}
                 />
                 <Select
                   placeholder="Selecione o hotel"
-                  data={[{ value: 'one', label: 'Hilton Garden' }]}
+                  data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
+                  {...form.getInputProps('data.products.createMany.data.0.hotelName')}
                 />
               </Group>
               <Group grow>
                 <Select
                   placeholder="Selecione tipo hospedagem"
-                  data={[{ value: 'one', label: 'Meia pensão' }]}
+                  data={[{ value: 'Meia Pensão', label: 'Meia pensão' }]}
+                  {...form.getInputProps('data.products.createMany.data.0.hotelMealPlan')}
                 />
                 <Select
                   placeholder="Selecione quantidade de quartos"
-                  data={[{ value: 'one', label: '1 Quarto' }]}
+                  data={[{ value: '', label: '1 Quarto' }]}
                 />
               </Group>
               <RoomPrefs />
@@ -184,9 +189,9 @@ const IndexPage: NextPageWithLayout = () => {
           </Box>
           <Divider color="gray.3" />
           <Group position="right" p="md">
-            <Button color="blue.8" onClick={() => {
-              mutation.mutate()
-            }}>Save changes</Button>
+            <Button color="blue.8" onClick={() => { mutation.mutate() }}>
+              Save changes
+            </Button>
           </Group>
         </Paper>
       </Flex>
