@@ -1,5 +1,9 @@
 import { useState } from 'react'
 
+import { QueryClient, QueryClientProvider, useMutation, useQuery } from 'react-query'
+
+import { useForm, zodResolver } from '@mantine/form'
+
 import {
   Box,
   Button,
@@ -15,17 +19,68 @@ import { DateRangePicker, DateRangePickerValue } from '@mantine/dates'
 
 import { IconCalendar, IconPlus } from '@tabler/icons-react'
 
+import { Prisma } from '@prisma/client'
+
+import { BookingUpdateArgsSchema } from '@common/validation'
+
 import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 
 import { CustomerServiceResume } from '@web/customer-service-resume'
 import { Header } from '@web/header'
 import { RoomPrefs } from '@web/room-prefs'
 
+const queryClient = new QueryClient()
+
 const IndexPage: NextPageWithLayout = () => {
+
+  const { data } = useQuery('newBooking', () =>
+    fetch('http://localhost:3000/api/bookings/new')
+      .then(res =>
+        res.json()
+      )
+  )
+
+  const bookingUpdate: Prisma.BookingUpdateArgs = {
+    ...data,
+    data: {
+      products: {
+        createMany: {
+          data: [{
+            tenantId: 1,
+            accountId: 1,
+            ownerId: 1,
+            category: 'Accommodation',
+            accommodationType: 'Hotel',
+            toLocation: '',
+            startDate: new Date(),
+            endDate: new Date(),
+            hotelName: '',
+            hotelMealPlan: ''
+          }]
+        }
+      }
+    }
+  }
+
   const [value, setValue] = useState<DateRangePickerValue>([
     new Date(2021, 11, 1),
     new Date(2021, 11, 5)
   ])
+
+  const form = useForm({
+    validate: zodResolver(BookingUpdateArgsSchema),
+    initialValues: bookingUpdate
+  })
+
+  const mutation = useMutation(() => {
+    return fetch(`http://localhost:3000/api/bookings/${1}`, {
+      method: 'PATCH',
+      body: JSON.stringify(form.values),
+      headers: { 'Content-type': 'application/json;charset=UTF-8' }
+    })
+      .then(response => response.json())
+      .then(json => console.log(json));
+  })
 
   return (
     <Container size="xl" py="md">
@@ -129,7 +184,9 @@ const IndexPage: NextPageWithLayout = () => {
           </Box>
           <Divider color="gray.3" />
           <Group position="right" p="md">
-            <Button color="blue.8">Save changes</Button>
+            <Button color="blue.8" onClick={() => {
+              mutation.mutate()
+            }}>Save changes</Button>
           </Group>
         </Paper>
       </Flex>
@@ -146,7 +203,9 @@ IndexPage.getLayout = (page) => (
       />
     }
   >
-    {page}
+    <QueryClientProvider client={queryClient}>
+      {page}
+    </QueryClientProvider>
   </AdminLayout>
 )
 
