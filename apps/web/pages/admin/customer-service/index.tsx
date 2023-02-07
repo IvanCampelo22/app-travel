@@ -17,6 +17,7 @@ import { Pagination } from '@web/pagination'
 import { TableRow } from '@web/table-row'
 
 import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
+import Link from 'next/link'
 
 const IndexPage: NextPageWithLayout = () => {
   return (
@@ -34,9 +35,11 @@ const IndexPage: NextPageWithLayout = () => {
         >
           Export
         </Button>
-        <Button color="blue.8" radius="md" leftIcon={<IconPlus size={18} />}>
-          Add
-        </Button>
+        <Link href="/admin/service-record">
+          <Button color="blue.8" radius="md" leftIcon={<IconPlus size={18} />}>
+            Add
+          </Button>
+        </Link>
       </Header>
       <HorizontalTabs mt={60} mb="xl" />
       <Filter />
