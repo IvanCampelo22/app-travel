@@ -1,3 +1,4 @@
+import { useState } from 'react'
 
 import { QueryClient, QueryClientProvider, useMutation, useQuery } from '@tanstack/react-query'
 
@@ -7,11 +8,11 @@ import {
   Box,
   Button,
   Container,
-  Divider,
-  Flex,
+  Divider, Drawer, Flex,
   Group,
   Paper,
-  Select
+  Select,
+  TextInput
 } from '@mantine/core'
 
 import { DateRangePicker } from '@mantine/dates'
@@ -27,10 +28,13 @@ import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 import { CustomerServiceResume } from '@web/customer-service-resume'
 import { Header } from '@web/header'
 import { RoomPrefs } from '@web/room-prefs'
+import Link from 'next/link'
 
 const queryClient = new QueryClient()
 
 const IndexPage: NextPageWithLayout = () => {
+
+  const [opened, setOpened] = useState(false);
 
   const { data } = useQuery(['newBooking'], () =>
     fetch('http://localhost:3000/api/bookings/new')
@@ -45,7 +49,6 @@ const IndexPage: NextPageWithLayout = () => {
   const bookingUpdate: Prisma.BookingUpdateArgs = {
     ...data,
     data: {
-      customerName: 'Rafael',
       products: {
         createMany: {
           data: [{
@@ -62,7 +65,7 @@ const IndexPage: NextPageWithLayout = () => {
           }]
         }
       }
-    }
+    },
   }
 
   const form = useForm({
@@ -76,18 +79,43 @@ const IndexPage: NextPageWithLayout = () => {
       body: JSON.stringify(form.values),
       headers: { 'Content-type': 'application/json;charset=UTF-8' }
     })
-      .then(() => { form.setValues(bookingUpdate); alert('Novo Produto Adicionado') })
+      .then(() => { alert('Novo Produto Adicionado') })
       .catch(() => alert('Erro ao adicionar produto'))
   })
 
   return (
     <Container size="xl" py="md">
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        padding="xl"
+        size="xl"
+        position="right"
+      >
+        <Header
+          subHead={true}
+          title='Adicionar Cliente'
+          subtitle='Preencha os dados do cliente'
+        />
+        <Box mt="md">
+          <TextInput label="Nome" />
+          <Group mt="md" grow>
+            <TextInput label="Telefone" />
+            <TextInput label="Email" />
+          </Group>
+          <Group mt="md" position="right">
+            <Button>Adicionar</Button>
+          </Group>
+        </Box>
+      </Drawer>
       <Header
         title="Novo Atendimento"
-        subtitle="12FEV20022020003 - 12/12/2022"
+        subtitle={`12FEV20022020003 - 12/12/2012`}
         justify="space-between"
       >
-        <Button variant="default">Voltar</Button>
+        <Link href="/admin/customer-service">
+          <Button variant="default">Voltar</Button>
+        </Link>
       </Header>
       <Divider color="gray.3" mt="sm" />
       <Flex mt={36} gap="lg">
@@ -113,7 +141,7 @@ const IndexPage: NextPageWithLayout = () => {
                 {...form.getInputProps('data.customerName')}
               />
               <Button variant="default">
-                <IconPlus size={18} stroke={1.5} />
+                <IconPlus size={18} stroke={1.5} onClick={() => setOpened(true)} />
               </Button>
             </Flex>
           </Paper>
