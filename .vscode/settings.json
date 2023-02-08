@@ -65,8 +65,8 @@
     ".husky": true,
     "**/.gitkeep": true,
     "**/.turbo": true,
-    "**/.next": true,
-    "**/dist": true
+    "**/.next": true
+    // "**/dist": true
   },
   "search.exclude": {
     "./.nx-container": true,

@@ -1,14 +1,21 @@
 import { useState } from 'react'
 
-import { QueryClient, QueryClientProvider, useMutation, useQuery } from '@tanstack/react-query'
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery
+} from '@tanstack/react-query'
 
-import { useForm, zodResolver } from '@mantine/form'
+import { useForm } from '@mantine/form'
 
 import {
   Box,
   Button,
   Container,
-  Divider, Drawer, Flex,
+  Divider,
+  Drawer,
+  Flex,
   Group,
   Paper,
   Select,
@@ -21,8 +28,6 @@ import { IconCalendar, IconPlus } from '@tabler/icons-react'
 
 import { Prisma } from '@prisma/client'
 
-import { BookingUpdateArgsSchema } from '@common/validation'
-
 import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 
 import { CustomerServiceResume } from '@web/customer-service-resume'
@@ -33,17 +38,19 @@ import Link from 'next/link'
 const queryClient = new QueryClient()
 
 const IndexPage: NextPageWithLayout = () => {
+  const { NEXT_PUBLIC_API_URL } = process.env
 
-  const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(false)
 
-  const { data } = useQuery(['newBooking'], () =>
-    fetch('http://localhost:3000/api/bookings/new')
-      .then(res =>
-        res.json()
-      )
-      .catch(() => alert('Erro ao criar booking')), {
-    staleTime: Infinity
-  }
+  const { data } = useQuery(
+    ['newBooking'],
+    () =>
+      fetch(`${NEXT_PUBLIC_API_URL}/api/bookings/new`)
+        .then((res) => res.json())
+        .catch(() => alert('Erro ao criar booking')),
+    {
+      staleTime: Infinity
+    }
   )
 
   const bookingUpdate: Prisma.BookingUpdateArgs = {
@@ -51,35 +58,38 @@ const IndexPage: NextPageWithLayout = () => {
     data: {
       products: {
         createMany: {
-          data: [{
-            tenantId: 1,
-            accountId: 1,
-            ownerId: 1,
-            category: 'Accommodation',
-            accommodationType: 'Hotel',
-            toLocation: '',
-            startDate: new Date(),
-            endDate: new Date(),
-            hotelName: '',
-            hotelMealPlan: ''
-          }]
+          data: [
+            {
+              tenantId: 1,
+              accountId: 1,
+              ownerId: 1,
+              category: 'Accommodation',
+              accommodationType: 'Hotel',
+              toLocation: '',
+              startDate: new Date(),
+              endDate: new Date(),
+              hotelName: '',
+              hotelMealPlan: ''
+            }
+          ]
         }
       }
-    },
+    }
   }
 
   const form = useForm({
-    validate: zodResolver(BookingUpdateArgsSchema),
     initialValues: bookingUpdate
   })
 
   const mutation = useMutation(() => {
-    return fetch(`http://localhost:3000/api/bookings/${data.id}`, {
+    return fetch(`${NEXT_PUBLIC_API_URL}/api/bookings/${data.id}`, {
       method: 'PATCH',
       body: JSON.stringify(form.values),
       headers: { 'Content-type': 'application/json;charset=UTF-8' }
     })
-      .then(() => { alert('Novo Produto Adicionado') })
+      .then(() => {
+        alert('Novo Produto Adicionado')
+      })
       .catch(() => alert('Erro ao adicionar produto'))
   })
 
@@ -94,8 +104,8 @@ const IndexPage: NextPageWithLayout = () => {
       >
         <Header
           subHead={true}
-          title='Adicionar Cliente'
-          subtitle='Preencha os dados do cliente'
+          title="Adicionar Cliente"
+          subtitle="Preencha os dados do cliente"
         />
         <Box mt="md">
           <TextInput label="Nome" />
@@ -141,7 +151,11 @@ const IndexPage: NextPageWithLayout = () => {
                 {...form.getInputProps('data.customerName')}
               />
               <Button variant="default">
-                <IconPlus size={18} stroke={1.5} onClick={() => setOpened(true)} />
+                <IconPlus
+                  size={18}
+                  stroke={1.5}
+                  onClick={() => setOpened(true)}
+                />
               </Button>
             </Flex>
           </Paper>
@@ -157,18 +171,24 @@ const IndexPage: NextPageWithLayout = () => {
               <Select
                 placeholder="Selecione o produto"
                 data={[{ value: 'Accommodation', label: 'Hospedagem' }]}
-                {...form.getInputProps('data.products.createMany.data.0.category')}
+                {...form.getInputProps(
+                  'data.products.createMany.data.0.category'
+                )}
               />
               <Group grow>
                 <Select
                   placeholder="Selecione tipo hospedagem"
                   data={[{ value: 'Hotel', label: 'Hotel' }]}
-                  {...form.getInputProps('data.products.createMany.data.0.accommodationType')}
+                  {...form.getInputProps(
+                    'data.products.createMany.data.0.accommodationType'
+                  )}
                 />
                 <Select
                   placeholder="Selecione a cidade"
                   data={[{ value: 'Nova York', label: 'Nova York' }]}
-                  {...form.getInputProps('data.products.createMany.data.0.toLocation')}
+                  {...form.getInputProps(
+                    'data.products.createMany.data.0.toLocation'
+                  )}
                 />
               </Group>
               <Group grow>
@@ -177,19 +197,32 @@ const IndexPage: NextPageWithLayout = () => {
                   icon={<IconCalendar size={18} />}
                   inputFormat="DD/MM/YYYY"
                   placeholder="Data de ida e volta"
-                  onChange={(e) => { form.setFieldValue('data.products.createMany.data.0.startDate', e[0]); form.setFieldValue('data.products.createMany.data.0.endDate', e[1]) }}
+                  onChange={(e) => {
+                    form.setFieldValue(
+                      'data.products.createMany.data.0.startDate',
+                      e[0]
+                    )
+                    form.setFieldValue(
+                      'data.products.createMany.data.0.endDate',
+                      e[1]
+                    )
+                  }}
                 />
                 <Select
                   placeholder="Selecione o hotel"
                   data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
-                  {...form.getInputProps('data.products.createMany.data.0.hotelName')}
+                  {...form.getInputProps(
+                    'data.products.createMany.data.0.hotelName'
+                  )}
                 />
               </Group>
               <Group grow>
                 <Select
                   placeholder="Selecione tipo hospedagem"
                   data={[{ value: 'Meia Pensão', label: 'Meia pensão' }]}
-                  {...form.getInputProps('data.products.createMany.data.0.hotelMealPlan')}
+                  {...form.getInputProps(
+                    'data.products.createMany.data.0.hotelMealPlan'
+                  )}
                 />
                 <Select
                   placeholder="Selecione quantidade de quartos"
@@ -216,7 +249,12 @@ const IndexPage: NextPageWithLayout = () => {
           </Box>
           <Divider color="gray.3" />
           <Group position="right" p="md">
-            <Button color="blue.8" onClick={() => { mutation.mutate() }}>
+            <Button
+              color="blue.8"
+              onClick={() => {
+                mutation.mutate()
+              }}
+            >
               Save changes
             </Button>
           </Group>
@@ -235,9 +273,7 @@ IndexPage.getLayout = (page) => (
       />
     }
   >
-    <QueryClientProvider client={queryClient}>
-      {page}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{page}</QueryClientProvider>
   </AdminLayout>
 )
 

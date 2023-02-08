@@ -25,6 +25,7 @@
       "@server/core": ["libs/server/infra/core/src/index.ts"],
       "@server/database": ["libs/server/infra/database/src/index.ts"],
       "@server/tenant": ["libs/server/tenant/src/index.ts"],
+      "@server/tenant/fixtures": ["libs/server/tenant/src/specs/index.ts"],
       "@server/user": ["libs/server/user/src/index.ts"],
       "@web/auth": ["libs/web/auth/src/index.ts"],
       "@web/base-ui": ["libs/web/base-ui/src/index.ts"],

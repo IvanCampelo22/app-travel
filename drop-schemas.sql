@@ -8,7 +8,7 @@ CREATE OR REPLACE FUNCTION drop_all() RETURNS VOID AS $$
     FOR schemas IN 
     SELECT DISTINCT(schema_name)
     FROM information_schema.schemata
-    where schema_name not in ('pg_catalog', 'information_schema', 'public', 'pg_toast')
+    where schema_name not in ('pg_catalog', 'information_schema', 'pg_toast')
     LOOP
       EXECUTE format('DROP SCHEMA %I CASCADE', schemas.schema_name);
     END LOOP;

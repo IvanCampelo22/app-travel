@@ -1,7 +1,11 @@
 import { faker } from '@faker-js/faker'
 import { AccountCategory, PrismaClient } from '@prisma/client'
 
-const prisma = new PrismaClient()
+const { DB_USER, DB_PASSWORD, DB_NAME, DB_HOST, DB_PORT } = process.env
+
+const url = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
+
+const prisma = new PrismaClient({ datasources: { db: { url } } })
 
 async function main() {
   await prisma.tenant.upsert({
