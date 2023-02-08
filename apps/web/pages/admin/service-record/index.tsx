@@ -46,7 +46,7 @@ const IndexPage: NextPageWithLayout = () => {
     }
   )
 
-  const bookingUpdate: Prisma.BookingUpdateArgs = {
+  const bookingUpdate = {
     ...data,
     data: {
       products: {
