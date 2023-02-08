@@ -6,12 +6,13 @@ import {
   DatabaseService,
   DatabaseTestService
 } from '@server/database'
+import { createOneAccount } from './account.fixtures'
 
-import { createOneTenant, TenantModule, TenantService } from '@server/tenant'
+import { TenantModule, TenantService } from '@server/tenant'
+import { createOneTenant } from '@server/tenant/fixtures'
 import { UserModule, UserService } from '@server/user'
 import { AccountModule } from '../lib/account.module'
 import { AccountService } from '../lib/account.service'
-import { createOneAccount } from './account.fixtures'
 
 describe('Account Service', () => {
   let moduleRef: TestingModule

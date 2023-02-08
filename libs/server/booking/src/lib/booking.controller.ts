@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   NotFoundException,
@@ -18,7 +19,10 @@ export class BookingController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, input: Prisma.BookingUpdateArgs) {
+  async update(
+    @Param('id') id: string,
+    @Body() input: Prisma.BookingUpdateArgs
+  ) {
     try {
       this.service.update({ ...input, where: { id: Number(id) } })
     } catch (error) {

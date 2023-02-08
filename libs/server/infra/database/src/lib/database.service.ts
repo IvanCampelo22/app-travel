@@ -15,12 +15,15 @@ export class DatabaseService
   private logger = new Logger(DatabaseService.name)
 
   constructor(private readonly config: ConfigService) {
+    const user = config.get<string>('database.user')
+    const name = config.get<string>('database.name')
+    const password = config.get<string>('database.password')
+    const host = config.get<string>('database.host')
+    const port = config.get<string>('database.port')
+
+    const url = `postgresql://${user}:${password}@${host}:${port}/${name}`
     super({
-      datasources: {
-        db: {
-          url: config.get<string>('database.url')
-        }
-      },
+      datasources: { db: { url } },
       log: [
         {
           emit: 'event',

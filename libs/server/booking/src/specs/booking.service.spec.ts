@@ -17,7 +17,8 @@ import {
   DatabaseService,
   DatabaseTestService
 } from '@server/database'
-import { createOneTenant, TenantModule, TenantService } from '@server/tenant'
+import { TenantModule, TenantService } from '@server/tenant'
+import { createOneTenant } from '@server/tenant/fixtures'
 import { UserModule, UserService } from '@server/user'
 describe('Booking Service', () => {
   let moduleRef: TestingModule

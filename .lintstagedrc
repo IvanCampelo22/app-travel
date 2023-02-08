@@ -3,6 +3,5 @@
     "prettier --write --plugin-search-dir=.",
     "prettier --check --plugin-search-dir=."
   ],
-  "*.{js,ts,tsx}": "eslint --max-warnings=0 --no-ignore",
-  "*.*": "yarn build && yarn test"
+  "*.{js,ts,tsx}": "eslint --max-warnings=0 --no-ignore"
 }
