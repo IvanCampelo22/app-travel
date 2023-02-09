@@ -1,4 +1,4 @@
-FROM node:16.16.0-alpine3.16
+FROM node:16.19.0-alpine3.17
 WORKDIR /usr/src/app
 COPY dist/apps/web/ ./
 ENV NODE_ENV production

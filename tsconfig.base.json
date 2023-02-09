@@ -29,6 +29,7 @@
       "@server/user": ["libs/server/user/src/index.ts"],
       "@web/auth": ["libs/web/auth/src/index.ts"],
       "@web/base-ui": ["libs/web/base-ui/src/index.ts"],
+      "@web/base-ui/utils": ["libs/web/base-ui/src/utils/index.ts"],
       "@web/childe-age": ["libs/web/childe-age/src/index.ts"],
       "@web/customer-service-resume": [
         "libs/web/customer-service-resume/src/index.ts"

@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/dom'
 import '@testing-library/jest-dom'
 import { renderHook } from '@testing-library/react'
-import { renderWithTheme } from '@web/base-ui'
+import { renderWithTheme } from '@web/base-ui/utils'
 import { useRef } from 'react'
 import { PhoneInput } from '../lib/phone-input'
 

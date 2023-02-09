@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { fireEvent, screen } from '@testing-library/react'
-import { renderWithTheme } from '@web/base-ui'
+import { renderWithTheme } from '@web/base-ui/utils'
 import { MoneyInput } from '../lib/money-input'
 
 describe('MoneyInput', () => {
