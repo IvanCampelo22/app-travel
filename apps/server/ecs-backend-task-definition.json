@@ -1,4 +1,4 @@
-// task definition for the backend service
+// task definition for the backend services
 {
   "executionRoleArn": "arn:aws:iam::060454264788:role/v10-eng-ecsTaskExecutionRole-dev",
   "containerDefinitions": [
