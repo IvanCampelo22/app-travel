@@ -47,9 +47,9 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
           ACCOUNT_ID: ${{ secrets.DEV_ACCOUNT_ID }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f apps/server/Dockerfile .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile app/server
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG 
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest 
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest 
 
       - name: Fill in the new image ID in the Amazon ECS task definition
