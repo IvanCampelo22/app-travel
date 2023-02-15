@@ -39,16 +39,16 @@ jobs:
           node-version: 16.x
 
       - name: Start DB
-        run: docker-compose up db -d
+        run: docker-compose up -d db
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
       - name: Prisma Migrate
-        run: yarn db:migrate
+        run: yarn prisma migrate dev --schema=libs/server/infra/database/prisma/schema.prisma
 
       - name: Prisma Generate
-        run: yarn db:generate
+        run: yarn prisma generate --schema=libs/server/infra/database/prisma/schema.prisma
 
       - name: Grant Permissions build-web.sh
         run: chmod +x build-web.sh
