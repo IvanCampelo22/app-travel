@@ -1,11 +1,7 @@
-import { faker } from '@faker-js/faker'
 import { AccountCategory, PrismaClient } from '@prisma/client'
 
-const { DB_USER, DB_PASSWORD, DB_NAME, DB_HOST, DB_PORT } = process.env
-
-const url = `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`
-
-const prisma = new PrismaClient({ datasources: { db: { url } } })
+const { DATABASE_URL } = process.env
+const prisma = new PrismaClient({ datasources: { db: { url: DATABASE_URL } } })
 
 async function main() {
   await prisma.tenant.upsert({
@@ -22,7 +18,7 @@ async function main() {
               lastName: 'Loepert',
               email: 'bruno@viagem10.com',
               isMaster: true,
-              externalId: faker.database.mongodbObjectId()
+              externalId: '2a9f4eae-ad38-11ed-afa1-0242ac120002'
             }
           ]
         }
@@ -47,7 +43,7 @@ async function main() {
               lastName: 'Loepert',
               email: 'bruno@lbrtour.com',
               isMaster: true,
-              externalId: faker.database.mongodbObjectId()
+              externalId: '00d726de-cca2-4a89-9adc-67f01b8629ff'
             }
           ]
         }

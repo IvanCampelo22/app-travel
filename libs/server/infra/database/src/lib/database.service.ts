@@ -15,15 +15,8 @@ export class DatabaseService
   private logger = new Logger(DatabaseService.name)
 
   constructor(private readonly config: ConfigService) {
-    const user = config.get<string>('database.user')
-    const name = config.get<string>('database.name')
-    const password = config.get<string>('database.password')
-    const host = config.get<string>('database.host')
-    const port = config.get<string>('database.port')
-
-    const url = `postgresql://${user}:${password}@${host}:${port}/${name}`
     super({
-      datasources: { db: { url } },
+      datasources: { db: { url: config.get<string>('database.url') } },
       log: [
         {
           emit: 'event',
@@ -57,10 +50,7 @@ export class DatabaseService
           }
         }
       })
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      // ;(this as any).$on('error', (e: any) => {
-      //   this.logger.error(`target: ${e.target}, message: ${e.message}`)
-      // })
+
       await this.$connect()
       setInterval(
         () =>
