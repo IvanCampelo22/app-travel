@@ -18,6 +18,7 @@ env:
   SERVER_ECS_TASK_DEFINITION: v10-eng-dev-backend-ts
   SERVER_CONTAINER_NAME: backend-ts
   NEXT_PUBLIC_API_URL: http://backend.dev.viagem10.com
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
   NODE_ENV: test
 
 jobs:
@@ -46,9 +47,6 @@ jobs:
 
       - name: Prisma Migrate
         run: yarn prisma migrate dev --schema=libs/server/infra/database/prisma/schema.prisma
-
-      - name: Prisma Generate
-        run: yarn prisma generate --schema=libs/server/infra/database/prisma/schema.prisma
 
       - name: Grant Permissions build-web.sh
         run: chmod +x build-web.sh
