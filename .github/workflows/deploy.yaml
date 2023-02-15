@@ -48,79 +48,46 @@ jobs:
       - name: Prisma Migrate
         run: yarn prisma migrate dev --schema=libs/server/infra/database/prisma/schema.prisma
 
-      - name: Grant Permissions build-web.sh
-        run: chmod +x build-web.sh
-
       - name: Grant Permissions build-server.sh
         run: chmod +x build-server.sh
-
-      - name: Build Web
-        run: ./build-web.sh
 
       - name: Build Server
         run: ./build-server.sh
 
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@master
-      #   with:
-      #     role-to-assume: arn:aws:iam::060454264788:role/github-actions
-      #     aws-region: sa-east-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@master
+        with:
+          role-to-assume: arn:aws:iam::060454264788:role/github-actions
+          aws-region: sa-east-1
 
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v1
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
 
-      # - name: Build, tag, and push WEB to Amazon ECR
-      #   env:
-      #     WEB_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     WEB_ECR_REPOSITORY: v10-eng-dev-frontend-node
-      #     WEB_IMAGE_TAG: ${{ github.sha }}
-      #   run: |
-      #     docker build -t $WEB_ECR_REGISTRY/$WEB_ECR_REPOSITORY:$WEB_IMAGE_TAG -f apps/web/Dockerfile .
-      #     docker push $WEB_ECR_REGISTRY/$WEB_ECR_REPOSITORY:$WEB_IMAGE_TAG
-      #     docker build -t $WEB_ECR_REGISTRY/$WEB_ECR_REPOSITORY:latest -f apps/web/Dockerfile .
-      #     docker push $WEB_ECR_REGISTRY/$WEB_ECR_REPOSITORY:latest
+      - name: Build, tag, and push SERVER to Amazon ECR
+        env:
+          SERVER_ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          SERVER_ECR_REPOSITORY: v10-eng-dev-backend-ts
+          SERVER_IMAGE_TAG: ${{ github.sha }}
+          ACCOUNT_ID: ${{ secrets.DEV_ACCOUNT_ID }}
+        run: |
+          docker build -t $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:$SERVER_IMAGE_TAG -f apps/server/Dockerfile .
+          docker push $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:$SERVER_IMAGE_TAG
+          docker build -t $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:latest -f apps/server/Dockerfile .
+          docker push $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:latest
 
-      # - name: Build, tag, and push SERVER to Amazon ECR
-      #   env:
-      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     ECR_REPOSITORY: v10-eng-dev-backend-ts
-      #     IMAGE_TAG: ${{ github.sha }}
-      #     ACCOUNT_ID: ${{ secrets.DEV_ACCOUNT_ID }}
-      #   run: |
-      #     docker build -t $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:$IMAGE_TAG -f apps/server/Dockerfile .
-      #     docker push $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:$IMAGE_TAG
-      #     docker build -t $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:latest -f apps/server/Dockerfile .
-      #     docker push $SERVER_ECR_REGISTRY/$SERVER_ECR_REPOSITORY:latest
+      - name: Fill in the new image ID in the Amazon ECS task definition for SERVER
+        id: task-def-server
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ecs-backend-task-definition.json
+          container-name: ${{ env.SERVER_CONTAINER_NAME }}
+          image: ${{ env.SERVER_ECR_REPOSITORY }}:${{ github.sha }}
 
-      # - name: Fill in the new image ID in the Amazon ECS task definition for WEB
-      #   id: task-def-web
-      #   uses: aws-actions/amazon-ecs-render-task-definition@97587c9d45a4930bf0e3da8dd2feb2a463cf4a3a
-      #   with:
-      #     task-definition: ecs-web-task-definition.json
-      #     container-name: ${{ env.WEB_CONTAINER_NAME }}
-      #     image: ${{ env.WEB_ECR_REPOSITORY }}:${{ github.sha }}
-
-      # - name: Fill in the new image ID in the Amazon ECS task definition for SERVER
-      #   id: task-def-server
-      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
-      #   with:
-      #     task-definition: ecs-backend-task-definition.json
-      #     container-name: ${{ env.SERVER_CONTAINER_NAME }}
-      #     image: ${{ env.SERVER_ECR_REPOSITORY }}:${{ github.sha }}
-
-      # - name: Deploy Amazon ECS task definition for WEB
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1.4.10
-      #   with:
-      #     task-definition: ${{ steps.task-def-web.outputs.task-definition }}
-      #     service: ${{ env.WEB_ECS_SERVICE }}
-      #     cluster: ${{ env.WEB_ECS_CLUSTER }}
-      #     wait-for-service-stability: true
-
-      # - name: Deploy Amazon ECS task definition for SERVER
-      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1.4.10
-      #   with:
-      #     task-definition: ${{ steps.task-def-server.outputs.task-definition }}
-      #     service: ${{ env.SERVER_ECS_SERVICE }}
-      #     cluster: ${{ env.SERVER_ECS_CLUSTER }}
-      #     wait-for-service-stability: true
+      - name: Deploy Amazon ECS task definition for SERVER
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1.4.10
+        with:
+          task-definition: ${{ steps.task-def-server.outputs.task-definition }}
+          service: ${{ env.SERVER_ECS_SERVICE }}
+          cluster: ${{ env.SERVER_ECS_CLUSTER }}
+          wait-for-service-stability: true
