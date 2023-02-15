@@ -3,8 +3,6 @@ version: '3'
 services:
   db:
     image: postgres:14-alpine
-    volumes:
-      - ${PWD}/docker/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -30,8 +28,6 @@ services:
       - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
     ports:
       - 7700:7700
-    volumes:
-      - ${PWD}/docker/meilisearch:/data.ms
     restart: unless-stopped
 
   auth:
@@ -43,5 +39,3 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=admin
     ports:
       - 8080:8080
-    volumes:
-      - ${PWD}/docker/keycloak:/opt/keycloak/data/h2
