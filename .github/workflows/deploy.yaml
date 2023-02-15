@@ -39,7 +39,7 @@ jobs:
           node-version: 16.x
 
       - name: Start DB
-        run: docker-compose up db -d
+        run: docker-compose up -d db
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
