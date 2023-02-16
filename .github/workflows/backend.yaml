@@ -1,4 +1,5 @@
 name: Deploy backend to Amazon ECS
+
 on:
   push:
     branches:
@@ -51,9 +52,6 @@ jobs:
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Checkout
-        uses: actions/checkout@v2
 
       - name: Build, tag, and push image to Amazon ECR
         env:
