@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - development
-    paths:
-      - apps/server/**
-      - .github/workflows/**
 
 env:
   AWS_REGION: sa-east-1
