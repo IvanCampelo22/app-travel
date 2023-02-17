@@ -12,7 +12,7 @@ env:
   ECS_CLUSTER: v10-eng-cluster
   ECS_TASK_DEFINITION: v10-eng-dev-backend-ts
   CONTAINER_NAME: backend-ts
-  # DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+  DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
   NODE_ENV: test
 
 jobs:
