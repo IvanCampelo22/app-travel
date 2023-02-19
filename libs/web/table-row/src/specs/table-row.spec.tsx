@@ -1,10 +1,9 @@
-import { render } from '@testing-library/react'
-
+import '@testing-library/jest-dom'
+import { renderWithTheme } from '@web/base-ui/utils'
 import TableRow from '../lib/table-row'
 
-describe('TableRow', () => {
+describe('<TableRow />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<TableRow />)
-    expect(baseElement).toBeTruthy()
+    renderWithTheme(<TableRow />)
   })
 })

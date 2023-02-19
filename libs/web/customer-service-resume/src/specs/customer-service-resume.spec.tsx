@@ -1,10 +1,9 @@
-import { render } from '@testing-library/react'
-
+import '@testing-library/jest-dom'
+import { renderWithTheme } from '@web/base-ui/utils'
 import CustomerServiceResume from '../lib/customer-service-resume'
 
-describe('CustomerServiceResume', () => {
+describe('<CustomerServiceResume />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<CustomerServiceResume />)
-    expect(baseElement).toBeTruthy()
+    renderWithTheme(<CustomerServiceResume />)
   })
 })

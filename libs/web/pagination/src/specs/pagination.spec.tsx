@@ -1,10 +1,9 @@
-import { render } from '@testing-library/react'
-
+import '@testing-library/jest-dom'
+import { renderWithTheme } from '@web/base-ui/utils'
 import Pagination from '../lib/pagination'
 
-describe('Pagination', () => {
+describe('<Pagination />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<Pagination />)
-    expect(baseElement).toBeTruthy()
+    renderWithTheme(<Pagination />)
   })
 })

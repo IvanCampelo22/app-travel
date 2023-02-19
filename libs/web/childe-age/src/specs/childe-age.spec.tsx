@@ -1,10 +1,9 @@
-import { render } from '@testing-library/react'
-
+import '@testing-library/jest-dom'
+import { renderWithTheme } from '@web/base-ui/utils'
 import ChildeAge from '../lib/childe-age'
 
-describe('<ChildeAge />', () => {
+describe('<ChildAge />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<ChildeAge />)
-    expect(baseElement).toBeTruthy()
+    renderWithTheme(<ChildeAge />)
   })
 })

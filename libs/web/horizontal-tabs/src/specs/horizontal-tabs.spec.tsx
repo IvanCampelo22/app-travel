@@ -1,10 +1,9 @@
-import { render } from '@testing-library/react'
-
+import '@testing-library/jest-dom'
+import { renderWithTheme } from '@web/base-ui/utils'
 import HorizontalTabs from '../lib/horizontal-tabs'
 
-describe('HorizontalTabs', () => {
+describe('<HorizontalTabs />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<HorizontalTabs />)
-    expect(baseElement).toBeTruthy()
+    renderWithTheme(<HorizontalTabs />)
   })
 })

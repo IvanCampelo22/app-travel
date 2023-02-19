@@ -1,9 +1,9 @@
 import '@testing-library/jest-dom'
 import { renderWithTheme } from '@web/base-ui/utils'
-import Filter from '../lib/filter'
+import Header from '../lib/header'
 
-describe('<Filter />', () => {
+describe('<Header />', () => {
   it('should render successfully', () => {
-    renderWithTheme(<Filter />)
+    renderWithTheme(<Header title="Teste" subtitle="Teste" />)
   })
 })

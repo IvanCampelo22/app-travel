@@ -1,10 +1,9 @@
-import { render } from '@testing-library/react'
-
+import '@testing-library/jest-dom'
+import { renderWithTheme } from '@web/base-ui/utils'
 import RoomPrefs from '../lib/room-prefs'
 
 describe('<RoomPrefs />', () => {
   it('should render successfully', () => {
-    const { baseElement } = render(<RoomPrefs />)
-    expect(baseElement).toBeTruthy()
+    renderWithTheme(<RoomPrefs />)
   })
 })
