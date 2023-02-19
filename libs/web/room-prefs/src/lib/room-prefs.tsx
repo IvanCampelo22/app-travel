@@ -72,8 +72,18 @@ export function RoomPrefs(props: RoomPrefs) {
           })}
           data={[{ value: 'one', label: 'Suíte Master' }]}
         />
-        <QuantityInput />
-        <QuantityInput />
+        <QuantityInput
+          min={1}
+          max={7}
+          title="Adultos"
+          description="Acima de 18 anos"
+        />
+        <QuantityInput
+          min={0}
+          max={7}
+          title="Menor"
+          description="Até 17 anos"
+        />
       </Flex>
       <Flex mt={24} justify="space-between" gap="lg">
         <ChildeAge />
