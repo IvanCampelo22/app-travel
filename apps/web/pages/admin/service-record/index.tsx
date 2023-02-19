@@ -7,12 +7,18 @@ import {
   Divider,
   Drawer,
   Flex,
+  Grid,
   Group,
+  NumberInput,
   Paper,
   Select,
   TextInput
 } from '@mantine/core'
+
 import { useForm } from '@mantine/form'
+
+import Link from 'next/link'
+
 import {
   QueryClient,
   QueryClientProvider,
@@ -22,11 +28,11 @@ import {
 
 import { DateRangePicker } from '@mantine/dates'
 import { IconCalendar, IconPlus } from '@tabler/icons-react'
+
 import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 import { CustomerServiceResume } from '@web/customer-service-resume'
 import { Header } from '@web/header'
 import { RoomPrefs } from '@web/room-prefs'
-import Link from 'next/link'
 
 const queryClient = new QueryClient()
 
@@ -34,6 +40,7 @@ const IndexPage: NextPageWithLayout = () => {
   const { NEXT_PUBLIC_API_URL } = process.env
 
   const [opened, setOpened] = useState(false)
+  const [rooms, setRooms] = useState<any[]>([])
 
   const { data } = useQuery(
     ['newBooking'],
@@ -107,7 +114,7 @@ const IndexPage: NextPageWithLayout = () => {
             <TextInput label="Email" />
           </Group>
           <Group mt="md" position="right">
-            <Button>Adicionar</Button>
+            <Button color="blue.9">Adicionar</Button>
           </Group>
         </Box>
       </Drawer>
@@ -121,8 +128,8 @@ const IndexPage: NextPageWithLayout = () => {
         </Link>
       </Header>
       <Divider color="gray.3" mt="sm" />
-      <Flex mt={36} gap="lg">
-        <div>
+      <Grid mt={36} grow>
+        <Grid.Col lg={7}>
           <Paper withBorder p="md">
             <Header
               title="Cliente"
@@ -143,12 +150,8 @@ const IndexPage: NextPageWithLayout = () => {
                 data={[{ value: 'Jay Jay Okocha', label: 'Jay Jay Okocha' }]}
                 {...form.getInputProps('data.customerName')}
               />
-              <Button variant="default">
-                <IconPlus
-                  size={18}
-                  stroke={1.5}
-                  onClick={() => setOpened(true)}
-                />
+              <Button variant="default" onClick={() => setOpened(true)}>
+                <IconPlus size={18} stroke={1.5} />
               </Button>
             </Flex>
           </Paper>
@@ -217,42 +220,52 @@ const IndexPage: NextPageWithLayout = () => {
                     'data.products.createMany.data.0.hotelMealPlan'
                   )}
                 />
-                <Select
-                  placeholder="Selecione quantidade de quartos"
-                  data={[{ value: '', label: '1 Quarto' }]}
+                <NumberInput
+                  min={1}
+                  max={7}
+                  placeholder="Quartos"
+                  onChange={(e) =>
+                    e > rooms.length
+                      ? setRooms([...rooms, [e]])
+                      : setRooms(rooms.slice(0, -1))
+                  }
                 />
               </Group>
-              <RoomPrefs />
+              {rooms.map((room, i) => {
+                return <RoomPrefs key={i} />
+              })}
             </Flex>
           </Paper>
-        </div>
-        <Paper withBorder>
-          <Box p="md">
-            <Header
-              title="Resumo do Atendimento"
-              subtitle="localizador #23ABC12"
-              subHead={true}
-            />
-            <Divider color="gray.3" mb="md" mt="sm" />
-            <Flex gap="lg" direction="column">
-              <CustomerServiceResume />
-              <CustomerServiceResume />
-              <CustomerServiceResume />
-            </Flex>
-          </Box>
-          <Divider color="gray.3" />
-          <Group position="right" p="md">
-            <Button
-              color="blue.8"
-              onClick={() => {
-                mutation.mutate()
-              }}
-            >
-              Save changes
-            </Button>
-          </Group>
-        </Paper>
-      </Flex>
+        </Grid.Col>
+        <Grid.Col lg={2}>
+          <Paper withBorder>
+            <Box p="md">
+              <Header
+                title="Resumo do Atendimento"
+                subtitle="localizador #23ABC12"
+                subHead={true}
+              />
+              <Divider color="gray.3" mb="md" mt="sm" />
+              <Flex gap="lg" direction="column">
+                <CustomerServiceResume />
+                <CustomerServiceResume />
+                <CustomerServiceResume />
+              </Flex>
+            </Box>
+            <Divider color="gray.3" />
+            <Group position="right" p="md">
+              <Button
+                color="blue.8"
+                onClick={() => {
+                  mutation.mutate()
+                }}
+              >
+                Save changes
+              </Button>
+            </Group>
+          </Paper>
+        </Grid.Col>
+      </Grid>
     </Container>
   )
 }
