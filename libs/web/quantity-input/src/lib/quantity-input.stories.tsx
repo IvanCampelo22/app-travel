@@ -5,4 +5,6 @@ export default {
   component: QuantityInput
 }
 
-export const QuantityInputStorie = () => <QuantityInput />
+export const QuantityInputStorie = () => (
+  <QuantityInput title="Adultos" description="Acima de 18 anos" />
+)
