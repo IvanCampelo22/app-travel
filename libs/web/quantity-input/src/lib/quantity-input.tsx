@@ -49,25 +49,33 @@ const useStyles = createStyles((theme) => ({
 interface QuantityInputProps {
   min?: number
   max?: number
+  title: string
+  description: string
 }
 
-export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
+export function QuantityInput({
+  min = 1,
+  max = 10,
+  title,
+  description
+}: QuantityInputProps) {
   const { classes } = useStyles()
   const handlers = useRef<NumberInputHandlers>(null)
-  const [value, setValue] = useState<number | undefined>(1)
+  const [value, setValue] = useState<number | undefined>(min)
 
   return (
     <Flex direction="column" gap={0} align="start">
       <Box mb={0}>
         <Text color="gray.7" weight={500} size={14}>
-          Adultos
+          {title}
         </Text>
         <Text size={16} color="gray.5" weight={400}>
-          Acima de 18 anos
+          {description}
         </Text>
       </Box>
       <div className={classes.wrapper}>
         <ActionIcon<'button'>
+          data-testid="minus"
           size={28}
           variant="default"
           onClick={() => handlers.current?.decrement()}
@@ -90,6 +98,7 @@ export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
         />
 
         <ActionIcon<'button'>
+          data-testid="plus"
           size={28}
           variant="default"
           onClick={() => handlers.current?.increment()}
