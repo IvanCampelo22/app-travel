@@ -2,7 +2,10 @@ import {
   Box,
   Button,
   Container,
-  Divider, Flex, Paper,
+  Divider,
+  Flex,
+  Paper,
+  ScrollArea,
   Table,
   Title
 } from '@mantine/core'
@@ -38,7 +41,11 @@ const IndexPage: NextPageWithLayout = () => {
             Export
           </Button>
           <Link href="/admin/service-record">
-            <Button color="blue.8" radius="md" leftIcon={<IconPlus size={18} />}>
+            <Button
+              color="blue.8"
+              radius="md"
+              leftIcon={<IconPlus size={18} />}
+            >
               Add
             </Button>
           </Link>
@@ -52,23 +59,29 @@ const IndexPage: NextPageWithLayout = () => {
             </Title>
           </Box>
           <Divider color="gray.3" />
-          <Table verticalSpacing="lg" horizontalSpacing={20}>
-            <thead style={{ backgroundColor: '#F9FAFB' }}>
-              <tr>
-                <th>ORDER</th>
-                <th>CUSTOMER</th>
-                <th>CREATED BY</th>
-                <th>ISSUE DATE</th>
-                <th>PRODUCTS</th>
-                <th>STATUS</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <TableRow />
-              <TableRow />
-            </tbody>
-          </Table>
+          <ScrollArea>
+            <Table
+              verticalSpacing="lg"
+              horizontalSpacing={20}
+              sx={{ minWidth: 1200 }}
+            >
+              <thead style={{ backgroundColor: '#F9FAFB' }}>
+                <tr>
+                  <th>ORDER</th>
+                  <th>CUSTOMER</th>
+                  <th>CREATED BY</th>
+                  <th>ISSUE DATE</th>
+                  <th>PRODUCTS</th>
+                  <th>STATUS</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <TableRow />
+                <TableRow />
+              </tbody>
+            </Table>
+          </ScrollArea>
           <Divider color="gray.3" />
           <Pagination p="md" />
         </Paper>
