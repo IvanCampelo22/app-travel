@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core'
 
-import { IconDownload, IconPlus } from '@tabler/icons'
+import { IconDownload, IconPlus } from '@tabler/icons-react'
 
 import Header from './header'
 
