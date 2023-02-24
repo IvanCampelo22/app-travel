@@ -15,7 +15,9 @@ import {
   TextInput
 } from '@mantine/core'
 
-import { useForm } from '@mantine/form'
+import { z } from 'zod'
+
+import { useForm, zodResolver } from '@mantine/form'
 
 import Link from 'next/link'
 
@@ -35,6 +37,24 @@ import { Header } from '@web/header'
 import { RoomPrefs } from '@web/room-prefs'
 
 const queryClient = new QueryClient()
+
+const schema = z.object({
+  data: z.object({
+    products: z.object({
+      createMany: z.object({
+        data: z.array(
+          z.object({
+            category: z.string().min(1),
+            accommodationType: z.string().min(1),
+            toLocation: z.string().min(1),
+            hotelName: z.string().min(1),
+            hotelMealPlan: z.string().min(1)
+          })
+        )
+      })
+    })
+  })
+})
 
 const IndexPage: NextPageWithLayout = () => {
   const { NEXT_PUBLIC_API_URL } = process.env
@@ -64,7 +84,7 @@ const IndexPage: NextPageWithLayout = () => {
               accountId: 1,
               ownerId: 1,
               category: 'Accommodation',
-              accommodationType: 'Hotel',
+              accommodationType: '',
               toLocation: '',
               startDate: new Date(),
               endDate: new Date(),
@@ -78,6 +98,7 @@ const IndexPage: NextPageWithLayout = () => {
   }
 
   const form = useForm({
+    validate: zodResolver(schema),
     initialValues: bookingUpdate
   })
 
@@ -130,112 +151,152 @@ const IndexPage: NextPageWithLayout = () => {
       <Divider color="gray.3" mt="sm" />
       <Grid mt={36} grow>
         <Grid.Col lg={7}>
-          <Paper withBorder p="md">
-            <Header
-              title="Cliente"
-              subtitle="Selecione um cliente ou adicione um"
-              subHead={true}
-              justify="space-between"
-            />
-            <Divider color="gray.3" mt="lg" mb="lg" />
-            <Flex justify="space-between" gap="sm">
-              <Select
-                placeholder="Selecine o cliente"
-                styles={(theme) => ({
-                  root: {
-                    maxWidth: '95%',
-                    width: '95%'
-                  }
-                })}
-                data={[{ value: 'Jay Jay Okocha', label: 'Jay Jay Okocha' }]}
-                {...form.getInputProps('data.customerName')}
-              />
-              <Button variant="default" onClick={() => setOpened(true)}>
-                <IconPlus size={18} stroke={1.5} />
-              </Button>
-            </Flex>
-          </Paper>
-          <Paper withBorder mt={36} p="md">
-            <Flex direction="column" gap="lg">
+          <form
+            onSubmit={form.onSubmit(() => {
+              mutation.mutate()
+            })}
+          >
+            <Paper withBorder p="md">
               <Header
-                title="Produtos"
-                subtitle="Adicione um ou mais produtos"
+                title="Cliente"
+                subtitle="Selecione um cliente ou adicione um"
                 subHead={true}
                 justify="space-between"
               />
-              <Divider color="gray.3" />
-              <Select
-                placeholder="Selecione o produto"
-                data={[{ value: 'Accommodation', label: 'Hospedagem' }]}
-                {...form.getInputProps(
-                  'data.products.createMany.data.0.category'
-                )}
-              />
-              <Group grow>
+              <Divider color="gray.3" mt="lg" mb="lg" />
+              <Flex justify="space-between" gap="sm">
                 <Select
-                  placeholder="Selecione tipo hospedagem"
-                  data={[{ value: 'Hotel', label: 'Hotel' }]}
+                  placeholder="Selecine o cliente"
+                  styles={(theme) => ({
+                    root: {
+                      maxWidth: '95%',
+                      width: '95%'
+                    },
+                    error: {
+                      display: 'none'
+                    }
+                  })}
+                  data={[{ value: 'Jay Jay Okocha', label: 'Jay Jay Okocha' }]}
+                  {...form.getInputProps('data.customerName')}
+                />
+                <Button variant="default" onClick={() => setOpened(true)}>
+                  <IconPlus size={18} stroke={1.5} />
+                </Button>
+              </Flex>
+            </Paper>
+            <Paper withBorder mt={36} p="md">
+              <Flex direction="column" gap="xl">
+                <Header
+                  title="Produtos"
+                  subtitle="Adicione um ou mais produtos"
+                  subHead={true}
+                  justify="space-between"
+                />
+                <Divider color="gray.3" />
+                <Select
+                  placeholder="Selecione o produto"
+                  styles={(theme) => ({
+                    error: {
+                      display: 'none'
+                    }
+                  })}
+                  data={[{ value: 'Accommodation', label: 'Hospedagem' }]}
                   {...form.getInputProps(
-                    'data.products.createMany.data.0.accommodationType'
+                    'data.products.createMany.data.0.category'
                   )}
                 />
-                <Select
-                  placeholder="Selecione a cidade"
-                  data={[{ value: 'Nova York', label: 'Nova York' }]}
-                  {...form.getInputProps(
-                    'data.products.createMany.data.0.toLocation'
-                  )}
-                />
-              </Group>
-              <Group grow>
-                <DateRangePicker
-                  clearable={false}
-                  icon={<IconCalendar size={18} />}
-                  inputFormat="DD/MM/YYYY"
-                  placeholder="Data de ida e volta"
-                  onChange={(e) => {
-                    form.setFieldValue(
-                      'data.products.createMany.data.0.startDate',
-                      e[0]
-                    )
-                    form.setFieldValue(
-                      'data.products.createMany.data.0.endDate',
-                      e[1]
-                    )
-                  }}
-                />
-                <Select
-                  placeholder="Selecione o hotel"
-                  data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
-                  {...form.getInputProps(
-                    'data.products.createMany.data.0.hotelName'
-                  )}
-                />
-              </Group>
-              <Group grow>
-                <Select
-                  placeholder="Selecione tipo hospedagem"
-                  data={[{ value: 'Meia Pensão', label: 'Meia pensão' }]}
-                  {...form.getInputProps(
-                    'data.products.createMany.data.0.hotelMealPlan'
-                  )}
-                />
-                <NumberInput
-                  min={1}
-                  max={7}
-                  placeholder="Quartos"
-                  onChange={(e) =>
-                    e > rooms.length
-                      ? setRooms([...rooms, [e]])
-                      : setRooms(rooms.slice(0, -1))
-                  }
-                />
-              </Group>
-              {rooms.map((room, i) => {
-                return <RoomPrefs key={i} />
-              })}
-            </Flex>
-          </Paper>
+                <Group grow>
+                  <Select
+                    placeholder="Selecione tipo hospedagem"
+                    styles={(theme) => ({
+                      error: {
+                        display: 'none'
+                      }
+                    })}
+                    data={[{ value: 'Hotel', label: 'Hotel' }]}
+                    {...form.getInputProps(
+                      'data.products.createMany.data.0.accommodationType'
+                    )}
+                  />
+                  <Select
+                    placeholder="Selecione a cidade"
+                    styles={(theme) => ({
+                      error: {
+                        display: 'none'
+                      }
+                    })}
+                    data={[{ value: 'Nova York', label: 'Nova York' }]}
+                    {...form.getInputProps(
+                      'data.products.createMany.data.0.toLocation'
+                    )}
+                  />
+                </Group>
+                <Group grow>
+                  <DateRangePicker
+                    clearable={false}
+                    icon={<IconCalendar size={18} />}
+                    inputFormat="DD/MM/YYYY"
+                    placeholder="Data de ida e volta"
+                    value={[new Date(), new Date()]}
+                    onChange={(e) => {
+                      form.setFieldValue(
+                        'data.products.createMany.data.0.startDate',
+                        e[0]
+                      )
+                      form.setFieldValue(
+                        'data.products.createMany.data.0.endDate',
+                        e[1]
+                      )
+                    }}
+                  />
+                  <Select
+                    placeholder="Selecione o hotel"
+                    styles={(theme) => ({
+                      error: {
+                        display: 'none'
+                      }
+                    })}
+                    data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
+                    {...form.getInputProps(
+                      'data.products.createMany.data.0.hotelName'
+                    )}
+                  />
+                </Group>
+                <Group grow>
+                  <Select
+                    placeholder="Plano de alimentação"
+                    styles={(theme) => ({
+                      error: {
+                        display: 'none'
+                      }
+                    })}
+                    data={[{ value: 'Meia Pensão', label: 'Meia pensão' }]}
+                    {...form.getInputProps(
+                      'data.products.createMany.data.0.hotelMealPlan'
+                    )}
+                  />
+                  <NumberInput
+                    min={1}
+                    max={7}
+                    placeholder="Quartos"
+                    onChange={(e) =>
+                      e > rooms.length
+                        ? setRooms([...rooms, [e]])
+                        : setRooms(rooms.slice(0, -1))
+                    }
+                  />
+                </Group>
+                {rooms.map((room, i) => {
+                  return <RoomPrefs key={i} />
+                })}
+                <Group position="right">
+                  <Button color="blue.8" type="submit">
+                    Save changes
+                  </Button>
+                </Group>
+              </Flex>
+            </Paper>
+          </form>
         </Grid.Col>
         <Grid.Col lg={2}>
           <Paper withBorder>
@@ -253,16 +314,6 @@ const IndexPage: NextPageWithLayout = () => {
               </Flex>
             </Box>
             <Divider color="gray.3" />
-            <Group position="right" p="md">
-              <Button
-                color="blue.8"
-                onClick={() => {
-                  mutation.mutate()
-                }}
-              >
-                Save changes
-              </Button>
-            </Group>
           </Paper>
         </Grid.Col>
       </Grid>
