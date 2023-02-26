@@ -1,9 +1,9 @@
 name: Build & Deploy
 
 on:
-  pull_request:
+  push:
     branches:
-      - stage
+      - development
 
 env:
   AWS_REGION: sa-east-1
