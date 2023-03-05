@@ -1,4 +1,5 @@
-name: Build & Deploy
+# testing the deployment with API gatewayg
+ame: Build & Deploy
 
 on:
   push:
