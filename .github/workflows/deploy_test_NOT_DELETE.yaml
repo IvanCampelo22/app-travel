@@ -1,5 +1,5 @@
 # testing the deployment with API gatewayg
-ame: Build & Deploy
+name: Build & Deploy
 
 on:
   push:

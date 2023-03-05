@@ -3,7 +3,7 @@ name: Deploy Web
 on:
   push:
     branches:
-      - development
+      - stage
 
 env:
   AWS_REGION: sa-east-1
