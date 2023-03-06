@@ -1,8 +1,8 @@
-import { AccountCreateArgsSchema } from '@common/validation'
 import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
+import { CreateAccountDto } from './dto/account.create.dto'
+import { UpdateAccountDto } from './dto/account.update.dto'
 
 @Injectable()
 export class AccountService {
@@ -11,17 +11,16 @@ export class AccountService {
     private readonly userService: UserService
   ) {}
 
-  async create(input: Prisma.AccountCreateArgs) {
-    AccountCreateArgsSchema.parse(input)
-    return this.db.account.create({ ...input })
+  async create(input: CreateAccountDto) {
+    return this.db.account.create({ data: { ...input } })
   }
 
   async findMany() {
     return this.db.account.findMany()
   }
 
-  async update(input: Prisma.AccountUpdateArgs) {
-    return this.db.account.update(input)
+  async update(id: number, input: UpdateAccountDto) {
+    return this.db.account.update({ where: { id }, data: input })
   }
 
   async destroy(id: number) {

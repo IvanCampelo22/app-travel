@@ -1,17 +1,15 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Patch,
   Post
 } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { ZodError } from 'zod'
 import { AccountService } from './account.service'
+import { CreateAccountDto } from './dto/account.create.dto'
+import { UpdateAccountDto } from './dto/account.update.dto'
 
 @Controller('accounts')
 export class AccountController {
@@ -23,33 +21,17 @@ export class AccountController {
   }
 
   @Post()
-  async create(@Body() input: Prisma.AccountCreateArgs) {
-    try {
-      return await this.service.create(input)
-    } catch (error) {
-      const { issues } = error as ZodError
-      throw new BadRequestException(issues, 'Validation Failed')
-    }
+  async create(@Body() input: CreateAccountDto) {
+    return await this.service.create(input)
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() data: Prisma.AccountUpdateArgs
-  ) {
-    try {
-      return await this.service.update({ ...data, where: { id: Number(id) } })
-    } catch (error) {
-      throw new NotFoundException()
-    }
+  async update(@Param('id') id: string, @Body() data: UpdateAccountDto) {
+    return await this.service.update(Number(id), data)
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    try {
-      return await this.service.destroy(Number(id))
-    } catch (error) {
-      throw new NotFoundException()
-    }
+    return await this.service.destroy(Number(id))
   }
 }

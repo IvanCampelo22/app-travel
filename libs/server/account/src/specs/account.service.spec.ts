@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { AccountCategory, Tenant, User } from '@prisma/client'
+import { Tenant, User } from '@prisma/client'
 import { CoreModule } from '@server/core'
 import {
   DatabaseModule,
   DatabaseService,
   DatabaseTestService
 } from '@server/database'
-import { createOneAccount } from './account.fixtures'
+import { CreateAccountDto } from './../lib/dto/account.create.dto'
 
 import { TenantModule, TenantService } from '@server/tenant'
 import { createOneTenant } from '@server/tenant/fixtures'
@@ -50,8 +50,16 @@ describe('Account Service', () => {
 
   describe('create', () => {
     it('should save and return a account object', async () => {
+      const createAccount: CreateAccountDto = {
+        tenantId: 1,
+        name: 'account1',
+        email: 'account1@gmail.com',
+        ownerId: 1,
+        category: 'Agency',
+        phone: '12345678'
+      }
       const { email, ownerId, isActive, id } = await accountService.create(
-        createOneAccount(tenant.id, user.id, AccountCategory.Agency)
+        createAccount
       )
 
       const adminUser = await userService.find({ accountId: id })
@@ -67,9 +75,27 @@ describe('Account Service', () => {
 
   describe('findMany', () => {
     it('should find all account objects', async () => {
-      await accountService.create(
-        createOneAccount(tenant.id, user.id, AccountCategory.Agency)
-      )
+      const createAccount1: CreateAccountDto = {
+        tenantId: 1,
+        name: 'account1',
+        email: 'account1@gmail.com',
+        ownerId: 1,
+        category: 'Agency',
+        phone: '123476371'
+      }
+
+      const createAccount2: CreateAccountDto = {
+        tenantId: 1,
+        name: 'account2',
+        email: 'account2@gmail.com',
+        ownerId: 1,
+        category: 'Agency',
+        phone: '12342133'
+      }
+
+      await accountService.create(createAccount1)
+
+      await accountService.create(createAccount2)
 
       const accounts = await accountService.findMany()
 
@@ -79,11 +105,25 @@ describe('Account Service', () => {
 
   describe('update', () => {
     it('should update a object account', async () => {
+      const createAccount: CreateAccountDto = {
+        tenantId: 1,
+        name: 'Account1',
+        email: 'account1@gmail.com',
+        ownerId: 1,
+        category: 'Agency',
+        phone: '123421221'
+      }
+
+      await accountService.create(createAccount)
       const { id } = (await accountService.findMany())[1]
 
-      const { email } = await accountService.update({
-        where: { id },
-        data: { email: 'account2@gmail.com' }
+      const { email } = await accountService.update(id, {
+        tenantId: 1,
+        ownerId: 1,
+        name: 'name',
+        category: 'Agency',
+        email: 'account2@gmail.com',
+        phone: '12342'
       })
 
       expect(email).toBe('account2@gmail.com')
