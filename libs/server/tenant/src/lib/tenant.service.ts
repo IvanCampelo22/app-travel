@@ -1,8 +1,8 @@
-import { TenantCreateArgsSchema } from '@common/validation'
 import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
+import { CreateTenantDto } from './dto/tenant.create.dto'
+import { UpdateTenantDto } from './dto/tenant.update.dto'
 
 @Injectable()
 export class TenantService {
@@ -11,21 +11,20 @@ export class TenantService {
     private readonly userService: UserService
   ) {}
 
-  async create(input: Prisma.TenantCreateArgs) {
-    TenantCreateArgsSchema.parse(input)
-    return this.db.tenant.create(input)
+  async create(input: CreateTenantDto) {
+    return this.db.tenant.create({ data: { ...input } })
   }
 
   async findMany() {
     return this.db.tenant.findMany()
   }
 
-  async find(where: Prisma.TenantWhereInput) {
-    return this.db.tenant.findFirst({ where })
+  async find(id: number) {
+    return this.db.tenant.findFirst({ where: { id } })
   }
 
-  async update(input: Prisma.TenantUpdateArgs) {
-    return this.db.tenant.update(input)
+  async update(id: number, input: UpdateTenantDto) {
+    return this.db.tenant.update({ where: { id }, data: { ...input } })
   }
 
   async destroy(id: number) {
