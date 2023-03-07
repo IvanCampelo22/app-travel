@@ -3,7 +3,7 @@ name: Build & Deploy
 on:
   pull_request:
     branches:
-      - stage
+      - main
 
 env:
   AWS_REGION: sa-east-1
