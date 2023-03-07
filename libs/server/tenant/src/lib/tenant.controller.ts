@@ -1,16 +1,14 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   Patch,
   Post
 } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { ZodError } from 'zod'
+import { CreateTenantDto } from './dto/tenant.create.dto'
+import { UpdateTenantDto } from './dto/tenant.update.dto'
 import { TenantService } from './tenant.service'
 
 @Controller('tenants')
@@ -23,33 +21,17 @@ export class TenantController {
   }
 
   @Post()
-  async create(@Body() data: Prisma.TenantCreateArgs) {
-    try {
-      return await this.service.create(data)
-    } catch (error) {
-      const { issues } = error as ZodError
-      throw new BadRequestException(issues, 'Validation Failed')
-    }
+  async create(@Body() data: CreateTenantDto) {
+    return await this.service.create(data)
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() data: Prisma.TenantUpdateArgs) {
-    try {
-      return await this.service.update({
-        ...data,
-        where: { id: Number(id) }
-      })
-    } catch (error) {
-      throw new NotFoundException()
-    }
+  async update(@Param('id') id: string, @Body() data: UpdateTenantDto) {
+    return await this.service.update(Number(id), data)
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    try {
-      return await this.service.destroy(Number(id))
-    } catch (error) {
-      throw new NotFoundException()
-    }
+    return await this.service.destroy(Number(id))
   }
 }
