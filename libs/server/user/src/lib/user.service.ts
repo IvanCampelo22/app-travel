@@ -1,27 +1,25 @@
-import { UserCreateArgsSchema } from '@common/validation'
 import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
 import { DatabaseService } from '@server/database'
-
+import { CreateUserDto } from './dto/user.create.dto'
+import { UpdateUserDto } from './dto/user.update.dto'
 @Injectable()
 export class UserService {
   constructor(private readonly db: DatabaseService) {}
 
-  async create(input: Prisma.UserCreateArgs) {
-    UserCreateArgsSchema.parse(input)
-    return this.db.user.create(input)
+  async create(input: CreateUserDto) {
+    return this.db.user.create({ data: { ...input } })
   }
 
   async findMany() {
     return this.db.user.findMany()
   }
 
-  async find(where: Prisma.UserWhereInput) {
-    return this.db.user.findFirst({ where })
+  async find(id: number) {
+    return this.db.user.findFirst({ where: { id } })
   }
 
-  async update(input: Prisma.UserUpdateArgs) {
-    return this.db.user.update(input)
+  async update(id: number, input: UpdateUserDto) {
+    return this.db.user.update({ where: { id }, data: input })
   }
 
   async getLoggedUser(externalId: string) {
