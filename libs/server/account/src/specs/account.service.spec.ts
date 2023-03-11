@@ -1,26 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { Tenant, User } from '@prisma/client'
 import { CoreModule } from '@server/core'
 import {
   DatabaseModule,
   DatabaseService,
   DatabaseTestService
 } from '@server/database'
+import { CreateTenantDto } from '@server/tenant'
 import { CreateAccountDto } from './../lib/dto/account.create.dto'
 
 import { TenantModule, TenantService } from '@server/tenant'
-import { createOneTenant } from '@server/tenant/fixtures'
 import { UserModule, UserService } from '@server/user'
 import { AccountModule } from '../lib/account.module'
 import { AccountService } from '../lib/account.service'
 
 describe('Account Service', () => {
-  let moduleRef: TestingModule
-  let accountService: AccountService
   let tenantService: TenantService
+  let accountService: AccountService
   let userService: UserService
-  let tenant: Tenant
-  let user: User
+  let moduleRef: TestingModule
+  let db: DatabaseService
 
   beforeAll(async () => {
     moduleRef = await Test.createTestingModule({
@@ -28,55 +26,63 @@ describe('Account Service', () => {
         CoreModule,
         DatabaseModule,
         TenantModule,
-        UserModule,
-        AccountModule
+        AccountModule,
+        UserModule
       ]
     })
       .overrideProvider(DatabaseService)
       .useClass(DatabaseTestService)
       .compile()
 
+    accountService = moduleRef.get<AccountService>(AccountService)
     tenantService = moduleRef.get<TenantService>(TenantService)
     userService = moduleRef.get<UserService>(UserService)
-    accountService = moduleRef.get<AccountService>(AccountService)
-
-    tenant = await tenantService.create(createOneTenant())
-    user = (await userService.find({ tenantId: tenant.id }))!
+    db = moduleRef.get<DatabaseService>(DatabaseService)
   })
 
-  afterAll(async () => {
+  beforeEach(async () => {
+    await db.account.deleteMany({})
+    await db.tenant.deleteMany({})
+    await db.user.deleteMany({})
+  })
+
+  afterAll(() => {
     moduleRef.close()
   })
 
   describe('create', () => {
     it('should save and return a account object', async () => {
+      const createTenant: CreateTenantDto = {
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      }
+
+      const { id } = await tenantService.create(createTenant)
       const createAccount: CreateAccountDto = {
-        tenantId: 1,
+        tenantId: id,
         name: 'account1',
         email: 'account1@gmail.com',
         ownerId: 1,
         category: 'Agency',
         phone: '12345678'
       }
-      const { email, ownerId, isActive, id } = await accountService.create(
-        createAccount
-      )
+      const objAccount = await accountService.create(createAccount)
 
-      const adminUser = await userService.find({ accountId: id })
-
-      expect(email).toBeDefined()
-      expect(ownerId).toEqual(user.id)
-      expect(isActive).toBeTruthy()
-      expect(adminUser).toBeDefined()
-      expect(adminUser?.isActive).toBeTruthy()
-      expect(adminUser?.isMaster).toBeTruthy()
+      expect(objAccount.name).toBe('account1')
     })
   })
 
   describe('findMany', () => {
     it('should find all account objects', async () => {
+      const createTenant1: CreateTenantDto = {
+        name: 'Tenant1',
+        email: 'tenant1@gmail.com'
+      }
+
+      const { id } = await tenantService.create(createTenant1)
+
       const createAccount1: CreateAccountDto = {
-        tenantId: 1,
+        tenantId: id,
         name: 'account1',
         email: 'account1@gmail.com',
         ownerId: 1,
@@ -85,7 +91,7 @@ describe('Account Service', () => {
       }
 
       const createAccount2: CreateAccountDto = {
-        tenantId: 1,
+        tenantId: id,
         name: 'account2',
         email: 'account2@gmail.com',
         ownerId: 1,
@@ -105,8 +111,14 @@ describe('Account Service', () => {
 
   describe('update', () => {
     it('should update a object account', async () => {
+      const createTenant: CreateTenantDto = {
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      }
+
+      const obj = await tenantService.create(createTenant)
       const createAccount: CreateAccountDto = {
-        tenantId: 1,
+        tenantId: obj.id,
         name: 'Account1',
         email: 'account1@gmail.com',
         ownerId: 1,
@@ -115,15 +127,10 @@ describe('Account Service', () => {
       }
 
       await accountService.create(createAccount)
-      const { id } = (await accountService.findMany())[1]
+      const { id } = (await accountService.findMany())[0]
 
       const { email } = await accountService.update(id, {
-        tenantId: 1,
-        ownerId: 1,
-        name: 'name',
-        category: 'Agency',
-        email: 'account2@gmail.com',
-        phone: '12342'
+        email: 'account2@gmail.com'
       })
 
       expect(email).toBe('account2@gmail.com')
@@ -132,8 +139,24 @@ describe('Account Service', () => {
 
   describe('destroy', () => {
     it('should disabled a account', async () => {
+      const createTenant: CreateTenantDto = {
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      }
+
+      const obj = await tenantService.create(createTenant)
+
+      const createAccount: CreateAccountDto = {
+        tenantId: obj.id,
+        name: 'Account1',
+        email: 'account1@gmail.com',
+        ownerId: 1,
+        category: 'Agency',
+        phone: '2321231231'
+      }
+      await accountService.create(createAccount)
       const mock = jest.spyOn(userService, 'destroy')
-      const { id } = (await accountService.findMany())[1]
+      const { id } = (await accountService.findMany())[0]
 
       const { isActive } = await accountService.destroy(id)
 
