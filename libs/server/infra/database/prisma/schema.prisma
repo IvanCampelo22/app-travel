@@ -170,7 +170,7 @@ model Booking {
   account            Account           @relation(fields: [accountId], references: [id], name: "bookings")
   customerId         Int?
   customer           Account?          @relation(fields: [customerId], references: [id], name: "purchasing")
-  ownerId            Int
+  ownerId            Int?
   customerName       String?           @db.VarChar(128)
   /// @zod.string.email()
   customerEmail      String?           @db.VarChar(64)
