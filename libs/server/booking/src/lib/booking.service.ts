@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { Injectable } from '@nestjs/common'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
+import { UpdateBookingDto } from './dto/booking.update.dto'
 
 @Injectable()
 export class BookingService {
@@ -24,29 +24,32 @@ export class BookingService {
     const booking = this.db.booking.create({
       data: {
         tenantId: account.tenantId,
-        accountId: account.id,
-        ownerId: account.accountUsers[0].id
+        accountId: account.id
       }
     })
     return booking
   }
 
-  async find(where: Prisma.BookingWhereInput) {
-    return this.db.booking.findFirst({ where })
+  async find(id: number) {
+    return this.db.booking.findFirst({ where: { id } })
   }
 
   async findMany() {
     return this.db.booking.findMany()
   }
 
-  async update(input: Prisma.BookingUpdateArgs) {
-    const { id } = input.where
-    const booking = await this.find({ id })
-    const newProducts = input.data.products?.createMany?.data
+  async update(id: number, input: UpdateBookingDto) {
+    return this.db.tenant.update({ where: { id }, data: { ...input } })
+  }
 
-    if (booking?.modifiedAt === booking?.createdAt && !newProducts)
-      throw new BadRequestException('Product list is required')
+  async destroy(id: number) {
+    const tenant = await this.db.tenant.update({
+      where: { id },
+      data: { isActive: false }
+    })
 
-    return this.db.booking.update(input)
+    await this.userService.destroy(tenant.id)
+
+    return tenant
   }
 }
