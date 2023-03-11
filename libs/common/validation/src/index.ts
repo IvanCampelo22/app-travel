@@ -491,7 +491,7 @@ export const BookingSchema = z.object({
   tenantId: z.number().int(),
   accountId: z.number().int(),
   customerId: z.number().int().nullable(),
-  ownerId: z.number().int(),
+  ownerId: z.number().int().nullable(),
   customerName: z.string().nullable(),
   customerEmail: z.string().email().nullable(),
   customerPhone: z.string().nullable(),
@@ -2741,7 +2741,10 @@ export const BookingWhereInputSchema: z.ZodType<Prisma.BookingWhereInput> = z
       ])
       .optional()
       .nullable(),
-    ownerId: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
+    ownerId: z
+      .union([z.lazy(() => IntNullableFilterSchema), z.number()])
+      .optional()
+      .nullable(),
     customerName: z
       .union([z.lazy(() => StringNullableFilterSchema), z.string()])
       .optional()
@@ -3044,8 +3047,12 @@ export const BookingScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.Booki
         .optional()
         .nullable(),
       ownerId: z
-        .union([z.lazy(() => IntWithAggregatesFilterSchema), z.number()])
-        .optional(),
+        .union([
+          z.lazy(() => IntNullableWithAggregatesFilterSchema),
+          z.number()
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.lazy(() => StringNullableWithAggregatesFilterSchema),
@@ -7504,7 +7511,7 @@ export const BookingCreateInputSchema: z.ZodType<Prisma.BookingCreateInput> = z
     customer: z
       .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
       .optional(),
-    ownerId: z.number().int(),
+    ownerId: z.number().int().optional().nullable(),
     customerName: z.string().optional().nullable(),
     customerEmail: z.string().email().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -7575,7 +7582,7 @@ export const BookingUncheckedCreateInputSchema: z.ZodType<
     tenantId: z.number().int(),
     accountId: z.number().int(),
     customerId: z.number().int().optional().nullable(),
-    ownerId: z.number().int(),
+    ownerId: z.number().int().optional().nullable(),
     customerName: z.string().optional().nullable(),
     customerEmail: z.string().email().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -7656,9 +7663,10 @@ export const BookingUpdateInputSchema: z.ZodType<Prisma.BookingUpdateInput> = z
     ownerId: z
       .union([
         z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     customerName: z
       .union([
         z.string(),
@@ -7925,9 +7933,10 @@ export const BookingUncheckedUpdateInputSchema: z.ZodType<
     ownerId: z
       .union([
         z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     customerName: z
       .union([
         z.string(),
@@ -8179,7 +8188,7 @@ export const BookingCreateManyInputSchema: z.ZodType<
     tenantId: z.number().int(),
     accountId: z.number().int(),
     customerId: z.number().int().optional().nullable(),
-    ownerId: z.number().int(),
+    ownerId: z.number().int().optional().nullable(),
     customerName: z.string().optional().nullable(),
     customerEmail: z.string().email().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -8242,9 +8251,10 @@ export const BookingUpdateManyMutationInputSchema: z.ZodType<Prisma.BookingUpdat
       ownerId: z
         .union([
           z.number().int(),
-          z.lazy(() => IntFieldUpdateOperationsInputSchema)
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
         ])
-        .optional(),
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -8507,9 +8517,10 @@ export const BookingUncheckedUpdateManyInputSchema: z.ZodType<
     ownerId: z
       .union([
         z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     customerName: z
       .union([
         z.string(),
@@ -18166,7 +18177,7 @@ export const BookingCreateWithoutTenantInputSchema: z.ZodType<Prisma.BookingCrea
       customer: z
         .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
         .optional(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -18235,7 +18246,7 @@ export const BookingUncheckedCreateWithoutTenantInputSchema: z.ZodType<Prisma.Bo
       id: z.number().optional(),
       accountId: z.number(),
       customerId: z.number().optional().nullable(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -19009,7 +19020,10 @@ export const BookingScalarWhereInputSchema: z.ZodType<Prisma.BookingScalarWhereI
         .union([z.lazy(() => IntNullableFilterSchema), z.number()])
         .optional()
         .nullable(),
-      ownerId: z.union([z.lazy(() => IntFilterSchema), z.number()]).optional(),
+      ownerId: z
+        .union([z.lazy(() => IntNullableFilterSchema), z.number()])
+        .optional()
+        .nullable(),
       customerName: z
         .union([z.lazy(() => StringNullableFilterSchema), z.string()])
         .optional()
@@ -21381,7 +21395,7 @@ export const BookingCreateWithoutAccountInputSchema: z.ZodType<Prisma.BookingCre
       customer: z
         .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
         .optional(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -21450,7 +21464,7 @@ export const BookingUncheckedCreateWithoutAccountInputSchema: z.ZodType<Prisma.B
       id: z.number().optional(),
       tenantId: z.number(),
       customerId: z.number().optional().nullable(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -21542,7 +21556,7 @@ export const BookingCreateWithoutCustomerInputSchema: z.ZodType<Prisma.BookingCr
     .object({
       tenant: z.lazy(() => TenantCreateNestedOneWithoutBookingsInputSchema),
       account: z.lazy(() => AccountCreateNestedOneWithoutBookingsInputSchema),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -21611,7 +21625,7 @@ export const BookingUncheckedCreateWithoutCustomerInputSchema: z.ZodType<Prisma.
       id: z.number().optional(),
       tenantId: z.number(),
       accountId: z.number(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -25654,7 +25668,7 @@ export const BookingCreateWithoutTravelersInputSchema: z.ZodType<Prisma.BookingC
       customer: z
         .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
         .optional(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -25721,7 +25735,7 @@ export const BookingUncheckedCreateWithoutTravelersInputSchema: z.ZodType<Prisma
       tenantId: z.number(),
       accountId: z.number(),
       customerId: z.number().optional().nullable(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -26476,8 +26490,12 @@ export const BookingUpdateWithoutTravelersInputSchema: z.ZodType<Prisma.BookingU
         .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -26736,8 +26754,12 @@ export const BookingUncheckedUpdateWithoutTravelersInputSchema: z.ZodType<Prisma
         .optional()
         .nullable(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -27593,7 +27615,7 @@ export const BookingCreateWithoutProductsInputSchema: z.ZodType<Prisma.BookingCr
       customer: z
         .lazy(() => AccountCreateNestedOneWithoutPurchasingInputSchema)
         .optional(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -27660,7 +27682,7 @@ export const BookingUncheckedCreateWithoutProductsInputSchema: z.ZodType<Prisma.
       tenantId: z.number(),
       accountId: z.number(),
       customerId: z.number().optional().nullable(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -28482,8 +28504,12 @@ export const BookingUpdateWithoutProductsInputSchema: z.ZodType<Prisma.BookingUp
         .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -28742,8 +28768,12 @@ export const BookingUncheckedUpdateWithoutProductsInputSchema: z.ZodType<Prisma.
         .optional()
         .nullable(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -30621,7 +30651,7 @@ export const BookingCreateManyTenantInputSchema: z.ZodType<Prisma.BookingCreateM
       id: z.number().int().optional(),
       accountId: z.number(),
       customerId: z.number().optional().nullable(),
-      ownerId: z.number(),
+      ownerId: z.number().optional().nullable(),
       customerName: z.string().optional().nullable(),
       customerEmail: z.string().optional().nullable(),
       customerPhone: z.string().optional().nullable(),
@@ -31926,8 +31956,12 @@ export const BookingUpdateWithoutTenantInputSchema: z.ZodType<Prisma.BookingUpda
         .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -32186,8 +32220,12 @@ export const BookingUncheckedUpdateWithoutTenantInputSchema: z.ZodType<Prisma.Bo
         .optional()
         .nullable(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -32455,9 +32493,10 @@ export const BookingUncheckedUpdateManyWithoutBookingsInputSchema: z.ZodType<
     ownerId: z
       .union([
         z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     customerName: z
       .union([
         z.string(),
@@ -34177,7 +34216,7 @@ export const BookingCreateManyAccountInputSchema: z.ZodType<
     // omitted: id: z.number().optional(),
     tenantId: z.number().int(),
     customerId: z.number().optional().nullable(),
-    ownerId: z.number().int(),
+    ownerId: z.number().int().optional().nullable(),
     customerName: z.string().optional().nullable(),
     customerEmail: z.string().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -34241,7 +34280,7 @@ export const BookingCreateManyCustomerInputSchema: z.ZodType<
     // omitted: id: z.number().optional(),
     tenantId: z.number().int(),
     accountId: z.number().int(),
-    ownerId: z.number().int(),
+    ownerId: z.number().int().optional().nullable(),
     customerName: z.string().optional().nullable(),
     customerEmail: z.string().email().optional().nullable(),
     customerPhone: z.string().optional().nullable(),
@@ -35543,8 +35582,12 @@ export const BookingUpdateWithoutAccountInputSchema: z.ZodType<Prisma.BookingUpd
         .lazy(() => AccountUpdateOneWithoutPurchasingNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -35803,8 +35846,12 @@ export const BookingUncheckedUpdateWithoutAccountInputSchema: z.ZodType<Prisma.B
         .optional()
         .nullable(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -36061,8 +36108,12 @@ export const BookingUpdateWithoutCustomerInputSchema: z.ZodType<Prisma.BookingUp
         .lazy(() => AccountUpdateOneRequiredWithoutBookingsNestedInputSchema)
         .optional(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -36317,8 +36368,12 @@ export const BookingUncheckedUpdateWithoutCustomerInputSchema: z.ZodType<Prisma.
         .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
         .optional(),
       ownerId: z
-        .union([z.number(), z.lazy(() => IntFieldUpdateOperationsInputSchema)])
-        .optional(),
+        .union([
+          z.number(),
+          z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
+        ])
+        .optional()
+        .nullable(),
       customerName: z
         .union([
           z.string(),
@@ -36585,9 +36640,10 @@ export const BookingUncheckedUpdateManyWithoutPurchasingInputSchema: z.ZodType<
     ownerId: z
       .union([
         z.number().int(),
-        z.lazy(() => IntFieldUpdateOperationsInputSchema)
+        z.lazy(() => NullableIntFieldUpdateOperationsInputSchema)
       ])
-      .optional(),
+      .optional()
+      .nullable(),
     customerName: z
       .union([
         z.string(),
