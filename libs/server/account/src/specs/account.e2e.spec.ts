@@ -1,19 +1,18 @@
 import { faker } from '@faker-js/faker'
 import { INestApplication } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
-import { AccountCategory, Tenant, User } from '@prisma/client'
+//import { Tenant } from '@prisma/client'
 import { CoreModule } from '@server/core'
 import {
   DatabaseModule,
   DatabaseService,
   DatabaseTestService
 } from '@server/database'
-import { createOneTenant, TenantModule, TenantService } from '@server/tenant'
-import { UserModule, UserService } from '@server/user'
+import { TenantModule, TenantService } from '@server/tenant'
+import { UserModule } from '@server/user'
 import * as request from 'supertest'
 import { AccountModule } from '../lib/account.module'
 import { AccountService } from '../lib/account.service'
-import { createOneAccount } from './account.fixtures'
 import supertest = require('supertest')
 
 describe('Account Controller', () => {
@@ -21,10 +20,11 @@ describe('Account Controller', () => {
   let moduleRef: TestingModule
   let accountService: AccountService
   let tenantService: TenantService
-  let userService: UserService
-  let tenant: Tenant
-  let user: User
+  //let userService: UserService
+  //let tenant: Tenant
+  //let user: User
   const PATH = '/accounts'
+  let db: DatabaseService
 
   beforeAll(async () => {
     moduleRef = await Test.createTestingModule({
@@ -43,21 +43,44 @@ describe('Account Controller', () => {
     app = moduleRef.createNestApplication()
     await app.init()
     tenantService = moduleRef.get<TenantService>(TenantService)
-    userService = moduleRef.get<UserService>(UserService)
+    //userService = moduleRef.get<UserService>(UserService)
     accountService = moduleRef.get<AccountService>(AccountService)
+    db = moduleRef.get<DatabaseService>(DatabaseService)
 
-    tenant = await tenantService.create(createOneTenant())
-    user = (await userService.find({ tenantId: tenant.id }))!
+    //tenant = await tenantService.create({
+    //name: 'tenant1',
+    //email: 'tenant1@gmail.com'
+    //})
+    //user = (await userService.find(tenant.id))!
+  })
+  beforeEach(async () => {
+    await db.account.deleteMany({})
+    await db.tenant.deleteMany({})
+    await db.user.deleteMany({})
   })
 
   describe('GET /accounts', () => {
     it('should return 2 accounts', async () => {
-      await accountService.create(
-        createOneAccount(tenant.id, user.id, AccountCategory.Agency)
-      )
-      await accountService.create(
-        createOneAccount(tenant.id, user.id, AccountCategory.Agency)
-      )
+      const tenantObj = await tenantService.create({
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      })
+      await accountService.create({
+        tenantId: tenantObj.id,
+        name: 'account1',
+        email: 'account1@gmail.com',
+        ownerId: 1,
+        phone: '122121',
+        category: 'Agency'
+      })
+      await accountService.create({
+        tenantId: tenantObj.id,
+        name: 'account2',
+        email: 'account2@gmail.com',
+        ownerId: 2,
+        phone: '1221212',
+        category: 'Agency'
+      })
 
       const { ok, body } = await supertest(app.getHttpServer()).get(PATH)
 
@@ -68,15 +91,21 @@ describe('Account Controller', () => {
 
   describe('POST /accounts', () => {
     it('successfully', async () => {
-      const { data } = createOneAccount(
-        tenant.id,
-        user.id,
-        AccountCategory.Agency
-      )
+      const tenantObj1 = await tenantService.create({
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      })
 
       const { ok, body } = await request(app.getHttpServer())
         .post(PATH)
-        .send({ data })
+        .send({
+          tenantId: tenantObj1.id,
+          name: 'account1',
+          email: 'account1@gmail.com',
+          ownerId: 1,
+          phone: '1231212',
+          category: 'Agency'
+        })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
@@ -97,17 +126,26 @@ describe('Account Controller', () => {
 
   describe('PATCH /accounts', () => {
     it('successfully', async () => {
-      const { id } = (await accountService.findMany())[2]
-      const email = faker.internet.email()
-
+      const tenantObj2 = await tenantService.create({
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      })
+      const { id } = await accountService.create({
+        tenantId: tenantObj2.id,
+        name: 'account1',
+        email: 'account1@gmail.com',
+        ownerId: 1,
+        category: 'Agency',
+        phone: '121212'
+      })
       const { ok, body } = await request(app.getHttpServer())
         .patch(`${PATH}/${id}`)
-        .send({ data: { email } })
+        .send({ email: 'account2@gmail.com' })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
       expect(ok).toBeTruthy()
-      expect(body.email).toEqual(email)
+      expect(body.email).toEqual('account2@gmail.com')
     })
 
     it('should throw NotFoundException', async () => {
@@ -125,10 +163,30 @@ describe('Account Controller', () => {
 
   describe('DELETE /accounts', () => {
     it('successfully', async () => {
-      const { id } = (await accountService.findMany())[2]
+      const tenant = await tenantService.create({
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      })
+      await accountService.create({
+        tenantId: tenant.id,
+        name: 'account1',
+        email: 'account1@gmail.com',
+        category: 'Agency',
+        ownerId: 1,
+        phone: '1211212'
+      })
+      await accountService.create({
+        tenantId: tenant.id,
+        name: 'account2',
+        email: 'account2@gmail.com',
+        category: 'Agency',
+        ownerId: 2,
+        phone: '12121212'
+      })
+      const account = (await accountService.findMany())[0]
 
       const { ok, body } = await request(app.getHttpServer())
-        .delete(`${PATH}/${id}`)
+        .delete(`${PATH}/${account.id}`)
         .send({})
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
