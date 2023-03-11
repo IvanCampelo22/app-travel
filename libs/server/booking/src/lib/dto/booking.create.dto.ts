@@ -4,8 +4,9 @@ export class CreateBookingDto {
   @IsNumber()
   accountId: number
 
+  @IsOptional()
   @IsNumber()
-  ownerId: number
+  ownerId?: number
 
   @IsOptional()
   @IsString()
