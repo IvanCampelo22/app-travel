@@ -10,12 +10,13 @@ import { UserModule } from '@server/user'
 import * as request from 'supertest'
 import { TenantModule } from '../lib/tenant.module'
 import { TenantService } from '../lib/tenant.service'
-import { createOneTenant } from './tenant.fixtures'
 
 describe('Tenant Controller', () => {
+  jest.setTimeout(100000)
   let app: INestApplication
   let tenantService: TenantService
   let moduleRef: TestingModule
+  let db: DatabaseService
   const PATH = '/tenants'
 
   beforeAll(async () => {
@@ -29,6 +30,12 @@ describe('Tenant Controller', () => {
     app = moduleRef.createNestApplication()
     await app.init()
     tenantService = moduleRef.get<TenantService>(TenantService)
+    db = moduleRef.get<DatabaseService>(DatabaseService)
+  })
+  beforeEach(async () => {
+    await db.account.deleteMany({})
+    await db.tenant.deleteMany({})
+    await db.user.deleteMany({})
   })
 
   afterAll(async () => {
@@ -37,8 +44,14 @@ describe('Tenant Controller', () => {
 
   describe('GET /tenants', () => {
     it('sucessfully', async () => {
-      await tenantService.create(createOneTenant())
-      await tenantService.create(createOneTenant())
+      await tenantService.create({
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      })
+      await tenantService.create({
+        name: 'tenant2',
+        email: 'tenant2@gmail.com'
+      })
 
       const { ok, body } = await request(app.getHttpServer()).get(PATH)
 
@@ -49,22 +62,20 @@ describe('Tenant Controller', () => {
 
   describe('POST /tenants', () => {
     it('successfully', async () => {
-      const { data } = createOneTenant()
-
       const { ok, body } = await request(app.getHttpServer())
         .post(PATH)
-        .send({ data })
+        .send({ name: 'tenant1', email: 'tenant1@gmail.com' })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
       expect(ok).toBeTruthy()
-      expect(body['email']).toEqual(data.email)
+      expect(body['email']).toEqual('tenant1@gmail.com')
     })
 
     it('should throw BadRequestException', async () => {
       const { statusCode } = await request(app.getHttpServer())
         .post(PATH)
-        .send({ data: {} })
+        .send({})
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
@@ -74,11 +85,14 @@ describe('Tenant Controller', () => {
 
   describe('/PACTH tenants', () => {
     it('successfully', async () => {
-      const { id } = await tenantService.create(createOneTenant())
+      const { id } = await tenantService.create({
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      })
 
       const { body, ok } = await request(app.getHttpServer())
         .patch(`${PATH}/${id}`)
-        .send({ data: { email: 'tenant2@gmail.com' } })
+        .send({ email: 'tenant2@gmail.com' })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
@@ -100,7 +114,10 @@ describe('Tenant Controller', () => {
 
   describe('/DELETE tenants', () => {
     it('successfully', async () => {
-      const { id } = await tenantService.create(createOneTenant())
+      const { id } = await tenantService.create({
+        name: 'tenant1',
+        email: 'tenant1@gmail.com'
+      })
 
       const { body, ok } = await request(app.getHttpServer())
         .delete(`${PATH}/${id}`)
