@@ -1,13 +1,6 @@
-import {
-  Body,
-  Controller,
-  Get,
-  NotFoundException,
-  Param,
-  Patch
-} from '@nestjs/common'
-import { Prisma } from '@prisma/client'
+import { Body, Controller, Get, Param, Patch } from '@nestjs/common'
 import { BookingService } from './booking.service'
+import { UpdateBookingDto } from './dto/booking.update.dto'
 
 @Controller('bookings')
 export class BookingController {
@@ -19,14 +12,7 @@ export class BookingController {
   }
 
   @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() input: Prisma.BookingUpdateArgs
-  ) {
-    try {
-      this.service.update({ ...input, where: { id: Number(id) } })
-    } catch (error) {
-      throw new NotFoundException('Booking not found')
-    }
+  async update(@Param('id') id: string, @Body() input: UpdateBookingDto) {
+    return this.service.update(Number(id), input)
   }
 }
