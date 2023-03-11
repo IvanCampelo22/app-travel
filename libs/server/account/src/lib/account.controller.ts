@@ -1,8 +1,10 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post
@@ -22,16 +24,27 @@ export class AccountController {
 
   @Post()
   async create(@Body() input: CreateAccountDto) {
-    return await this.service.create(input)
+    try {
+      return await this.service.create(input)
+    } catch (error) {
+      throw new BadRequestException('Bad Request')
+    }
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() data: UpdateAccountDto) {
-    return await this.service.update(Number(id), data)
+    try {
+      return await this.service.update(Number(id), data)
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
   }
-
   @Delete(':id')
   async delete(@Param('id') id: string) {
-    return await this.service.destroy(Number(id))
+    try {
+      return await this.service.destroy(Number(id))
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
   }
 }
