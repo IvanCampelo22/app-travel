@@ -63,8 +63,7 @@ describe('Account Service', () => {
         name: 'account1',
         email: 'account1@gmail.com',
         ownerId: 1,
-        category: 'Agency',
-        phone: '12345678'
+        category: 'Agency'
       }
       const objAccount = await accountService.create(createAccount)
 
@@ -86,8 +85,7 @@ describe('Account Service', () => {
         name: 'account1',
         email: 'account1@gmail.com',
         ownerId: 1,
-        category: 'Agency',
-        phone: '123476371'
+        category: 'Agency'
       }
 
       const createAccount2: CreateAccountDto = {
@@ -95,8 +93,7 @@ describe('Account Service', () => {
         name: 'account2',
         email: 'account2@gmail.com',
         ownerId: 1,
-        category: 'Agency',
-        phone: '12342133'
+        category: 'Agency'
       }
 
       await accountService.create(createAccount1)
@@ -122,8 +119,7 @@ describe('Account Service', () => {
         name: 'Account1',
         email: 'account1@gmail.com',
         ownerId: 1,
-        category: 'Agency',
-        phone: '123421221'
+        category: 'Agency'
       }
 
       await accountService.create(createAccount)
@@ -151,8 +147,7 @@ describe('Account Service', () => {
         name: 'Account1',
         email: 'account1@gmail.com',
         ownerId: 1,
-        category: 'Agency',
-        phone: '2321231231'
+        category: 'Agency'
       }
       await accountService.create(createAccount)
       const mock = jest.spyOn(userService, 'destroy')

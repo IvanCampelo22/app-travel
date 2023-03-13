@@ -70,7 +70,6 @@ describe('Account Controller', () => {
         name: 'account1',
         email: 'account1@gmail.com',
         ownerId: 1,
-        phone: '122121',
         category: 'Agency'
       })
       await accountService.create({
@@ -78,7 +77,6 @@ describe('Account Controller', () => {
         name: 'account2',
         email: 'account2@gmail.com',
         ownerId: 2,
-        phone: '1221212',
         category: 'Agency'
       })
 
@@ -103,7 +101,6 @@ describe('Account Controller', () => {
           name: 'account1',
           email: 'account1@gmail.com',
           ownerId: 1,
-          phone: '1231212',
           category: 'Agency'
         })
         .set('Accept', 'application/json')
@@ -135,8 +132,7 @@ describe('Account Controller', () => {
         name: 'account1',
         email: 'account1@gmail.com',
         ownerId: 1,
-        category: 'Agency',
-        phone: '121212'
+        category: 'Agency'
       })
       const { ok, body } = await request(app.getHttpServer())
         .patch(`${PATH}/${id}`)
@@ -172,16 +168,14 @@ describe('Account Controller', () => {
         name: 'account1',
         email: 'account1@gmail.com',
         category: 'Agency',
-        ownerId: 1,
-        phone: '1211212'
+        ownerId: 1
       })
       await accountService.create({
         tenantId: tenant.id,
         name: 'account2',
         email: 'account2@gmail.com',
         category: 'Agency',
-        ownerId: 2,
-        phone: '12121212'
+        ownerId: 2
       })
       const account = (await accountService.findMany())[0]
 
