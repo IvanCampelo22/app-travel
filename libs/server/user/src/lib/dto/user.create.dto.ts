@@ -73,17 +73,17 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsDate()
-  modifiedAt: Date
+  modifiedAt?: Date
 
   @IsOptional()
   @IsString()
-  modifiedBy: string
+  modifiedBy?: string
 
   @IsOptional()
   @IsBoolean()
-  isActive: boolean
+  isActive?: boolean
 
   @IsOptional()
   @IsBoolean()
-  isMaster: boolean
+  isMaster?: boolean
 }
