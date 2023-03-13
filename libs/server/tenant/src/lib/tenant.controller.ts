@@ -1,34 +1,17 @@
 import {
-  ArgumentsHost,
   BadRequestException,
   Body,
-  Catch,
   Controller,
   Delete,
-  ExceptionFilter,
   Get,
   NotFoundException,
   Param,
   Patch,
-  Post,
-  UseFilters
+  Post
 } from '@nestjs/common'
-import { Response } from 'express'
 import { CreateTenantDto } from './dto/tenant.create.dto'
 import { UpdateTenantDto } from './dto/tenant.update.dto'
 import { TenantService } from './tenant.service'
-
-@Catch(BadRequestException)
-export class BadRequestFilter implements ExceptionFilter {
-  catch(exception: BadRequestException, host: ArgumentsHost) {
-    const ctx = host.switchToHttp()
-    const response = ctx.getResponse<Response>()
-    response.status(400).json({
-      message: 'Bad Request',
-      error: exception.message
-    })
-  }
-}
 
 @Controller('tenants')
 export class TenantController {
@@ -40,7 +23,6 @@ export class TenantController {
   }
 
   @Post()
-  @UseFilters(BadRequestFilter)
   async create(@Body() data: CreateTenantDto) {
     try {
       return await this.service.create(data)
