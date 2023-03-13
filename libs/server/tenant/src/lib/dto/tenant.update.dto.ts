@@ -1,6 +1,7 @@
 import { IsBoolean, IsDate, IsOptional, IsString } from 'class-validator'
 
 export class UpdateTenantDto {
+  @IsOptional()
   @IsString()
   name?: string
 
@@ -40,8 +41,9 @@ export class UpdateTenantDto {
   @IsString()
   jobTitle?: string
 
+  @IsOptional()
   @IsString()
-  email: string
+  email?: string
 
   @IsOptional()
   @IsString()
