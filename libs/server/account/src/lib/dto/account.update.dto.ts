@@ -8,15 +8,19 @@ import {
 } from 'class-validator'
 
 export class UpdateAccountDto {
+  @IsOptional()
   @IsNumber()
   tenantId?: number
 
+  @IsOptional()
   @IsNumber()
   ownerId?: number
 
+  @IsOptional()
   @IsString()
   name?: string
 
+  @IsOptional()
   @IsString()
   category?: AccountCategory
 
@@ -36,6 +40,7 @@ export class UpdateAccountDto {
   @IsString()
   brand?: string
 
+  @IsOptional()
   @IsString()
   email?: string
 
