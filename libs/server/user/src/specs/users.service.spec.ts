@@ -86,4 +86,18 @@ describe('User Service', () => {
       expect(user?.firstName).toBe('firstName')
     })
   })
+
+  describe('update', () => {
+    it('should update a object user', async () => {
+      const createUser: CreateUserDto = {
+        externalId: '1',
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'email'
+      }
+      const { id } = await userService.create(createUser)
+      const user = await userService.update(id, { email: 'email2' })
+      expect(user.email).toBe('email2')
+    })
+  })
 })
