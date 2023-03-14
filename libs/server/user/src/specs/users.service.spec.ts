@@ -36,7 +36,7 @@ describe('User Service', () => {
   })
 
   describe('findMany', () => {
-    it('should return all tenants objects', async () => {
+    it('should return all users objects', async () => {
       const createUser1: CreateUserDto = {
         externalId: '1',
         firstName: 'firstName',
@@ -57,6 +57,19 @@ describe('User Service', () => {
       const users = await userService.findMany()
 
       expect(users.length).toEqual(2)
+    })
+  })
+
+  describe('create', () => {
+    it('should save and return a user object', async () => {
+      const createUser: CreateUserDto = {
+        externalId: '1',
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'email'
+      }
+      const user = await userService.create(createUser)
+      expect(user.firstName).toBe('firstName')
     })
   })
 })
