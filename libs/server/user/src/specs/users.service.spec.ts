@@ -72,4 +72,18 @@ describe('User Service', () => {
       expect(user.firstName).toBe('firstName')
     })
   })
+
+  describe('find', () => {
+    it('should return just one user object', async () => {
+      const createUser: CreateUserDto = {
+        externalId: '1',
+        firstName: 'firstName',
+        lastName: 'lastName',
+        email: 'email'
+      }
+      const { id } = await userService.create(createUser)
+      const user = await userService.find(id)
+      expect(user?.firstName).toBe('firstName')
+    })
+  })
 })
