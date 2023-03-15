@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -53,6 +54,15 @@ export class UserControllers {
   async getLoggedUser(@Param(':externalId') externalId: string) {
     try {
       return await this.service.getLoggedUser(externalId)
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
+  }
+
+  @Delete(':id')
+  async destroy(@Param(':id') id: string) {
+    try {
+      return await this.service.destroy(Number(id))
     } catch (error) {
       throw new NotFoundException('Not Found')
     }
