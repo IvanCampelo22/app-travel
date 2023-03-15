@@ -5,10 +5,12 @@ import {
   Get,
   NotFoundException,
   Param,
+  Patch,
   Post
 } from '@nestjs/common'
 import { User } from '@prisma/client'
 import { CreateUserDto } from './dto/user.create.dto'
+import { UpdateUserDto } from './dto/user.update.dto'
 import { UserService } from './user.service'
 
 @Controller('users')
@@ -30,9 +32,18 @@ export class UserControllers {
   }
 
   @Get(':id')
-  async findOne(@Param(':id') id: number) {
+  async findOne(@Param(':id') id: string) {
     try {
-      return await this.service.find(id)
+      return await this.service.find(Number(id))
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
+  }
+
+  @Patch(':id')
+  async update(@Param(':id') id: string, @Body() data: UpdateUserDto) {
+    try {
+      return await this.service.update(Number(id), data)
     } catch (error) {
       throw new NotFoundException('Not Found')
     }
