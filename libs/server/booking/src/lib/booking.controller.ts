@@ -19,9 +19,18 @@ export class BookingController {
     return this.service.new()
   }
 
+  @Get()
+  async index() {
+    return this.service.findMany()
+  }
+
   @Patch(':id')
   async update(@Param('id') id: string, @Body() input: UpdateBookingDto) {
-    return this.service.update(Number(id), input)
+    try {
+      return this.service.update(Number(id), input)
+    } catch (error) {
+      throw new BadRequestException('Bad Request')
+    }
   }
 
   @Delete(':id')
