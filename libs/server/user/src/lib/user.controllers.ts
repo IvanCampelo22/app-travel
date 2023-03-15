@@ -3,6 +3,8 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
+  Param,
   Post
 } from '@nestjs/common'
 import { User } from '@prisma/client'
@@ -24,6 +26,15 @@ export class UserControllers {
       return await this.service.create(data)
     } catch (error) {
       throw new BadRequestException('Bad Request')
+    }
+  }
+
+  @Get(':id')
+  async findOne(@Param(':id') id: number) {
+    try {
+      return await this.service.find(id)
+    } catch (error) {
+      throw new NotFoundException('Not Found')
     }
   }
 }
