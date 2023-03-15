@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch
 } from '@nestjs/common'
@@ -21,7 +22,16 @@ export class BookingController {
 
   @Get()
   async index() {
-    return this.service.findMany()
+    return await this.service.findMany()
+  }
+
+  @Get(':id')
+  async getOne(@Param('id') id: string) {
+    try {
+      return await this.service.find(Number(id))
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
   }
 
   @Patch(':id')
@@ -36,7 +46,7 @@ export class BookingController {
   @Delete(':id')
   async destroy(@Param('id') id: string) {
     try {
-      return this.service.destroy(Number(id))
+      return await this.service.destroy(Number(id))
     } catch (error) {
       throw new BadRequestException('Bad Request')
     }
