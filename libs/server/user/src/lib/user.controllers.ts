@@ -48,4 +48,13 @@ export class UserControllers {
       throw new NotFoundException('Not Found')
     }
   }
+
+  @Get(':externalId')
+  async getLoggedUser(@Param(':externalId') externalId: string) {
+    try {
+      return await this.service.getLoggedUser(externalId)
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
+  }
 }
