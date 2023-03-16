@@ -8,7 +8,6 @@ import {
 import { CreateUserDto } from '../lib/dto/user.create.dto'
 import { UserModule } from './../lib/user.module'
 import { UserService } from './../lib/user.service'
-
 describe('User Service', () => {
   let userService: UserService
   let moduleRef: TestingModule
@@ -98,6 +97,35 @@ describe('User Service', () => {
       const { id } = await userService.create(createUser)
       const user = await userService.update(id, { email: 'email2' })
       expect(user.email).toBe('email2')
+    })
+  })
+
+  describe('destroy', () => {
+    it('should be destroy a user object', async () => {
+      const tenant = await db.tenant.create({
+        data: { name: 'tenant', email: 'tenant1@gmail.com' }
+      })
+      await db.user.createMany({
+        data: [
+          {
+            tenantId: tenant.id,
+            externalId: '1',
+            firstName: 'Paul',
+            lastName: 'Jones',
+            email: 'paul@gmail.com'
+          },
+          {
+            tenantId: tenant.id,
+            externalId: '2',
+            firstName: 'Julie',
+            lastName: 'Marta',
+            email: 'julie@gmail.om'
+          }
+        ]
+      })
+      await userService.destroy(tenant.id)
+      const users = (await userService.findMany())[0]
+      expect(users.isActive).toBe(false)
     })
   })
 })
