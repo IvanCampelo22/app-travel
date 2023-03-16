@@ -98,8 +98,8 @@ describe('new', () => {
   //   })
   // })
 
-  describe('/GET index', () => {
-    it('sucefully', async () => {
+  describe('index', () => {
+    it('should return all objects of the booking', async () => {
       await bookingService.new()
       await bookingService.new()
 
@@ -109,8 +109,8 @@ describe('new', () => {
     })
   })
 
-  describe('/Get findOne', () => {
-    it('sucefully', async () => {
+  describe('find', () => {
+    it('should return one booking object', async () => {
       const { id } = await bookingService.new()
       await bookingService.new()
 
@@ -123,8 +123,8 @@ describe('new', () => {
     })
   })
 
-  describe('/PATCH update', () => {
-    it('sucefully', async () => {
+  describe('update', () => {
+    it('should return a object booking', async () => {
       const booking = await bookingService.new()
 
       const obj = await bookingService.update(booking.id, {
