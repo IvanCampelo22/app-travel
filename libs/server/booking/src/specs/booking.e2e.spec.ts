@@ -76,4 +76,17 @@ describe('Account Controller', () => {
       expect(body.length).toBe(2)
     })
   })
+
+  describe('/GET find', () => {
+    it('suscefully', async () => {
+      const booking = await bookingService.new()
+      const updateBooking = await bookingService.update(booking.id, {
+        customerEmail: 'james@gmail.com'
+      })
+      const findBooking = await bookingService.find(updateBooking.id)
+      const { ok } = await supertest(app.getHttpServer()).get(PATH)
+      expect(ok).toBeTruthy()
+      expect(findBooking?.customerEmail).toEqual('james@gmail.com')
+    })
+  })
 })
