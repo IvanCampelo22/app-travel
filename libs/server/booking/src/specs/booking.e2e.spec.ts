@@ -65,4 +65,15 @@ describe('Account Controller', () => {
       expect(body.length).toBe(1)
     })
   })
+  describe('/GET index', () => {
+    it('suscefully', async () => {
+      await bookingService.new()
+      await bookingService.new()
+
+      const { ok, body } = await supertest(app.getHttpServer()).get(PATH)
+
+      expect(ok).toBeTruthy()
+      expect(body.length).toBe(2)
+    })
+  })
 })
