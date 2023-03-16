@@ -12,7 +12,7 @@ import { BookingService } from '../lib/booking.service'
 import { BookingModule } from './../lib/booking.module'
 import supertest = require('supertest')
 
-describe('Account Controller', () => {
+describe('Booking Controller', () => {
   let app: INestApplication
   let moduleRef: TestingModule
   let bookingService: BookingService
