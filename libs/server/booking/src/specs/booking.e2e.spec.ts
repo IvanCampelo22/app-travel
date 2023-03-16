@@ -1,0 +1,68 @@
+import { INestApplication } from '@nestjs/common'
+import { Test, TestingModule } from '@nestjs/testing'
+import { Account, BookingStatus, Tenant } from '@prisma/client'
+import { CoreModule } from '@server/core'
+import {
+  DatabaseModule,
+  DatabaseService,
+  DatabaseTestService
+} from '@server/database'
+import { BookingService } from '../lib/booking.service'
+import { BookingModule } from './../lib/booking.module'
+import supertest = require('supertest')
+
+describe('Account Controller', () => {
+  let app: INestApplication
+  let moduleRef: TestingModule
+  let bookingService: BookingService
+  const PATH = '/bookings'
+  let db: DatabaseService
+  let franchise: Tenant
+  let agency: Account
+
+  beforeAll(async () => {
+    moduleRef = await Test.createTestingModule({
+      imports: [CoreModule, DatabaseModule, BookingModule]
+    })
+      .overrideProvider(DatabaseService)
+      .useClass(DatabaseTestService)
+      .compile()
+
+    app = moduleRef.createNestApplication()
+    await app.init()
+    bookingService = moduleRef.get<BookingService>(BookingService)
+    db = moduleRef.get<DatabaseService>(DatabaseService)
+  })
+  beforeEach(async () => {
+    await db.booking.deleteMany({})
+  })
+
+  describe('/GET new', () => {
+    it('suscefully', async () => {
+      franchise = await db.tenant.create({
+        data: { name: 'tenant1', email: 'tenant1@gmail.com' }
+      })
+      agency = await db.account.create({
+        data: {
+          tenantId: franchise.id,
+          name: 'account1',
+          email: 'account1@gmail.com',
+          ownerId: 1,
+          category: 'Agency',
+          phone: '123121313'
+        }
+      })
+      const booking = await bookingService.new()
+      expect(booking.id).toBeDefined()
+      expect(booking.tenantId).toEqual(franchise.id)
+      expect(booking.accountId).toEqual(agency.id)
+      expect(booking.status).toEqual(BookingStatus.WaitingService)
+      expect(booking.createdAt).toBeDefined()
+
+      const { ok, body } = await supertest(app.getHttpServer()).get(PATH)
+
+      expect(ok).toBeTruthy()
+      expect(body.length).toBe(1)
+    })
+  })
+})
