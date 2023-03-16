@@ -40,11 +40,11 @@ export class BookingService {
   }
 
   async update(id: number, input: UpdateBookingDto) {
-    return this.db.tenant.update({ where: { id }, data: { ...input } })
+    return this.db.booking.update({ where: { id }, data: { ...input } })
   }
 
   async destroy(id: number) {
-    const tenant = await this.db.tenant.update({
+    const tenant = await this.db.booking.update({
       where: { id },
       data: { isActive: false }
     })
