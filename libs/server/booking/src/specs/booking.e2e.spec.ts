@@ -38,7 +38,7 @@ describe('Account Controller', () => {
     await db.booking.deleteMany({})
   })
 
-  describe('/GET new', () => {
+  describe('GET /new', () => {
     it('suscefully', async () => {
       franchise = await db.tenant.create({
         data: { name: 'tenant1', email: 'tenant1@gmail.com' }
@@ -66,7 +66,7 @@ describe('Account Controller', () => {
       expect(body.length).toBe(1)
     })
   })
-  describe('/GET index', () => {
+  describe('GET /index', () => {
     it('suscefully', async () => {
       await bookingService.new()
       await bookingService.new()
@@ -78,7 +78,7 @@ describe('Account Controller', () => {
     })
   })
 
-  describe('/GET find', () => {
+  describe('GET /find', () => {
     it('suscefully', async () => {
       const booking = await bookingService.new()
       const updateBooking = await bookingService.update(booking.id, {
@@ -91,7 +91,7 @@ describe('Account Controller', () => {
     })
   })
 
-  describe('/PATCH update', () => {
+  describe('PATCH /update', () => {
     it('suscefully', async () => {
       const booking = await bookingService.new()
       const { ok, body } = await supertest(app.getHttpServer())
@@ -106,7 +106,7 @@ describe('Account Controller', () => {
     })
   })
 
-  describe('DELETE /booking', () => {
+  describe('DELETE /destroy', () => {
     it('successfully', async () => {
       await bookingService.new()
       const booking = (await bookingService.findMany())[0]
