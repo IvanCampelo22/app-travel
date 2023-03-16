@@ -89,4 +89,19 @@ describe('Account Controller', () => {
       expect(findBooking?.customerEmail).toEqual('james@gmail.com')
     })
   })
+
+  describe('/PATCH update', () => {
+    it('suscefully', async () => {
+      const booking = await bookingService.new()
+      const { ok, body } = await supertest(app.getHttpServer())
+        .patch(`${PATH}/${booking.id}`)
+        .send({ customerName: 'Henry' })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(ok).toBeTruthy()
+      expect(body['id']).toBeDefined()
+      expect(body['customerName']).toBe('Henry')
+    })
+  })
 })
