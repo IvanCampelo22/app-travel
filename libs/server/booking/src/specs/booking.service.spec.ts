@@ -108,4 +108,16 @@ describe('new', () => {
       expect(objsBooking.length).toBe(2)
     })
   })
+
+  describe('/PATCH update', () => {
+    it('sucefully', async () => {
+      const booking = await bookingService.new()
+
+      const obj = await bookingService.update(booking.id, {
+        customerEmail: 'marco@gmail.com'
+      })
+
+      expect(obj.customerEmail).toBe('marco@gmail.com')
+    })
+  })
 })
