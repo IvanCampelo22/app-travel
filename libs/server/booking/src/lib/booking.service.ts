@@ -44,13 +44,13 @@ export class BookingService {
   }
 
   async destroy(id: number) {
-    const tenant = await this.db.booking.update({
+    const booking = await this.db.booking.update({
       where: { id },
       data: { isActive: false }
     })
 
-    await this.userService.destroy(tenant.id)
+    await this.userService.destroy(booking.id)
 
-    return tenant
+    return booking
   }
 }
