@@ -109,6 +109,20 @@ describe('new', () => {
     })
   })
 
+  describe('/Get findOne', () => {
+    it('sucefully', async () => {
+      const { id } = await bookingService.new()
+      await bookingService.new()
+
+      await bookingService.update(id, {
+        customerEmail: 'gabriel@gmail.com'
+      })
+
+      const obj = await bookingService.find(id)
+      expect(obj?.customerEmail).toBe('gabriel@gmail.com')
+    })
+  })
+
   describe('/PATCH update', () => {
     it('sucefully', async () => {
       const booking = await bookingService.new()
