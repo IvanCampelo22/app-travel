@@ -7,6 +7,7 @@ import {
   DatabaseService,
   DatabaseTestService
 } from '@server/database'
+import * as request from 'supertest'
 import { BookingService } from '../lib/booking.service'
 import { BookingModule } from './../lib/booking.module'
 import supertest = require('supertest')
@@ -102,6 +103,22 @@ describe('Account Controller', () => {
       expect(ok).toBeTruthy()
       expect(body['id']).toBeDefined()
       expect(body['customerName']).toBe('Henry')
+    })
+  })
+
+  describe('DELETE /booking', () => {
+    it('successfully', async () => {
+      await bookingService.new()
+      const booking = (await bookingService.findMany())[0]
+
+      const { ok, body } = await request(app.getHttpServer())
+        .delete(`${PATH}/${booking.id}`)
+        .send({})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(ok).toBeTruthy()
+      expect(body['isActive']).toBeFalsy()
     })
   })
 })
