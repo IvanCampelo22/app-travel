@@ -24,7 +24,7 @@ let franchise: Tenant
 //let franchiseMasterUser: User
 let agency: Account
 //let agencyMasterUser: User
-
+let db: DatabaseService
 beforeAll(async () => {
   moduleRef = await Test.createTestingModule({
     imports: [
@@ -44,6 +44,7 @@ beforeAll(async () => {
   //userService = moduleRef.get<UserService>(UserService)
   accountService = moduleRef.get<AccountService>(AccountService)
   bookingService = moduleRef.get<BookingService>(BookingService)
+  db = moduleRef.get<DatabaseService>(DatabaseService)
 
   franchise = await tenantService.create({
     name: 'tenant1',
@@ -59,6 +60,10 @@ beforeAll(async () => {
     phone: '123121313'
   })
   //agencyMasterUser = (await userService.find(agency.id))!
+})
+
+beforeEach(async () => {
+  await db.booking.deleteMany({})
 })
 
 afterAll(() => {
@@ -92,4 +97,15 @@ describe('new', () => {
   //     expect(productArray).toEqual('')
   //   })
   // })
+
+  describe('/GET index', () => {
+    it('sucefully', async () => {
+      await bookingService.new()
+      await bookingService.new()
+
+      const objsBooking = await bookingService.findMany()
+
+      expect(objsBooking.length).toBe(2)
+    })
+  })
 })
