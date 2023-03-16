@@ -3,7 +3,8 @@ name: Deploy Web
 on:
   push:
     branches:
-      - stage
+      - development   
+      # - stage
 
 env:
   AWS_REGION: sa-east-1
@@ -70,7 +71,7 @@ jobs:
           image: ${{ env.ECR_REPOSITORY }}:${{ github.sha }}
 
       - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
+        uses: aws-actions/amazon-ecs-deploy-task-definition@@v1.4.10
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
