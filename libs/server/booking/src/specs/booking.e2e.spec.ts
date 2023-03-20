@@ -113,6 +113,15 @@ describe('Booking Controller', () => {
       expect(body['id']).toBeDefined()
       expect(body['customerName']).toBe('Henry')
     })
+    it('should throw NotFoundException', async () => {
+      const { statusCode } = await request(app.getHttpServer())
+        .patch(`${PATH}/${200}`)
+        .send({ customerName: 'Henry' })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(statusCode).toEqual(404)
+    })
   })
 
   describe('DELETE /destroy', () => {
