@@ -89,6 +89,15 @@ describe('Booking Controller', () => {
       expect(ok).toBeTruthy()
       expect(findBooking?.customerEmail).toEqual('james@gmail.com')
     })
+    it('should throw NotFoundException', async () => {
+      const { statusCode } = await request(app.getHttpServer())
+        .post(PATH)
+        .send({})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(statusCode).toEqual(404)
+    })
   })
 
   describe('PATCH /update', () => {
