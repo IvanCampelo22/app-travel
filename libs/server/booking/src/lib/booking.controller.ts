@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -37,9 +36,9 @@ export class BookingController {
   @Patch(':id')
   async update(@Param('id') id: string, @Body() input: UpdateBookingDto) {
     try {
-      return this.service.update(Number(id), input)
+      return await this.service.update(Number(id), input)
     } catch (error) {
-      throw new BadRequestException('Bad Request')
+      throw new NotFoundException('Not Found')
     }
   }
 
@@ -48,7 +47,7 @@ export class BookingController {
     try {
       return await this.service.destroy(Number(id))
     } catch (error) {
-      throw new BadRequestException('Bad Request')
+      throw new NotFoundException('Not Found')
     }
   }
 }
