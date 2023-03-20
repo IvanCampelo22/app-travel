@@ -138,5 +138,14 @@ describe('Booking Controller', () => {
       expect(ok).toBeTruthy()
       expect(body['isActive']).toBeFalsy()
     })
+    it('should throw NotFoundException', async () => {
+      const { statusCode } = await request(app.getHttpServer())
+        .patch(`${PATH}/${200}`)
+        .send({})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(statusCode).toEqual(404)
+    })
   })
 })
