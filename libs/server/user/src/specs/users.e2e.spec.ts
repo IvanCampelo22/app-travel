@@ -59,4 +59,20 @@ describe('Booking Controller', () => {
       expect(body.length).toBe(2)
     })
   })
+  describe('POST /users', () => {
+    it('sucefully', async () => {
+      const { ok, body } = await await supertest(app.getHttpServer())
+        .post(PATH)
+        .send({
+          externalId: '1',
+          firstName: 'Henry',
+          lastName: 'James',
+          email: 'henry@gmail.com'
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+      expect(ok).toBeTruthy()
+      expect(body['firstName']).toEqual('Henry')
+    })
+  })
 })
