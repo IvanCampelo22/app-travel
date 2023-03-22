@@ -10,7 +10,7 @@ import { UserModule } from '../lib/user.module'
 import { UserService } from '../lib/user.service'
 import supertest = require('supertest')
 
-describe('Booking Controller', () => {
+describe('Users Controllers', () => {
   jest.setTimeout(1000000)
 
   let app: INestApplication
@@ -73,6 +73,27 @@ describe('Booking Controller', () => {
         .expect('Content-Type', /json/)
       expect(ok).toBeTruthy()
       expect(body['firstName']).toEqual('Henry')
+    })
+  })
+
+  describe('PACTH /users', () => {
+    it('successfully', async () => {
+      const { id } = await userService.create({
+        externalId: '1',
+        firstName: 'James',
+        lastName: 'Gabriel',
+        email: 'james@gmail.com'
+      })
+
+      const { body, ok } = await supertest(app.getHttpServer())
+        .patch(`${PATH}/${id}`)
+        .send({ email: 'james2@gmail.com' })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(ok).toBeTruthy()
+      expect(body['id']).toBeDefined()
+      expect(body['email']).toBe('james2@gmail.com')
     })
   })
 })
