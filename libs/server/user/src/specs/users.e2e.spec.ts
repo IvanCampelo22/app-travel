@@ -75,6 +75,16 @@ describe('Users Controllers', () => {
       expect(ok).toBeTruthy()
       expect(body['firstName']).toEqual('Henry')
     })
+
+    it('should throw BadRequestException', async () => {
+      const { statusCode } = await request(app.getHttpServer())
+        .post(PATH)
+        .send({})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(statusCode).toEqual(400)
+    })
   })
 
   describe('PACTH /users', () => {
