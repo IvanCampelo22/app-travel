@@ -106,9 +106,18 @@ describe('Users Controllers', () => {
       expect(body['id']).toBeDefined()
       expect(body['email']).toBe('james2@gmail.com')
     })
+    it('should throw NotFoundException', async () => {
+      const { statusCode } = await request(app.getHttpServer())
+        .patch(`${PATH}/${200}`)
+        .send({ firstName: 'Henry' })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(statusCode).toEqual(404)
+    })
   })
 
-  describe('DELETE /LoggedUser', () => {
+  describe('DELETE /destroy', () => {
     it('suscefully', async () => {
       const tenant = await db.tenant.create({
         data: { name: 'Henry', email: 'Jonas' }
