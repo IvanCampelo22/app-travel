@@ -42,7 +42,7 @@ export class UserControllers {
   }
 
   @Patch(':id')
-  async update(@Param(':id') id: string, @Body() data: UpdateUserDto) {
+  async update(@Param('id') id: string, @Body() data: UpdateUserDto) {
     try {
       return await this.service.update(Number(id), data)
     } catch (error) {
@@ -51,7 +51,7 @@ export class UserControllers {
   }
 
   @Get(':externalId')
-  async getLoggedUser(@Param(':externalId') externalId: string) {
+  async getLoggedUser(@Param('externalId') externalId: string) {
     try {
       return await this.service.getLoggedUser(externalId)
     } catch (error) {
@@ -60,7 +60,7 @@ export class UserControllers {
   }
 
   @Delete(':id')
-  async destroy(@Param(':id') id: string) {
+  async destroy(@Param('id') id: string) {
     try {
       return await this.service.destroy(Number(id))
     } catch (error) {
