@@ -6,6 +6,7 @@ import {
   DatabaseService,
   DatabaseTestService
 } from '@server/database'
+import * as request from 'supertest'
 import { UserModule } from '../lib/user.module'
 import { UserService } from '../lib/user.service'
 import supertest = require('supertest')
@@ -94,6 +95,31 @@ describe('Users Controllers', () => {
       expect(ok).toBeTruthy()
       expect(body['id']).toBeDefined()
       expect(body['email']).toBe('james2@gmail.com')
+    })
+  })
+
+  describe('DELETE /LoggedUser', () => {
+    it('suscefully', async () => {
+      const tenant = await db.tenant.create({
+        data: { name: 'Henry', email: 'Jonas' }
+      })
+      await userService.create({
+        tenantId: tenant.id,
+        externalId: '1',
+        firstName: 'Vaiola',
+        lastName: 'Joana',
+        email: 'vaiola@gmail.com'
+      })
+      const user = (await userService.findMany())[0]
+
+      const { ok, body } = await request(app.getHttpServer())
+        .delete(`${PATH}/${user.tenantId}`)
+        .send({})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(ok).toBeTruthy()
+      expect(body['isActive']).toBeFalsy()
     })
   })
 })
