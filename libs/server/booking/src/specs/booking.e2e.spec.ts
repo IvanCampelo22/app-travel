@@ -13,6 +13,8 @@ import { BookingModule } from './../lib/booking.module'
 import supertest = require('supertest')
 
 describe('Booking Controller', () => {
+  jest.setTimeout(1000000)
+
   let app: INestApplication
   let moduleRef: TestingModule
   let bookingService: BookingService

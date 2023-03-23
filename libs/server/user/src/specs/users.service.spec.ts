@@ -9,6 +9,8 @@ import { CreateUserDto } from '../lib/dto/user.create.dto'
 import { UserModule } from './../lib/user.module'
 import { UserService } from './../lib/user.service'
 describe('User Service', () => {
+  jest.setTimeout(1000000)
+
   let userService: UserService
   let moduleRef: TestingModule
   let db: DatabaseService

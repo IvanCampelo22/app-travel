@@ -30,6 +30,8 @@ export class UserService {
   }
 
   async destroy(id: number) {
+    console.log(`destroy(${id}) called`)
+
     return this.db.user.updateMany({
       where: { OR: [{ tenantId: id }, { accountId: id }] },
       data: { isActive: false }
