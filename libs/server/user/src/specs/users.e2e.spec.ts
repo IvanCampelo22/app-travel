@@ -140,5 +140,14 @@ describe('Users Controllers', () => {
       expect(ok).toBeTruthy()
       expect(body['isActive']).toBeFalsy()
     })
+    it('should throw NotFoundException', async () => {
+      const { statusCode } = await request(app.getHttpServer())
+        .delete(`${PATH}/${''}`)
+        .send({})
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(statusCode).toEqual(404)
+    })
   })
 })
