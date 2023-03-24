@@ -92,3 +92,20 @@ jobs:
           service: ${{ env.SERVER_ECS_SERVICE }}
           cluster: ${{ env.SERVER_ECS_CLUSTER }}
           wait-for-service-stability: true
+
+      - name: Grant Permissions build-web.sh
+        run: chmod +x build-web.sh
+
+      - name: Build Web
+        run: ./build-web.sh
+
+      - name: Build, tag, and push image to Amazon ECR for WEB
+        env:
+          WEBECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          WEBECR_REPOSITORY: v10-eng-dev-frontend-node
+          WEBIMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $WEBECR_REGISTRY/$WEBECR_REPOSITORY:$IMAGE_TAG -f apps/web/Dockerfile .
+          docker push $WEBECR_REGISTRY/$WEBECR_REPOSITORY:$IMAGE_TAG 
+          docker build -t $WEBECR_REGISTRY/$WEBECR_REPOSITORY:latest -f apps/web/Dockerfile .
+          docker push $WEBECR_REGISTRY/$WEBECR_REPOSITORY:latest
