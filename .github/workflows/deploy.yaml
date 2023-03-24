@@ -117,3 +117,11 @@ jobs:
           task-definition: ecs-web-task-definition.json
           container-name: ${{ env.WEB_CONTAINER_NAME }}
           image: ${{ env.WEB_ECR_REPOSITORY }}:${{ github.sha }}
+
+      - name: Deploy Amazon ECS task definition for WEB
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1.4.10
+        with:
+          task-definition: ${{ steps.task-def-web.outputs.task-definition }}
+          service: ${{ env.WEB_ECS_SERVICE }}
+          cluster: ${{ env.WEB_ECS_CLUSTER }}
+          wait-for-service-stability: true
