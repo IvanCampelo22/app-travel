@@ -1,12 +1,10 @@
 import { MantineThemeOverride } from '@mantine/core'
 
-// const defaultFont = Fira_Sans_Condensed({
-//   weight: ['300', '400', '500', '600', '700'],
-//   style: 'normal',
-//   subsets: ['latin']
-// })
-
-const customTheme: MantineThemeOverride = {
+const customTheme = (fontFamily: string): MantineThemeOverride => ({
+  fontFamily: fontFamily,
+  headings: {
+    fontFamily: fontFamily
+  },
   colors: {
     gray: [
       '#F9FAFB',
@@ -67,8 +65,21 @@ const customTheme: MantineThemeOverride = {
       '#175CD3',
       '#1849A9',
       '#194185'
+    ],
+    blueGray: [
+      '#F8F9FC',
+      '#EAECF5',
+      '#D5D9EB',
+      '#AFB5D9',
+      '#717BBC',
+      '#4E5BA6',
+      '#3E4784',
+      '#363F72',
+      '#293056',
+      '#101323'
     ]
   },
+  primaryColor: 'blue',
   components: {
     Input: {
       styles: (theme) => ({
@@ -82,6 +93,6 @@ const customTheme: MantineThemeOverride = {
       })
     }
   }
-}
+})
 
 export { customTheme }

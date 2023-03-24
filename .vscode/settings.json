@@ -35,7 +35,7 @@
     ]
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "vscode.typescript-language-features",
     "editor.codeActionsOnSave": [
       "source.organizeImports",
       "source.formatDocument",
@@ -65,8 +65,8 @@
     ".husky": true,
     "**/.gitkeep": true,
     "**/.turbo": true,
-    "**/.next": true,
-    "**/dist": true
+    "**/.next": true
+    // "**/dist": true
   },
   "search.exclude": {
     "./.nx-container": true,
@@ -83,5 +83,6 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma",
     "editor.codeActionsOnSave": ["source.formatDocument"]
-  }
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

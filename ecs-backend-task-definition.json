@@ -1,0 +1,41 @@
+{
+  "executionRoleArn": "arn:aws:iam::060454264788:role/v10-eng-ecsTaskExecutionRole-dev",
+  "containerDefinitions": [
+    {
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/v10-eng-dev-backend-ts",
+          "awslogs-region": "sa-east-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      },
+      "portMappings": [
+        {
+          "hostPort": 8000,
+          "protocol": "tcp",
+          "containerPort": 8000
+        }
+      ],
+      "linuxParameters": {
+        "initProcessEnabled": true
+      },
+      "image": "060454264788.dkr.ecr.sa-east-1.amazonaws.com/v10-eng-dev-backend-ts:latest",
+      "name": "backend-ts",
+      "secrets": [
+        {
+          "name": "DATABASE_URL",
+          "valueFrom": "arn:aws:ssm:sa-east-1:060454264788:parameter/dev/backend/DATABASE_URL"
+        }
+      ]
+    }
+  ],
+  "placementConstraints": [],
+  "memory": "2048",
+  "taskRoleArn": "arn:aws:iam::060454264788:role/v10-eng-ecsTaskRole-dev",
+  "family": "v10-eng-dev-backend-ts",
+  "requiresAttributes": [],
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "cpu": "1024"
+}

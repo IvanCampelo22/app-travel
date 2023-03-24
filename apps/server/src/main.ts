@@ -1,12 +1,14 @@
 import { Logger } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { MainModule } from './main.module'
-;(BigInt.prototype as any).toJSON = function () {
-  return this.toString()
-}
 
 async function bootstrap() {
   const app = await NestFactory.create(MainModule)
+  app.enableCors({
+    origin: ['http://localhost:4200', 'https://web.dev.viagem10.com'],
+    credentials: true,
+    methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS,PATCH'
+  })
   const globalPrefix = 'api'
   app.setGlobalPrefix(globalPrefix)
   const port = process.env.PORT || 3000

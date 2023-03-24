@@ -12,5 +12,6 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest'
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../../coverage/libs/server/tenant'
+  coverageDirectory: '../../../coverage/libs/server/tenant',
+  testTimeout: 60 * 100
 }
