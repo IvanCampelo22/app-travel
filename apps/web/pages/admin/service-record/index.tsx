@@ -57,12 +57,9 @@ const schema = z.object({
 })
 
 const IndexPage: NextPageWithLayout = () => {
-  const { NODE_ENV } = process.env
+  const API_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
-  const API_URL =
-    NODE_ENV === 'production'
-      ? 'https://backend.dev.viagem10.com'
-      : 'http://localhost:3000'
+  console.log(API_URL)
 
   const [opened, setOpened] = useState(false)
   const [rooms, setRooms] = useState<any[]>([])
@@ -70,7 +67,7 @@ const IndexPage: NextPageWithLayout = () => {
   const { data } = useQuery(
     ['newBooking'],
     () =>
-      fetch(`${API_URL}/api/bookings/new`)
+      fetch(`${API_URL}/bookings/new`)
         .then((res) => res.json())
         .catch(() => alert('Erro ao criar booking')),
     {
@@ -108,7 +105,7 @@ const IndexPage: NextPageWithLayout = () => {
   })
 
   const mutation = useMutation(() => {
-    return fetch(`${API_URL}/api/bookings/${data.id}`, {
+    return fetch(`${API_URL}/bookings/${data.id}`, {
       method: 'PATCH',
       body: JSON.stringify(form.values),
       headers: { 'Content-type': 'application/json;charset=UTF-8' }
