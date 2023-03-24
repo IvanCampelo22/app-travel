@@ -1,9 +1,9 @@
-name: Build & Deploy
+name: Deploy Server
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - development
 
 env:
   AWS_REGION: sa-east-1
@@ -39,14 +39,8 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Start DB
-        run: docker run --name db -p 5432:5432 -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -d postgres:14-alpine
-
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
-
-      - name: Prisma Migrate
-        run: yarn prisma migrate dev --schema=libs/server/infra/database/prisma/schema.prisma
 
       - name: Grant Permissions build-server.sh
         run: chmod +x build-server.sh

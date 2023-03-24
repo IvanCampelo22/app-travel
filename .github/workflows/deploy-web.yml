@@ -3,8 +3,7 @@ name: Deploy Web
 on:
   pull_request:
     branches:
-      - development   
-      # - stage
+      - development
 
 env:
   AWS_REGION: sa-east-1
@@ -38,7 +37,7 @@ jobs:
       - name: Grant Permissions build-web.sh
         run: chmod +x build-web.sh
 
-      - name: Build Server
+      - name: Build Web
         run: ./build-web.sh
 
       - name: Configure AWS credentials
