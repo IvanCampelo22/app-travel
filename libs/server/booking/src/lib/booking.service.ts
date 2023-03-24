@@ -25,7 +25,6 @@ export class BookingService {
       data: {
         tenantId: account.tenantId,
         accountId: account.id
-        //ownerId: account.accountUsers[0].id
       }
     })
     return booking
