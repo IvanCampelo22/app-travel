@@ -5,7 +5,11 @@ import { MainModule } from './main.module'
 async function bootstrap() {
   const app = await NestFactory.create(MainModule)
   app.enableCors({
-    origin: ['http://localhost:4200', 'https://web.dev.viagem10.com'],
+    origin: [
+      'http://localhost:4200',
+      'https://web.dev.viagem10.com',
+      'https://viagem10-monorepo-git-main-fabianofsantos.vercel.app'
+    ],
     credentials: true,
     methods: 'GET,PUT,POST,DELETE,UPDATE,OPTIONS,PATCH'
   })
