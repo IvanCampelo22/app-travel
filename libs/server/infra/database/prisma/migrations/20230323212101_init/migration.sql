@@ -130,7 +130,7 @@ CREATE TABLE "Booking" (
     "tenantId" INTEGER NOT NULL,
     "accountId" INTEGER NOT NULL,
     "customerId" INTEGER,
-    "ownerId" INTEGER NOT NULL,
+    "ownerId" INTEGER,
     "customerName" VARCHAR(128),
     "customerEmail" VARCHAR(64),
     "customerPhone" VARCHAR(32),

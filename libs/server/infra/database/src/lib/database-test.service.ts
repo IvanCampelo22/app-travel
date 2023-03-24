@@ -19,13 +19,7 @@ export class DatabaseTestService
 
   constructor(private readonly config: ConfigService) {
     const schema = v4()
-    const user = config.get<string>('database.user')
-    const name = config.get<string>('database.name')
-    const password = config.get<string>('database.password')
-    const host = config.get<string>('database.host')
-    const port = config.get<string>('database.port')
-    const url = `postgresql://${user}:${password}@${host}:${port}/${name}?schema=?${schema}`
-    console.log(url)
+    const url = `${config.get<string>('database.url')}?schema=?${schema}`
 
     super({
       datasources: { db: { url } }
