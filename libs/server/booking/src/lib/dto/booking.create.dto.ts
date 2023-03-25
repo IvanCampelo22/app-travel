@@ -1,5 +1,7 @@
+import { BookingProduct } from '@prisma/client'
 import { Decimal } from '@prisma/client/runtime'
 import {
+  IsArray,
   IsBoolean,
   IsDate,
   IsDecimal,
@@ -131,4 +133,8 @@ export class CreateBookingDto {
   @IsOptional()
   @IsBoolean()
   isActive?: boolean
+
+  @IsOptional()
+  @IsArray()
+  products: BookingProduct[]
 }
