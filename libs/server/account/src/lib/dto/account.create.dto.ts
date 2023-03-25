@@ -2,6 +2,7 @@ import { AccountCategory } from '@prisma/client'
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString
@@ -18,6 +19,7 @@ export class CreateAccountDto {
   name: string
 
   @IsString()
+  @IsEnum(AccountCategory)
   category: AccountCategory
 
   @IsOptional()
