@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import {
   Box,
@@ -25,7 +25,7 @@ import {
   QueryClient,
   QueryClientProvider,
   useMutation,
-  useQuery
+  useQueries
 } from '@tanstack/react-query'
 
 import { DateRangePicker } from '@mantine/dates'
@@ -35,10 +35,11 @@ import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 import { CustomerServiceResume } from '@web/customer-service-resume'
 import { Header } from '@web/header'
 import { RoomPrefs } from '@web/room-prefs'
+import { useRouter } from 'next/router'
 
 const queryClient = new QueryClient()
 
-const schema = z.object({
+const schemaProduct = z.object({
   data: z.object({
     products: z.object({
       createMany: z.object({
@@ -56,28 +57,104 @@ const schema = z.object({
   })
 })
 
+const schemaClient = z.object({
+  data: z.object({
+    tenantId: z.number().min(1),
+    ownerId: z.number().min(1),
+    category: z.string().min(1),
+    name: z.string().min(2, { message: 'Name should have at least 2 letters' }),
+    email: z.string().email({ message: 'Invalid email' }),
+    phone: z.string()
+  })
+})
+
+interface IBooking {
+  data: {
+    customerName: string
+    customerEmail: string
+    customerPhone: string
+    products: {
+      createMany: {
+        data: {
+          tenantId: number
+          accountId: number
+          ownerId: number
+          category: string
+          accommodationType: string
+          toLocation: string
+          startDate: Date
+          endDate: Date
+          hotelName: string
+          hotelMealPlan: string
+        }[];
+      };
+    };
+  };
+}
+
+interface IClient {
+  data: {
+    tenantId: number
+    ownerId: number
+    category: string
+    name: string
+    email: string
+    phone: string
+  };
+}
+
 const IndexPage: NextPageWithLayout = () => {
   const API_URL = process.env.NEXT_PUBLIC_SERVER_URL
 
-  console.log(API_URL)
-
-  const [opened, setOpened] = useState(false)
+  const [opened, setOpened] = useState<boolean>(false)
   const [rooms, setRooms] = useState<any[]>([])
 
-  const { data } = useQuery(
-    ['newBooking'],
-    () =>
-      fetch(`${API_URL}/bookings/new`)
-        .then((res) => res.json())
-        .catch(() => alert('Erro ao criar booking')),
-    {
-      staleTime: Infinity
+  const router = useRouter();
+  const linkParams = router.query;
+
+  const [newBooking, getClients, getBooking] = useQueries({
+    queries: [
+      {
+        queryKey: ['newBooking'],
+        staleTime: Infinity,
+        queryFn: () =>
+          fetch(`${API_URL}/bookings/new`)
+            .then((res) => res.json())
+            .catch(() => alert('Erro ao criar booking')),
+        enabled: !linkParams.bookingId ? true : false
+      },
+
+      {
+        queryKey: ['getClients'],
+        queryFn: () =>
+          fetch(`${API_URL}/accounts`)
+            .then((res) => res.json())
+            .catch(() => alert('Erro ao buscar usuários')),
+      },
+
+      {
+        queryKey: ['getBooking'],
+        queryFn: () =>
+          fetch(`${API_URL}/bookings/${linkParams.bookingId}`)
+            .then((res) => res.json())
+            .catch(() => alert('Erro ao buscar usuários')),
+        enabled: linkParams.bookingId ? true : false
+      },
+    ],
+  });
+
+  useEffect(() => {
+    if (!linkParams.bookingId) {
+      newBooking.refetch();
     }
-  )
+  }, []);
 
   const bookingUpdate = {
-    ...data,
+    ...newBooking,
     data: {
+      customerName: '',
+      customerEmail: '',
+      customerPhone: '',
       products: {
         createMany: {
           data: [
@@ -99,21 +176,60 @@ const IndexPage: NextPageWithLayout = () => {
     }
   }
 
-  const form = useForm({
-    validate: zodResolver(schema),
+  const clientCreate = {
+    data: {
+      tenantId: 1,
+      ownerId: 1,
+      category: 'Agency',
+      name: '',
+      email: '',
+      phone: ''
+    }
+  }
+
+  const clients = !getClients.isLoading ? getClients.data.map((client) => client.name) : []
+
+  const formProduct = useForm<IBooking>({
+    validate: zodResolver(schemaProduct),
     initialValues: bookingUpdate
   })
 
-  const mutation = useMutation(() => {
-    return fetch(`${API_URL}/bookings/${data.id}`, {
+  const formClient = useForm<IClient>({
+    validate: zodResolver(schemaClient),
+    initialValues: clientCreate
+  })
+
+  const selectClient = (name) => {
+    const client = getClients.data.filter(client => client.name === name);
+
+    formProduct.setFieldValue('data.customerName', client[0].name);
+    formProduct.setFieldValue('data.customerEmail', client[0].email);
+    formProduct.setFieldValue('data.customerPhone', client[0].phone);
+  }
+
+  const newProduct = useMutation(() => {
+    return fetch(`${API_URL}/bookings/${!linkParams.bookingId ? newBooking.data.id : linkParams.bookingId}`, {
       method: 'PATCH',
-      body: JSON.stringify(form.values),
+      body: JSON.stringify(formProduct.values.data),
       headers: { 'Content-type': 'application/json;charset=UTF-8' }
     })
       .then(() => {
-        alert('Novo Produto Adicionado')
+        alert('Novo produto adicionado')
       })
       .catch(() => alert('Erro ao adicionar produto'))
+  })
+
+  const newClient = useMutation(() => {
+    setOpened(false);
+    return fetch(`${API_URL}/accounts`, {
+      method: 'POST',
+      body: JSON.stringify(formClient.values.data),
+      headers: { 'Content-type': 'application/json;charset=UTF-8' }
+    })
+      .then(() => {
+        alert('Novo cliente adicionado')
+      })
+      .catch(() => alert('Erro ao adicionar cliente'))
   })
 
   return (
@@ -131,44 +247,49 @@ const IndexPage: NextPageWithLayout = () => {
           subtitle="Preencha os dados do cliente"
         />
         <Box mt="md">
-          <TextInput label="Nome" />
-          <Group mt="md" grow>
-            <TextInput label="Telefone" />
-            <TextInput label="Email" />
-          </Group>
-          <Group mt="md" position="right">
-            <Button color="blue.9">Adicionar</Button>
-          </Group>
+          <form
+            onSubmit={formClient.onSubmit(() => {
+              newClient.mutate()
+            })}>
+            <TextInput withAsterisk label="Nome"  {...formClient.getInputProps('data.name')} />
+            <Group mt="md" grow>
+              <TextInput label="Telefone" {...formClient.getInputProps('data.phone')} />
+              <TextInput withAsterisk label="Email" {...formClient.getInputProps('data.email')} />
+            </Group>
+            <Group mt="md" position="right">
+              <Button color="blue.9" type="submit">Adicionar</Button>
+            </Group>
+          </form>
         </Box>
       </Drawer>
       <Header
-        title="Novo Atendimento"
+        title={linkParams.bookingId ? 'Edit Booking' : 'New Booking'}
         subtitle={`12FEV20022020003 - 12/12/2012`}
         justify="space-between"
       >
         <Link href="/admin/customer-service">
-          <Button variant="default">Voltar</Button>
+          <Button variant="default">Back</Button>
         </Link>
       </Header>
       <Divider color="gray.3" mt="sm" />
       <Grid mt={36} grow>
         <Grid.Col lg={7}>
           <form
-            onSubmit={form.onSubmit(() => {
-              mutation.mutate()
+            onSubmit={formProduct.onSubmit(() => {
+              newProduct.mutate()
             })}
           >
             <Paper withBorder p="md">
               <Header
-                title="Cliente"
-                subtitle="Selecione um cliente ou adicione um"
+                title="Customer"
+                subtitle="Select a customer or add one"
                 subHead={true}
                 justify="space-between"
               />
               <Divider color="gray.3" mt="lg" mb="lg" />
               <Flex justify="space-between" gap="sm">
                 <Select
-                  placeholder="Selecine o cliente"
+                  placeholder="Select the customer"
                   styles={(theme) => ({
                     root: {
                       maxWidth: '95%',
@@ -178,8 +299,10 @@ const IndexPage: NextPageWithLayout = () => {
                       display: 'none'
                     }
                   })}
-                  data={[{ value: 'Jay Jay Okocha', label: 'Jay Jay Okocha' }]}
-                  {...form.getInputProps('data.customerName')}
+                  data={clients}
+                  onChange={(selectedOption) => {
+                    selectClient(selectedOption)
+                  }}
                 />
                 <Button variant="default" onClick={() => setOpened(true)}>
                   <IconPlus size={18} stroke={1.5} />
@@ -189,8 +312,8 @@ const IndexPage: NextPageWithLayout = () => {
             <Paper withBorder mt={36} p="md">
               <Flex direction="column" gap="xl">
                 <Header
-                  title="Produtos"
-                  subtitle="Adicione um ou mais produtos"
+                  title="Products"
+                  subtitle="Add one or more products"
                   subHead={true}
                   justify="space-between"
                 />
@@ -202,33 +325,33 @@ const IndexPage: NextPageWithLayout = () => {
                       display: 'none'
                     }
                   })}
-                  data={[{ value: 'Accommodation', label: 'Hospedagem' }]}
-                  {...form.getInputProps(
+                  data={[{ value: 'Accommodation', label: 'Accommodation' }]}
+                  {...formProduct.getInputProps(
                     'data.products.createMany.data.0.category'
                   )}
                 />
                 <Group grow>
                   <Select
-                    placeholder="Selecione tipo hospedagem"
+                    placeholder="Select hosting type"
                     styles={(theme) => ({
                       error: {
                         display: 'none'
                       }
                     })}
                     data={[{ value: 'Hotel', label: 'Hotel' }]}
-                    {...form.getInputProps(
+                    {...formProduct.getInputProps(
                       'data.products.createMany.data.0.accommodationType'
                     )}
                   />
                   <Select
-                    placeholder="Selecione a cidade"
+                    placeholder="Select the city"
                     styles={(theme) => ({
                       error: {
                         display: 'none'
                       }
                     })}
                     data={[{ value: 'Nova York', label: 'Nova York' }]}
-                    {...form.getInputProps(
+                    {...formProduct.getInputProps(
                       'data.products.createMany.data.0.toLocation'
                     )}
                   />
@@ -238,42 +361,42 @@ const IndexPage: NextPageWithLayout = () => {
                     clearable={false}
                     icon={<IconCalendar size={18} />}
                     inputFormat="DD/MM/YYYY"
-                    placeholder="Data de ida e volta"
+                    placeholder="Departure and return date"
                     value={[new Date(), new Date()]}
                     onChange={(e) => {
-                      form.setFieldValue(
+                      formProduct.setFieldValue(
                         'data.products.createMany.data.0.startDate',
                         e[0]
                       )
-                      form.setFieldValue(
+                      formProduct.setFieldValue(
                         'data.products.createMany.data.0.endDate',
                         e[1]
                       )
                     }}
                   />
                   <Select
-                    placeholder="Selecione o hotel"
+                    placeholder="Select the hotel"
                     styles={(theme) => ({
                       error: {
                         display: 'none'
                       }
                     })}
                     data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
-                    {...form.getInputProps(
+                    {...formProduct.getInputProps(
                       'data.products.createMany.data.0.hotelName'
                     )}
                   />
                 </Group>
                 <Group grow>
                   <Select
-                    placeholder="Plano de alimentação"
+                    placeholder="Meal plan"
                     styles={(theme) => ({
                       error: {
                         display: 'none'
                       }
                     })}
-                    data={[{ value: 'Meia Pensão', label: 'Meia pensão' }]}
-                    {...form.getInputProps(
+                    data={[{ value: 'Half Board', label: 'Half Board' }]}
+                    {...formProduct.getInputProps(
                       'data.products.createMany.data.0.hotelMealPlan'
                     )}
                   />
