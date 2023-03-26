@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import {
   ActionIcon,
   Avatar,
@@ -24,7 +26,18 @@ const useStyles = createStyles((theme) => ({
   }
 }))
 
-export function TableRow() {
+interface TableRowPrefs {
+  id: string
+  customer: string
+  customerEmail: string
+  date: string
+  status: string
+  onClickDelete: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void
+}
+
+export function TableRow(props: TableRowPrefs) {
   const { classes } = useStyles()
 
   return (
@@ -39,10 +52,10 @@ export function TableRow() {
           <Avatar radius="xl" />
           <div>
             <Text color="gray.9" weight="500" size={15}>
-              Olivia Rhye
+              {props.customer}
             </Text>
             <Text color="gray.5" weight="500" size={13}>
-              olivia@untitledui.com
+              {props.customerEmail}
             </Text>
           </div>
         </Flex>
@@ -52,17 +65,17 @@ export function TableRow() {
           <Avatar radius="xl" />
           <div>
             <Text color="gray.9" weight="500" size={15}>
-              Olivia Rhye
+              Bruno Loepert
             </Text>
             <Text color="gray.5" weight="500" size={13}>
-              olivia@untitledui.com
+              bruno@viagem10.com
             </Text>
           </div>
         </Flex>
       </td>
       <td>
         <Text color="gray.5" weight="500">
-          Jan 13, 2022
+          {props.date}
         </Text>
       </td>
       <td>
@@ -74,16 +87,23 @@ export function TableRow() {
         <Badge color="gray.7">
           <Flex align="center" gap="sm">
             <span className={classes.dot}></span>
-            <Text>WAITING PAYMENT</Text>
+            <Text>{props.status}</Text>
           </Flex>
         </Badge>
       </td>
       <td>
         <Group>
-          <ActionIcon>
-            <IconEdit className={classes.iconsEditAndRemove} />
-          </ActionIcon>
-          <ActionIcon>
+          <Link
+            href={{
+              pathname: '/admin/service-record',
+              query: { bookingId: props.id }
+            }}
+          >
+            <ActionIcon>
+              <IconEdit className={classes.iconsEditAndRemove} />
+            </ActionIcon>
+          </Link>
+          <ActionIcon onClick={props.onClickDelete}>
             <IconTrash className={classes.iconsEditAndRemove} />
           </ActionIcon>
         </Group>
