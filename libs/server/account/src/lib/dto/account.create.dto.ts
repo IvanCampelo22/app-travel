@@ -3,13 +3,14 @@ import {
   IsBoolean,
   IsDate,
   IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString
 } from 'class-validator'
 
 export class CreateAccountDto {
-  @IsNumber()
+  @IsInt()
   tenantId: number
 
   @IsNumber()
