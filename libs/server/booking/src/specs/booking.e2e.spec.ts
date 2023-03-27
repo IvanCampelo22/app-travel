@@ -80,7 +80,7 @@ describe('Booking Controller', () => {
     })
     it('should return filtered bookings', async () => {
       const startDate = new Date('2021-03-02')
-      const endDate = new Date('2023-06-02')
+      const endDate = new Date('2025-06-02')
       const booking1 = await bookingService.new()
       booking1.createdAt = new Date(Date.now())
       const booking2 = await bookingService.new()
@@ -95,6 +95,24 @@ describe('Booking Controller', () => {
         .get(`/bookings?start_date=${startDate.toISOString()}`)
         .expect(200)
       expect(filteredResponse.body).toHaveLength(2)
+    })
+    it('should return 0 bookings objects', async () => {
+      const startDate = new Date('2025-03-02')
+      const endDate = new Date('2029-06-02')
+      const booking1 = await bookingService.new()
+      booking1.createdAt = new Date(Date.now())
+      const booking2 = await bookingService.new()
+      booking2.createdAt = new Date(Date.now())
+      const response = await request(app.getHttpServer())
+        .get(
+          `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
+        )
+        .expect(200)
+      expect(response.body).toHaveLength(0)
+      const filteredResponse = await request(app.getHttpServer())
+        .get(`/bookings?start_date=${startDate.toISOString()}`)
+        .expect(200)
+      expect(filteredResponse.body).toHaveLength(0)
     })
   })
 
