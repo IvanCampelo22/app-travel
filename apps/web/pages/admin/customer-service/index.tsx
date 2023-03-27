@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 import {
   Box,
   Button,
@@ -10,6 +12,13 @@ import {
   Title
 } from '@mantine/core'
 
+import {
+  QueryClient,
+  QueryClientProvider,
+  useMutation,
+  useQuery
+} from '@tanstack/react-query'
+
 import { IconDownload, IconPlus } from '@tabler/icons-react'
 
 import { Filter } from '@web/filter'
@@ -20,9 +29,29 @@ import { SideNavbar } from '@web/side-navbar'
 import { TableRow } from '@web/table-row'
 
 import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
-import Link from 'next/link'
+
+const queryClient = new QueryClient()
 
 const IndexPage: NextPageWithLayout = () => {
+  const API_URL = process.env.NEXT_PUBLIC_SERVER_URL
+
+  const { data } = useQuery(['bookings'], () =>
+    fetch(`${API_URL}/bookings`)
+      .then((res) => res.json())
+      .catch(() => alert('Erro ao buscar atendimentos'))
+  )
+
+  const deleteBooking = useMutation((bookingId) => {
+    return fetch(`${API_URL}/bookings/${bookingId}`, {
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json;charset=UTF-8' }
+    })
+      .then(() => {
+        alert('Atendimento deletado')
+      })
+      .catch(() => alert('Erro ao deletar atendimento'))
+  })
+
   return (
     <Flex>
       <SideNavbar />
@@ -77,8 +106,21 @@ const IndexPage: NextPageWithLayout = () => {
                 </tr>
               </thead>
               <tbody>
-                <TableRow />
-                <TableRow />
+                {data
+                  ? data.map((row) => {
+                      return (
+                        <TableRow
+                          key={row.id}
+                          id={row.id}
+                          customer={row.customerName}
+                          customerEmail={row.customerEmail}
+                          status={row.status.replace(/([A-Z])/g, ' $1')}
+                          date={row.createdAt}
+                          onClickDelete={() => deleteBooking.mutate(row.id)}
+                        />
+                      )
+                    })
+                  : null}
               </tbody>
             </Table>
           </ScrollArea>
@@ -99,7 +141,7 @@ IndexPage.getLayout = (page) => (
       />
     }
   >
-    {page}
+    <QueryClientProvider client={queryClient}>{page}</QueryClientProvider>
   </AdminLayout>
 )
 
