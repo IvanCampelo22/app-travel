@@ -1,4 +1,5 @@
 import { Decimal } from '@prisma/client/runtime'
+import { Type } from 'class-transformer'
 import {
   IsBoolean,
   IsDate,
@@ -113,8 +114,8 @@ export class CreateBookingDto {
   invoiceFilePath?: string
 
   @IsOptional()
-  @IsDate()
-  createdAt?: Date
+  @Type(() => Date)
+  createdAt?: Date | null
 
   @IsOptional()
   @IsString()

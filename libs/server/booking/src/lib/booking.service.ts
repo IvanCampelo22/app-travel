@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { Booking } from '@prisma/client'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
 import { UpdateBookingDto } from './dto/booking.update.dto'
@@ -25,7 +26,6 @@ export class BookingService {
       data: {
         tenantId: account.tenantId,
         accountId: account.id
-        //ownerId: account.accountUsers[0].id
       }
     })
     return booking
@@ -35,8 +35,28 @@ export class BookingService {
     return this.db.booking.findFirst({ where: { id } })
   }
 
-  async findMany() {
-    return this.db.booking.findMany()
+  async findMany(
+    startDate: Date | null,
+    endDate: Date | null
+  ): Promise<Booking[]> {
+    console.log('startDate:', startDate)
+    console.log('endDate:', endDate)
+    const where: Record<string, any> = {}
+    if (startDate) {
+      where['createdAt'] = {
+        gte: startDate
+      }
+    }
+    if (endDate) {
+      if (where['createdAt']) {
+        where['createdAt']['lte'] = endDate
+      } else {
+        where['createdAt'] = {
+          lte: endDate
+        }
+      }
+    }
+    return await this.db.booking.findMany({ where })
   }
 
   async update(id: number, input: UpdateBookingDto) {

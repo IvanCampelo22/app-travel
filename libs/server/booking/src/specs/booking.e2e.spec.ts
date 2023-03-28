@@ -78,6 +78,42 @@ describe('Booking Controller', () => {
       expect(ok).toBeTruthy()
       expect(body.length).toBe(2)
     })
+    it('should return filtered bookings', async () => {
+      const startDate = new Date('2021-03-02')
+      const endDate = new Date('2025-06-02')
+      const booking1 = await bookingService.new()
+      booking1.createdAt = new Date(Date.now())
+      const booking2 = await bookingService.new()
+      booking2.createdAt = new Date(Date.now())
+      const response = await request(app.getHttpServer())
+        .get(
+          `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
+        )
+        .expect(200)
+      expect(response.body).toHaveLength(2)
+      const filteredResponse = await request(app.getHttpServer())
+        .get(`/bookings?start_date=${startDate.toISOString()}`)
+        .expect(200)
+      expect(filteredResponse.body).toHaveLength(2)
+    })
+    it('should return 0 bookings objects', async () => {
+      const startDate = new Date('2025-03-02')
+      const endDate = new Date('2029-06-02')
+      const booking1 = await bookingService.new()
+      booking1.createdAt = new Date(Date.now())
+      const booking2 = await bookingService.new()
+      booking2.createdAt = new Date(Date.now())
+      const response = await request(app.getHttpServer())
+        .get(
+          `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
+        )
+        .expect(200)
+      expect(response.body).toHaveLength(0)
+      const filteredResponse = await request(app.getHttpServer())
+        .get(`/bookings?start_date=${startDate.toISOString()}`)
+        .expect(200)
+      expect(filteredResponse.body).toHaveLength(0)
+    })
   })
 
   describe('GET /find', () => {
@@ -128,8 +164,10 @@ describe('Booking Controller', () => {
 
   describe('DELETE /destroy', () => {
     it('successfully', async () => {
+      const startDate = new Date(Date.now())
       await bookingService.new()
-      const booking = (await bookingService.findMany())[0]
+      const endDate = new Date(Date.now())
+      const booking = (await bookingService.findMany(startDate, endDate))[0]
 
       const { ok, body } = await request(app.getHttpServer())
         .delete(`${PATH}/${booking.id}`)

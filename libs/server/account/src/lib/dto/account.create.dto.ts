@@ -2,13 +2,15 @@ import { AccountCategory } from '@prisma/client'
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString
 } from 'class-validator'
 
 export class CreateAccountDto {
-  @IsNumber()
+  @IsInt()
   tenantId: number
 
   @IsNumber()
@@ -18,6 +20,7 @@ export class CreateAccountDto {
   name: string
 
   @IsString()
+  @IsEnum(AccountCategory)
   category: AccountCategory
 
   @IsOptional()

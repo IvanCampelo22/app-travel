@@ -100,12 +100,26 @@ describe('new', () => {
 
   describe('index', () => {
     it('should return all objects of the booking', async () => {
-      await bookingService.new()
+      const startDate = new Date(Date.now())
+
       await bookingService.new()
 
-      const objsBooking = await bookingService.findMany()
+      await bookingService.new()
+
+      const endDate = new Date(Date.now())
+
+      console.log(startDate, endDate)
+
+      const objsBooking = await bookingService.findMany(startDate, endDate)
 
       expect(objsBooking.length).toBe(2)
+      if (objsBooking[0].createdAt && objsBooking[0].createdAt >= startDate) {
+        expect(objsBooking[0].createdAt <= endDate).toBe(true)
+      }
+
+      if (objsBooking[1].createdAt && objsBooking[1].createdAt >= startDate) {
+        expect(objsBooking[1].createdAt <= endDate).toBe(true)
+      }
     })
   })
 

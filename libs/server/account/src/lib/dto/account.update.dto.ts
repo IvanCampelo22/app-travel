@@ -2,6 +2,7 @@ import { AccountCategory } from '@prisma/client'
 import {
   IsBoolean,
   IsDate,
+  IsEnum,
   IsNumber,
   IsOptional,
   IsString
@@ -21,6 +22,7 @@ export class UpdateAccountDto {
   name?: string
 
   @IsOptional()
+  @IsEnum(AccountCategory)
   @IsString()
   category?: AccountCategory
 

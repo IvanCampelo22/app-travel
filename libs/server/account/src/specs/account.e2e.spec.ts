@@ -110,6 +110,28 @@ describe('Account Controller', () => {
       expect(body['isActive']).toBeTruthy()
     })
 
+    it('suppliers suscefully', async () => {
+      const tenantObj = await tenantService.create({
+        name: 'Maria',
+        email: 'maria@gmail.com'
+      })
+      const { ok, body } = await request(app.getHttpServer())
+        .post(PATH)
+        .send({
+          tenantId: tenantObj.id,
+          name: 'account1',
+          email: 'account1@gmail.com',
+          ownerId: 1,
+          category: 'Supplier'
+        })
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+
+      expect(ok).toBeTruthy()
+      expect(body['isActive']).toBeTruthy()
+      expect(body['category']).toEqual('Supplier')
+    })
+
     it('should throw BadRequestException', async () => {
       const { statusCode } = await request(app.getHttpServer())
         .post(PATH)

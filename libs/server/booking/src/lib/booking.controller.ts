@@ -5,8 +5,10 @@ import {
   Get,
   NotFoundException,
   Param,
-  Patch
+  Patch,
+  Query
 } from '@nestjs/common'
+import { Booking } from '@prisma/client'
 import { BookingService } from './booking.service'
 import { UpdateBookingDto } from './dto/booking.update.dto'
 
@@ -20,8 +22,14 @@ export class BookingController {
   }
 
   @Get()
-  async index() {
-    return await this.service.findMany()
+  async index(
+    @Query('start_date') startDate?: string,
+    @Query('end_date') endDate?: string
+  ): Promise<Booking[]> {
+    const parsedStartDate = startDate ? new Date(startDate) : null
+    const parsedEndDate = endDate ? new Date(endDate) : null
+    console.log(parsedStartDate, parsedEndDate)
+    return await this.service.findMany(parsedStartDate, parsedEndDate)
   }
 
   @Get(':id')
