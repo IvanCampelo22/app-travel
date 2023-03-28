@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { DatabaseService } from '@server/database'
+import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
 
 @Injectable()
 export class BookingProductService {
@@ -7,5 +8,13 @@ export class BookingProductService {
 
   async findMany() {
     return this.service.bookingProduct.findMany()
+  }
+
+  async create(input: CreateBookingProductDto) {
+    try {
+      return this.service.bookingProduct.create({ data: { ...input } })
+    } catch (error) {
+      throw new BadRequestException('Bad Request')
+    }
   }
 }
