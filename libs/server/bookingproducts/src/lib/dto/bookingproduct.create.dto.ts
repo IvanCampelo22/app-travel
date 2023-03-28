@@ -1,8 +1,6 @@
 import { AccommodationType, ProductCategory } from '@prisma/client'
 import { Decimal } from '@prisma/client/runtime'
-import { Type } from 'class-transformer'
 import {
-  IsArray,
   IsBoolean,
   IsDate,
   IsDecimal,
@@ -10,10 +8,8 @@ import {
   IsInt,
   IsNotEmpty,
   IsOptional,
-  IsString,
-  ValidateNested
+  IsString
 } from 'class-validator'
-import { CreateBookingProductRoomCreateDto } from './bookingproductroom.create.dto'
 
 export class CreateBookingProductDto {
   @IsNotEmpty()
@@ -182,7 +178,7 @@ export class CreateBookingProductDto {
 
   @IsOptional()
   @IsString()
-  creditCardAuthorizationCode?: number
+  creditCardAuthorizationCode?: string
 
   @IsOptional()
   @IsDate()
@@ -203,9 +199,4 @@ export class CreateBookingProductDto {
   @IsOptional()
   @IsBoolean()
   isActive?: boolean
-
-  @ValidateNested({ each: true })
-  @IsArray()
-  @Type(() => CreateBookingProductRoomCreateDto)
-  rooms: CreateBookingProductRoomCreateDto[]
 }
