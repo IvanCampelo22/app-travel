@@ -178,4 +178,61 @@ describe('BookingProduct Service', () => {
       expect(bookingproduct.toLocation).toBe('california')
     })
   })
+  describe('find', () => {
+    it('should return a one bookingproduct objects', async () => {
+      franchise = await db.tenant.create({
+        data: {
+          name: 'tenant2',
+          email: 'tenant2@gmail.com'
+        }
+      })
+      //franchiseMasterUser = (await userService.find(franchise.id))!
+      agency = await db.account.create({
+        data: {
+          tenantId: franchise.id,
+          name: 'account2',
+          email: 'account2@gmail.com',
+          ownerId: 2,
+          category: 'Agency',
+          phone: '123121313'
+        }
+      })
+
+      const tenant = await db.tenant.create({
+        data: { name: 'Nath', email: 'nath@gmail.com' }
+      })
+      const booking = await bookingService.new()
+      expect(booking.id).toBeDefined()
+      expect(booking.tenantId).toEqual(franchise.id)
+      expect(booking.accountId).toEqual(agency.id)
+      expect(booking.status).toEqual(BookingStatus.WaitingService)
+      expect(booking.createdAt).toBeDefined()
+
+      const account = await accountService.create({
+        tenantId: tenant.id,
+        name: 'account3',
+        email: 'account3@gmail.com',
+        ownerId: 1,
+        category: 'Agency'
+      })
+
+      const bookingproduct = await bookingProductService.create({
+        tenantId: tenant.id,
+        bookingId: booking.id,
+        accountId: account.id,
+        ownerId: 1,
+        category: 'Accommodation',
+        startDate: new Date(Date.now()),
+        endDate: new Date(Date.now()),
+        toLocation: 'new york'
+      })
+
+      const objBookingProduct = await bookingProductService.find(
+        bookingproduct.id
+      )
+
+      expect(objBookingProduct?.id).toBeTruthy()
+      expect(objBookingProduct?.toLocation).toBe('new york')
+    })
+  })
 })
