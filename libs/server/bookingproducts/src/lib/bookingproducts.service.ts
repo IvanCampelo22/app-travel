@@ -38,4 +38,15 @@ export class BookingProductService {
       throw new NotFoundException('Not Found')
     }
   }
+
+  async destroy(id: number) {
+    try {
+      return this.service.bookingProduct.update({
+        where: { id },
+        data: { isActive: false }
+      })
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
+  }
 }
