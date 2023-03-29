@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { BookingProduct } from '@prisma/client'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
 import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
@@ -11,20 +12,26 @@ export class BookingProductService {
     private readonly userService: UserService
   ) {}
 
-  async findMany() {
-    return this.service.bookingProduct.findMany()
+  async findMany(): Promise<BookingProduct[]> {
+    return await this.service.bookingProduct.findMany()
   }
 
-  async create(input: CreateBookingProductDto) {
-    return this.service.bookingProduct.create({ data: { ...input } })
+  async create(input: CreateBookingProductDto): Promise<BookingProduct> {
+    return await this.service.bookingProduct.create({ data: { ...input } })
   }
 
   async find(id: number) {
-    return this.service.bookingProduct.findUnique({ where: { id } })
+    return await this.service.bookingProduct.findUnique({ where: { id } })
   }
 
-  async update(id: number, input: UpdateBookingProductDto) {
-    return this.service.bookingProduct.update({ where: { id }, data: input })
+  async update(
+    id: number,
+    input: UpdateBookingProductDto
+  ): Promise<BookingProduct> {
+    return await this.service.bookingProduct.update({
+      where: { id },
+      data: input
+    })
   }
 
   async destroy(id: number) {
