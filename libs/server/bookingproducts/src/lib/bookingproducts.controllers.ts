@@ -13,7 +13,7 @@ import { BookingProductService } from './bookingproducts.service'
 import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
 import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
 
-@Controller()
+@Controller('bookingproducts')
 export class BookingProductControllers {
   constructor(private readonly service: BookingProductService) {}
 
