@@ -16,8 +16,10 @@ export class BookingProductService {
     return await this.service.bookingProduct.findMany()
   }
 
-  async create(input: CreateBookingProductDto): Promise<BookingProduct> {
-    return await this.service.bookingProduct.create({ data: { ...input } })
+  async create(input: CreateBookingProductDto) {
+    return this.service.bookingProduct.create({
+      data: { ...input }
+    })
   }
 
   async find(id: number) {
@@ -30,7 +32,7 @@ export class BookingProductService {
   ): Promise<BookingProduct> {
     return await this.service.bookingProduct.update({
       where: { id },
-      data: input
+      data: { ...input }
     })
   }
 

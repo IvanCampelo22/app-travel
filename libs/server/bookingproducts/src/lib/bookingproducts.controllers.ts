@@ -23,9 +23,10 @@ export class BookingProductControllers {
   }
 
   @Post()
-  async post(@Body() data: CreateBookingProductDto) {
+  async post(@Body() input: CreateBookingProductDto) {
+    console.log(input)
     try {
-      return await this.service.create(data)
+      return await this.service.create(input)
     } catch (error) {
       throw new BadRequestException('Bad Request')
     }

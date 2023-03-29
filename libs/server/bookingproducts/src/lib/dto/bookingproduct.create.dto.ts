@@ -5,27 +5,23 @@ import {
   IsDate,
   IsDecimal,
   IsEnum,
-  IsInt,
-  IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString
 } from 'class-validator'
 
 export class CreateBookingProductDto {
-  @IsNotEmpty()
-  @IsInt()
+  @IsNumber()
   tenantId: number
 
-  @IsNotEmpty()
-  @IsInt()
+  @IsNumber()
   bookingId: number
 
-  @IsNotEmpty()
-  @IsInt()
+  @IsNumber()
   accountId: number
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   supplierId?: number
 
   @IsOptional()
@@ -33,10 +29,9 @@ export class CreateBookingProductDto {
   supplierName?: string
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   ownerId: number
 
-  @IsNotEmpty()
   @IsEnum(ProductCategory)
   category: ProductCategory
 
@@ -44,11 +39,9 @@ export class CreateBookingProductDto {
   @IsString()
   description?: string
 
-  @IsNotEmpty()
   @IsDate()
   startDate: Date
 
-  @IsNotEmpty()
   @IsDate()
   endDate: Date
 
@@ -56,7 +49,6 @@ export class CreateBookingProductDto {
   @IsString()
   fromLocation?: string
 
-  @IsNotEmpty()
   @IsString()
   toLocation: string
 
@@ -145,7 +137,7 @@ export class CreateBookingProductDto {
   hotelName?: string
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   hotelStarRaiting?: number
 
   @IsOptional()
@@ -157,7 +149,7 @@ export class CreateBookingProductDto {
   acommodationType?: AccommodationType
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   bookingGroupId?: number
 
   @IsOptional()
@@ -173,7 +165,7 @@ export class CreateBookingProductDto {
   creditCardType?: string
 
   @IsOptional()
-  @IsInt()
+  @IsNumber()
   creditCardLastFourDigits?: number
 
   @IsOptional()

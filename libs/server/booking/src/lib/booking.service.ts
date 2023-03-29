@@ -39,8 +39,6 @@ export class BookingService {
     startDate: Date | null,
     endDate: Date | null
   ): Promise<Booking[]> {
-    console.log('startDate:', startDate)
-    console.log('endDate:', endDate)
     const where: Record<string, any> = {}
     if (startDate) {
       where['createdAt'] = {

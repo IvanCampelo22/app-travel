@@ -54,6 +54,7 @@ describe('BookingProduct Service', () => {
     await db.booking.deleteMany({})
     await db.account.deleteMany({})
     await db.tenant.deleteMany({})
+    await db.bookingProductRoom.deleteMany({})
   })
 
   afterAll(() => {
