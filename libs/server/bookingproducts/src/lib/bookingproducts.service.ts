@@ -1,52 +1,40 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException
-} from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { DatabaseService } from '@server/database'
+import { UserService } from '@server/user'
 import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
 import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
 
 @Injectable()
 export class BookingProductService {
-  constructor(private readonly service: DatabaseService) {}
+  constructor(
+    private readonly service: DatabaseService,
+    private readonly userService: UserService
+  ) {}
 
   async findMany() {
     return this.service.bookingProduct.findMany()
   }
 
   async create(input: CreateBookingProductDto) {
-    try {
-      return this.service.bookingProduct.create({ data: { ...input } })
-    } catch (error) {
-      throw new BadRequestException('Bad Request')
-    }
+    return this.service.bookingProduct.create({ data: { ...input } })
   }
 
   async find(id: number) {
-    try {
-      return this.service.bookingProduct.findUnique({ where: { id } })
-    } catch (error) {
-      throw new NotFoundException('Not Found')
-    }
+    return this.service.bookingProduct.findUnique({ where: { id } })
   }
 
   async update(id: number, input: UpdateBookingProductDto) {
-    try {
-      return this.service.bookingProduct.update({ where: { id }, data: input })
-    } catch (error) {
-      throw new NotFoundException('Not Found')
-    }
+    return this.service.bookingProduct.update({ where: { id }, data: input })
   }
 
   async destroy(id: number) {
-    try {
-      return this.service.bookingProduct.update({
-        where: { id },
-        data: { isActive: false }
-      })
-    } catch (error) {
-      throw new NotFoundException('Not Found')
-    }
+    const bookingproduct = await this.service.bookingProduct.update({
+      where: { id },
+      data: { isActive: false }
+    })
+
+    await this.userService.destroy(bookingproduct.id)
+
+    return bookingproduct
   }
 }
