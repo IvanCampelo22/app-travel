@@ -9,6 +9,7 @@ import {
   DatabaseTestService
 } from '@server/database'
 import { TenantModule, TenantService } from '@server/tenant'
+import { UserModule, UserService } from '@server/user'
 import { BookingproductsModule } from './../lib/bookingproducts.module'
 import { BookingProductService } from './../lib/bookingproducts.service'
 describe('BookingProduct Service', () => {
@@ -20,6 +21,7 @@ describe('BookingProduct Service', () => {
   let agency: Account
   let accountService: AccountService
   let tenantService: TenantService
+  let userService: UserService
 
   beforeAll(async () => {
     moduleRef = await Test.createTestingModule({
@@ -29,7 +31,8 @@ describe('BookingProduct Service', () => {
         BookingproductsModule,
         BookingModule,
         TenantModule,
-        AccountModule
+        AccountModule,
+        UserModule
       ]
     })
       .overrideProvider(DatabaseService)
@@ -42,6 +45,7 @@ describe('BookingProduct Service', () => {
     bookingService = moduleRef.get<BookingService>(BookingService)
     accountService = moduleRef.get<AccountService>(AccountService)
     tenantService = moduleRef.get<TenantService>(TenantService)
+    userService = moduleRef.get<UserService>(UserService)
     db = moduleRef.get<DatabaseService>(DatabaseService)
   })
 
@@ -122,7 +126,6 @@ describe('BookingProduct Service', () => {
       })
 
       const obj = await bookingProductService.findMany()
-
       expect(obj.length).toBe(2)
     })
   })
@@ -174,7 +177,7 @@ describe('BookingProduct Service', () => {
         endDate: new Date(Date.now()),
         toLocation: 'california'
       })
-
+      expect(bookingproduct?.id).toBeTruthy()
       expect(bookingproduct.toLocation).toBe('california')
     })
   })
@@ -233,6 +236,122 @@ describe('BookingProduct Service', () => {
 
       expect(objBookingProduct?.id).toBeTruthy()
       expect(objBookingProduct?.toLocation).toBe('new york')
+    })
+  })
+  describe('update', () => {
+    it('should update a bookingproduct object', async () => {
+      franchise = await db.tenant.create({
+        data: {
+          name: 'tenant2',
+          email: 'tenant2@gmail.com'
+        }
+      })
+      //franchiseMasterUser = (await userService.find(franchise.id))!
+      agency = await db.account.create({
+        data: {
+          tenantId: franchise.id,
+          name: 'account2',
+          email: 'account2@gmail.com',
+          ownerId: 2,
+          category: 'Agency',
+          phone: '123121313'
+        }
+      })
+
+      const tenant = await db.tenant.create({
+        data: { name: 'Nath', email: 'nath@gmail.com' }
+      })
+      const booking = await bookingService.new()
+      expect(booking.id).toBeDefined()
+      expect(booking.tenantId).toEqual(franchise.id)
+      expect(booking.accountId).toEqual(agency.id)
+      expect(booking.status).toEqual(BookingStatus.WaitingService)
+      expect(booking.createdAt).toBeDefined()
+
+      const account = await accountService.create({
+        tenantId: tenant.id,
+        name: 'account3',
+        email: 'account3@gmail.com',
+        ownerId: 1,
+        category: 'Agency'
+      })
+
+      const bookingproduct = await bookingProductService.create({
+        tenantId: tenant.id,
+        bookingId: booking.id,
+        accountId: account.id,
+        ownerId: 1,
+        category: 'Accommodation',
+        startDate: new Date(Date.now()),
+        endDate: new Date(Date.now()),
+        toLocation: 'new york'
+      })
+
+      const objBookingProduct = await bookingProductService.update(
+        bookingproduct.id,
+        { toLocation: 'california' }
+      )
+
+      expect(objBookingProduct?.id).toBeTruthy()
+      expect(objBookingProduct?.toLocation).toBe('california')
+    })
+  })
+  describe('destroy', () => {
+    it('should destroy(soft delete) a tenant object', async () => {
+      franchise = await db.tenant.create({
+        data: {
+          name: 'tenant2',
+          email: 'tenant2@gmail.com'
+        }
+      })
+      //franchiseMasterUser = (await userService.find(franchise.id))!
+      agency = await db.account.create({
+        data: {
+          tenantId: franchise.id,
+          name: 'account2',
+          email: 'account2@gmail.com',
+          ownerId: 2,
+          category: 'Agency',
+          phone: '123121313'
+        }
+      })
+
+      const tenant = await db.tenant.create({
+        data: { name: 'Nath', email: 'nath@gmail.com' }
+      })
+      const booking = await bookingService.new()
+      expect(booking.id).toBeDefined()
+      expect(booking.tenantId).toEqual(franchise.id)
+      expect(booking.accountId).toEqual(agency.id)
+      expect(booking.status).toEqual(BookingStatus.WaitingService)
+      expect(booking.createdAt).toBeDefined()
+
+      const account = await accountService.create({
+        tenantId: tenant.id,
+        name: 'account3',
+        email: 'account3@gmail.com',
+        ownerId: 1,
+        category: 'Agency'
+      })
+
+      const bookingproduct = await bookingProductService.create({
+        tenantId: tenant.id,
+        bookingId: booking.id,
+        accountId: account.id,
+        ownerId: 1,
+        category: 'Accommodation',
+        startDate: new Date(Date.now()),
+        endDate: new Date(Date.now()),
+        toLocation: 'new york'
+      })
+
+      const mock = jest.spyOn(userService, 'destroy')
+      const { id } = (await bookingProductService.findMany())[0]
+
+      const obj = await bookingProductService.destroy(bookingproduct.id)
+
+      expect(obj.isActive).toBeFalsy()
+      expect(mock).toBeCalledWith(id)
     })
   })
 })
