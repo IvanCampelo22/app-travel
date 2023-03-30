@@ -24,12 +24,21 @@ export class BookingController {
   @Get()
   async index(
     @Query('start_date') startDate?: string,
-    @Query('end_date') endDate?: string
+    @Query('end_date') endDate?: string,
+    @Query('page') page?: string,
+    @Query('size') size?: string
   ): Promise<Booking[]> {
     const parsedStartDate = startDate ? new Date(startDate) : null
     const parsedEndDate = endDate ? new Date(endDate) : null
+    const skip = (parseInt(page || '1', 10) - 1) * parseInt(size || '10', 10)
+    const take = parseInt(size || '10', 10)
     console.log(parsedStartDate, parsedEndDate)
-    return await this.service.findMany(parsedStartDate, parsedEndDate)
+    return await this.service.findMany(
+      parsedStartDate,
+      parsedEndDate,
+      skip,
+      take
+    )
   }
 
   @Get(':id')
