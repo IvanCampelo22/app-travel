@@ -16,9 +16,9 @@ export class BookingProductService {
     return await this.service.bookingProduct.findMany()
   }
 
-  async create(input: CreateBookingProductDto) {
-    return this.service.bookingProduct.create({
-      data: { ...input }
+  async createMany(data: CreateBookingProductDto[]) {
+    return this.service.bookingProduct.createMany({
+      data
     })
   }
 

@@ -12,6 +12,7 @@ import { TenantModule, TenantService } from '@server/tenant'
 import { UserModule, UserService } from '@server/user'
 import { BookingproductsModule } from './../lib/bookingproducts.module'
 import { BookingProductService } from './../lib/bookingproducts.service'
+import { CreateBookingProductDto } from './../lib/dto/bookingproduct.create.dto'
 describe('BookingProduct Service', () => {
   let bookingProductService: BookingProductService
   let bookingService: BookingService
@@ -168,18 +169,47 @@ describe('BookingProduct Service', () => {
         category: 'Agency'
       })
 
-      const bookingproduct = await bookingProductService.create({
-        tenantId: tenant.id,
-        bookingId: booking.id,
-        accountId: account.id,
-        ownerId: 1,
-        category: 'Accommodation',
-        startDate: new Date(Date.now()),
-        endDate: new Date(Date.now()),
-        toLocation: 'california'
-      })
-      expect(bookingproduct?.id).toBeTruthy()
-      expect(bookingproduct.toLocation).toBe('california')
+      const bookingproduct: CreateBookingProductDto[] = [
+        {
+          tenantId: tenant.id,
+          bookingId: booking.id,
+          accountId: account.id,
+          ownerId: 1,
+          category: 'Accommodation',
+          startDate: new Date(Date.now()),
+          endDate: new Date(Date.now()),
+          toLocation: 'california'
+        },
+        {
+          tenantId: tenant.id,
+          bookingId: booking.id,
+          accountId: account.id,
+          ownerId: 1,
+          category: 'Accommodation',
+          startDate: new Date(Date.now()),
+          endDate: new Date(Date.now()),
+          toLocation: 'new york'
+        },
+        {
+          tenantId: tenant.id,
+          bookingId: booking.id,
+          accountId: account.id,
+          ownerId: 1,
+          category: 'Accommodation',
+          startDate: new Date(Date.now()),
+          endDate: new Date(Date.now()),
+          toLocation: 'new orleans'
+        }
+      ]
+
+      await bookingProductService.createMany(bookingproduct)
+
+      const products = await bookingProductService.findMany()
+
+      expect(products).toHaveLength(3)
+      expect(products[0].toLocation).toEqual(bookingproduct[0].toLocation)
+      expect(products[1].toLocation).toEqual(bookingproduct[1].toLocation)
+      expect(products[2].toLocation).toEqual(bookingproduct[2].toLocation)
     })
   })
   describe('find', () => {
@@ -220,23 +250,25 @@ describe('BookingProduct Service', () => {
         category: 'Agency'
       })
 
-      const bookingproduct = await bookingProductService.create({
-        tenantId: tenant.id,
-        bookingId: booking.id,
-        accountId: account.id,
-        ownerId: 1,
-        category: 'Accommodation',
-        startDate: new Date(Date.now()),
-        endDate: new Date(Date.now()),
-        toLocation: 'new york'
-      })
+      const bookingproduct: CreateBookingProductDto[] = [
+        {
+          tenantId: tenant.id,
+          bookingId: booking.id,
+          accountId: account.id,
+          ownerId: 1,
+          category: 'Accommodation',
+          startDate: new Date(Date.now()),
+          endDate: new Date(Date.now()),
+          toLocation: 'california'
+        }
+      ]
+      await bookingProductService.createMany(bookingproduct)
+      const products = await bookingProductService.findMany()
 
-      const objBookingProduct = await bookingProductService.find(
-        bookingproduct.id
-      )
+      const objBookingProduct = await bookingProductService.find(products[0].id)
 
       expect(objBookingProduct?.id).toBeTruthy()
-      expect(objBookingProduct?.toLocation).toBe('new york')
+      expect(objBookingProduct?.toLocation).toBe('california')
     })
   })
   describe('update', () => {
@@ -277,20 +309,25 @@ describe('BookingProduct Service', () => {
         category: 'Agency'
       })
 
-      const bookingproduct = await bookingProductService.create({
-        tenantId: tenant.id,
-        bookingId: booking.id,
-        accountId: account.id,
-        ownerId: 1,
-        category: 'Accommodation',
-        startDate: new Date(Date.now()),
-        endDate: new Date(Date.now()),
-        toLocation: 'new york'
-      })
-
+      const bookingproduct: CreateBookingProductDto[] = [
+        {
+          tenantId: tenant.id,
+          bookingId: booking.id,
+          accountId: account.id,
+          ownerId: 1,
+          category: 'Accommodation',
+          startDate: new Date(Date.now()),
+          endDate: new Date(Date.now()),
+          toLocation: 'new york'
+        }
+      ]
+      await bookingProductService.createMany(bookingproduct)
+      const products = await bookingProductService.findMany()
       const objBookingProduct = await bookingProductService.update(
-        bookingproduct.id,
-        { toLocation: 'california' }
+        products[0].id,
+        {
+          toLocation: 'california'
+        }
       )
 
       expect(objBookingProduct?.id).toBeTruthy()
@@ -335,21 +372,25 @@ describe('BookingProduct Service', () => {
         category: 'Agency'
       })
 
-      const bookingproduct = await bookingProductService.create({
-        tenantId: tenant.id,
-        bookingId: booking.id,
-        accountId: account.id,
-        ownerId: 1,
-        category: 'Accommodation',
-        startDate: new Date(Date.now()),
-        endDate: new Date(Date.now()),
-        toLocation: 'new york'
-      })
+      const bookingproduct: CreateBookingProductDto[] = [
+        {
+          tenantId: tenant.id,
+          bookingId: booking.id,
+          accountId: account.id,
+          ownerId: 1,
+          category: 'Accommodation',
+          startDate: new Date(Date.now()),
+          endDate: new Date(Date.now()),
+          toLocation: 'california'
+        }
+      ]
+      await bookingProductService.createMany(bookingproduct)
+      const products = await bookingProductService.findMany()
 
       const mock = jest.spyOn(userService, 'destroy')
       const { id } = (await bookingProductService.findMany())[0]
 
-      const obj = await bookingProductService.destroy(bookingproduct.id)
+      const obj = await bookingProductService.destroy(products[0].id)
 
       expect(obj.isActive).toBeFalsy()
       expect(mock).toBeCalledWith(id)

@@ -44,7 +44,9 @@ describe('BookingProducts Controller', () => {
       .compile()
 
     app = moduleRef.createNestApplication()
+
     await app.init()
+
     bookingService = moduleRef.get<BookingService>(BookingService)
 
     accountService = moduleRef.get<AccountService>(AccountService)
@@ -173,32 +175,48 @@ describe('BookingProducts Controller', () => {
       const startDate = new Date(Date.now())
       const endDate = new Date(Date.now())
 
-      const { ok, body } = await supertest(app.getHttpServer())
+      const { body } = await supertest(app.getHttpServer())
         .post(PATH)
-        .send({
-          tenantId: tenant.id,
-          bookingId: booking.id,
-          accountId: account.id,
-          ownerId: 1,
-          category: 'Accommodation',
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-          toLocation: 'california'
-        })
-        .set('Accept', 'application/json')
-        .expect('Content-Type', /json/)
-      console.log(body)
-      expect(ok).toBeTruthy()
-      expect(body['toLocation']).toEqual('california')
-    })
-    it('should throw BadRequestException', async () => {
-      const { statusCode } = await request(app.getHttpServer())
-        .post(PATH)
-        .send({})
+        .send([
+          {
+            tenantId: tenant.id,
+            bookingId: booking.id,
+            accountId: account.id,
+            ownerId: 1,
+            category: 'Accommodation',
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            toLocation: 'california'
+          },
+          {
+            tenantId: tenant.id,
+            bookingId: booking.id,
+            accountId: account.id,
+            ownerId: 1,
+            category: 'Accommodation',
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            toLocation: 'Boston'
+          },
+          {
+            tenantId: tenant.id,
+            bookingId: booking.id,
+            accountId: account.id,
+            ownerId: 1,
+            category: 'Accommodation',
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            toLocation: 'Kansas'
+          }
+        ])
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
-      expect(statusCode).toEqual(400)
+      const products = await db.bookingProduct.findMany()
+
+      expect(body).toBeDefined()
+      expect(body.count).toEqual(3)
+      expect(products[0]['toLocation']).toEqual('california')
     })
   })
   describe('PACTH /bookingproducts', () => {

@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
@@ -23,14 +22,10 @@ export class BookingProductControllers {
   }
 
   @Post()
-  async post(@Body() input: CreateBookingProductDto) {
-    console.log(input)
-    try {
-      return await this.service.create(input)
-    } catch (error) {
-      throw new BadRequestException('Bad Request')
-    }
+  async createMany(@Body() data: CreateBookingProductDto[]) {
+    return this.service.createMany(data)
   }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     try {
