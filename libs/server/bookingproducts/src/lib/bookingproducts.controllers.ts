@@ -16,9 +16,9 @@ import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
 export class BookingProductControllers {
   constructor(private readonly service: BookingProductService) {}
 
-  @Get()
-  async index() {
-    return this.service.findMany()
+  @Get(':bookingId')
+  async index(@Param('bookingId') bookingId?: string) {
+    return this.service.findMany(Number(bookingId))
   }
 
   @Post()
@@ -35,10 +35,13 @@ export class BookingProductControllers {
     }
   }
 
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() data: UpdateBookingProductDto) {
+  @Patch()
+  async update(
+    @Body()
+    data: UpdateBookingProductDto[]
+  ) {
     try {
-      return await this.service.update(Number(id), data)
+      return await this.service.update(data)
     } catch (error) {
       throw new NotFoundException('Not Found')
     }

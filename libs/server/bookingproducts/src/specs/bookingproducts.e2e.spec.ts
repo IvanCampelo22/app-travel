@@ -126,7 +126,9 @@ describe('BookingProducts Controller', () => {
         }
       })
 
-      const { ok, body } = await request(app.getHttpServer()).get(PATH)
+      const { ok, body } = await request(app.getHttpServer()).get(
+        `${PATH}/${booking.id}`
+      )
       console.log(body)
       expect(ok).toBeTruthy()
       expect(body.length).toBe(2)
@@ -273,14 +275,13 @@ describe('BookingProducts Controller', () => {
       })
 
       const { body, ok } = await supertest(app.getHttpServer())
-        .patch(`${PATH}/${id}`)
-        .send({ toLocation: 'new orleans' })
+        .patch(`${PATH}`)
+        .send([{ id: id, toLocation: 'new orleans' }])
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
       expect(ok).toBeTruthy()
-      expect(body['id']).toBeDefined()
-      expect(body['toLocation']).toBe('new orleans')
+      expect(body[0]['toLocation']).toBe('new orleans')
     })
     it('should throw NotFoundException', async () => {
       const { statusCode } = await request(app.getHttpServer())

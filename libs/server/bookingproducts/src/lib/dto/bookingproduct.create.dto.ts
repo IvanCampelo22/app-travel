@@ -11,6 +11,10 @@ import {
 } from 'class-validator'
 
 export class CreateBookingProductDto {
+  @IsOptional()
+  @IsNumber()
+  id?: number
+
   @IsNumber()
   tenantId: number
 

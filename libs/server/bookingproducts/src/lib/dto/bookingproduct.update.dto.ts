@@ -13,6 +13,10 @@ import {
 export class UpdateBookingProductDto {
   @IsOptional()
   @IsInt()
+  id: number
+
+  @IsOptional()
+  @IsInt()
   tenantId?: number
 
   @IsOptional()

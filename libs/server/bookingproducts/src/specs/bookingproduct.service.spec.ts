@@ -127,7 +127,7 @@ describe('BookingProduct Service', () => {
         }
       })
 
-      const obj = await bookingProductService.findMany()
+      const obj = await bookingProductService.findMany(booking.id)
       expect(obj.length).toBe(2)
     })
   })
@@ -263,7 +263,7 @@ describe('BookingProduct Service', () => {
         }
       ]
       await bookingProductService.createMany(bookingproduct)
-      const products = await bookingProductService.findMany()
+      const products = await bookingProductService.findMany(booking.id)
 
       const objBookingProduct = await bookingProductService.find(products[0].id)
 
@@ -311,6 +311,7 @@ describe('BookingProduct Service', () => {
 
       const bookingproduct: CreateBookingProductDto[] = [
         {
+          id: 1,
           tenantId: tenant.id,
           bookingId: booking.id,
           accountId: account.id,
@@ -322,16 +323,16 @@ describe('BookingProduct Service', () => {
         }
       ]
       await bookingProductService.createMany(bookingproduct)
-      const products = await bookingProductService.findMany()
-      const objBookingProduct = await bookingProductService.update(
-        products[0].id,
+      const products = await bookingProductService.findMany(booking.id)
+      const objBookingProduct = await bookingProductService.update([
         {
+          id: products[0].id,
           toLocation: 'california'
         }
-      )
+      ])
 
-      expect(objBookingProduct?.id).toBeTruthy()
-      expect(objBookingProduct?.toLocation).toBe('california')
+      expect(objBookingProduct[0].id).toBeTruthy()
+      expect(objBookingProduct[0]['toLocation']).toBe('california')
     })
   })
   describe('destroy', () => {
@@ -374,6 +375,7 @@ describe('BookingProduct Service', () => {
 
       const bookingproduct: CreateBookingProductDto[] = [
         {
+          id: 1,
           tenantId: tenant.id,
           bookingId: booking.id,
           accountId: account.id,
@@ -385,10 +387,10 @@ describe('BookingProduct Service', () => {
         }
       ]
       await bookingProductService.createMany(bookingproduct)
-      const products = await bookingProductService.findMany()
+      const products = await bookingProductService.findMany(booking.id)
 
       const mock = jest.spyOn(userService, 'destroy')
-      const { id } = (await bookingProductService.findMany())[0]
+      const { id } = (await bookingProductService.findMany(booking.id))[0]
 
       const obj = await bookingProductService.destroy(products[0].id)
 

@@ -12,8 +12,8 @@ export class BookingProductService {
     private readonly userService: UserService
   ) {}
 
-  async findMany(): Promise<BookingProduct[]> {
-    return await this.service.bookingProduct.findMany()
+  async findMany(bookingId?: number): Promise<BookingProduct[]> {
+    return await this.service.bookingProduct.findMany({ where: { bookingId } })
   }
 
   async createMany(data: CreateBookingProductDto[]) {
@@ -26,14 +26,25 @@ export class BookingProductService {
     return await this.service.bookingProduct.findUnique({ where: { id } })
   }
 
-  async update(
-    id: number,
-    input: UpdateBookingProductDto
-  ): Promise<BookingProduct> {
-    return await this.service.bookingProduct.update({
-      where: { id },
-      data: { ...input }
+  async update(input: UpdateBookingProductDto[]): Promise<BookingProduct[]> {
+    const updateManyPromises = input.map((dto) => {
+      return this.service.bookingProduct.updateMany({
+        where: { id: dto.id },
+        data: dto
+      })
     })
+
+    await Promise.all(updateManyPromises)
+
+    const updatedObjects = await this.service.bookingProduct.findMany({
+      where: {
+        id: {
+          in: input.map((dto) => dto.id)
+        }
+      }
+    })
+
+    return updatedObjects
   }
 
   async destroy(id: number) {
