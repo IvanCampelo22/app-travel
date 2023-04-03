@@ -119,11 +119,11 @@ describe('BookingProduct Service', () => {
           tenantId: tenant.id,
           bookingId: booking.id,
           accountId: account.id,
-          ownerId: 2,
+          ownerId: 1,
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'california'
+          toLocation: 'new york'
         }
       })
 

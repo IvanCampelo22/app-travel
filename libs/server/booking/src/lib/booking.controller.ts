@@ -27,18 +27,23 @@ export class BookingController {
     @Query('end_date') endDate?: string,
     @Query('page') page?: string,
     @Query('size') size?: string
-  ): Promise<Booking[]> {
+  ): Promise<{ bookings: Booking[]; totalPages: number }> {
     const parsedStartDate = startDate ? new Date(startDate) : null
     const parsedEndDate = endDate ? new Date(endDate) : null
     const skip = (parseInt(page || '1', 10) - 1) * parseInt(size || '10', 10)
     const take = parseInt(size || '10', 10)
-    console.log(parsedStartDate, parsedEndDate)
-    return await this.service.findMany(
+    const totalPages = await this.service.getTotalPages(
+      parsedStartDate,
+      parsedEndDate,
+      take
+    )
+    const bookings = await this.service.findMany(
       parsedStartDate,
       parsedEndDate,
       skip,
       take
     )
+    return { bookings, totalPages }
   }
 
   @Get(':id')

@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { Booking } from '@prisma/client'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
 import { UpdateBookingDto } from './dto/booking.update.dto'
@@ -35,12 +34,36 @@ export class BookingService {
     return this.db.booking.findFirst({ where: { id } })
   }
 
+  async getTotalPages(
+    startDate: Date | null,
+    endDate: Date | null,
+    pageSize: number
+  ): Promise<number> {
+    const where: Record<string, any> = {}
+    if (startDate) {
+      where['createdAt'] = {
+        gte: startDate
+      }
+    }
+    if (endDate) {
+      if (where['createdAt']) {
+        where['createdAt']['lte'] = endDate
+      } else {
+        where['createdAt'] = {
+          lte: endDate
+        }
+      }
+    }
+    const totalResults = await this.db.booking.count({ where })
+    return Math.ceil(totalResults / pageSize)
+  }
+
   async findMany(
     startDate: Date | null,
     endDate: Date | null,
     skip: number,
     take: number
-  ): Promise<Booking[]> {
+  ) {
     const where: Record<string, any> = {}
     if (startDate) {
       where['createdAt'] = {
