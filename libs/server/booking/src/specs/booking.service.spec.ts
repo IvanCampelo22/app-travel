@@ -108,9 +108,12 @@ describe('new', () => {
 
       const endDate = new Date(Date.now())
 
-      console.log(startDate, endDate)
-
-      const objsBooking = await bookingService.findMany(startDate, endDate)
+      const objsBooking = await bookingService.findMany(
+        startDate,
+        endDate,
+        0,
+        10
+      )
 
       expect(objsBooking.length).toBe(2)
       if (objsBooking[0].createdAt && objsBooking[0].createdAt >= startDate) {

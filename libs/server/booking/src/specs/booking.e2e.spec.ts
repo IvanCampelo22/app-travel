@@ -114,6 +114,20 @@ describe('Booking Controller', () => {
         .expect(200)
       expect(filteredResponse.body).toHaveLength(0)
     })
+    it('should work pagination', async () => {
+      for (let i = 0; i < 23; i++) {
+        await bookingService.new()
+      }
+
+      const page_Number = 1
+      const page_Size = 10
+      const response = await request(app.getHttpServer())
+        .get(
+          `/bookings?pageNumber=${page_Number.toString()}&pageSize=${page_Size.toString()}`
+        )
+        .expect(200)
+      expect(response.body).toHaveLength(10)
+    })
   })
 
   describe('GET /find', () => {
@@ -167,7 +181,12 @@ describe('Booking Controller', () => {
       const startDate = new Date(Date.now())
       await bookingService.new()
       const endDate = new Date(Date.now())
-      const booking = (await bookingService.findMany(startDate, endDate))[0]
+      const page = 0
+      const size = 10
+      const booking = (
+        await bookingService.findMany(startDate, endDate, page, size)
+      )[0]
+      console.log('boking', booking)
 
       const { ok, body } = await request(app.getHttpServer())
         .delete(`${PATH}/${booking.id}`)

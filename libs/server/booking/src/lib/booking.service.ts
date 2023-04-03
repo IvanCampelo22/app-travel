@@ -37,10 +37,10 @@ export class BookingService {
 
   async findMany(
     startDate: Date | null,
-    endDate: Date | null
+    endDate: Date | null,
+    skip: number,
+    take: number
   ): Promise<Booking[]> {
-    console.log('startDate:', startDate)
-    console.log('endDate:', endDate)
     const where: Record<string, any> = {}
     if (startDate) {
       where['createdAt'] = {
@@ -56,7 +56,7 @@ export class BookingService {
         }
       }
     }
-    return await this.db.booking.findMany({ where })
+    return await this.db.booking.findMany({ where, skip, take })
   }
 
   async update(id: number, input: UpdateBookingDto) {
