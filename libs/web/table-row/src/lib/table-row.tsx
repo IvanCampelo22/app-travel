@@ -27,6 +27,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 interface TableRowPrefs {
+  createdAt: string
   id: string
   customer: string
   customerEmail: string
@@ -44,7 +45,7 @@ export function TableRow(props: TableRowPrefs) {
     <tr>
       <td>
         <Text color="gray.5" weight="500">
-          12FEV2022123012
+          {props.createdAt}
         </Text>
       </td>
       <td>
@@ -95,7 +96,7 @@ export function TableRow(props: TableRowPrefs) {
         <Group>
           <Link
             href={{
-              pathname: '/admin/service-record',
+              pathname: '/admin/service-record-edit',
               query: { bookingId: props.id }
             }}
           >
