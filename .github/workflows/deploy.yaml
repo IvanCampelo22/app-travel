@@ -97,6 +97,8 @@ jobs:
         run: chmod +x build-web.sh
 
       - name: Build Web
+        env:
+          NEXT_PUBLIC_API_URL: http://backend.dev.viagem10.com
         run: ./build-web.sh
 
       - name: Build, tag, and push image to Amazon ECR for WEB
