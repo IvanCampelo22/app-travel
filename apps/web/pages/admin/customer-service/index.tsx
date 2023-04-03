@@ -151,8 +151,8 @@ const IndexPage: NextPageWithLayout = () => {
                 </tr>
               </thead>
               <tbody>
-                {getBookings.data && getBookings.data !== null
-                  ? getBookings.data?.filter((booking) => booking.isActive).map((booking) => {
+                {getBookings.data.bookings 
+                  ? getBookings.data.bookings.filter((booking) => booking.isActive).map((booking) => {
                     return (
                       <TableRow
                         key={booking.id}
@@ -171,7 +171,7 @@ const IndexPage: NextPageWithLayout = () => {
             </Table>
           </ScrollArea>
           <Divider color="gray.3" />
-          <Pagination onClickNext={() => setPage(page + 1)} onClickPrev={() => { page > 1 ? setPage(page - 1) : null }} />
+          <Pagination onClickNext={() =>  page === getBookings.data.totalPages ? null : setPage(page + 1)} onClickPrev={() => { page > 1 ? setPage(page - 1) : null }} />
         </Paper>
       </Container>
     </Flex>
