@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { Button, createStyles, Flex, Group, MultiSelect } from '@mantine/core'
 
 import { DateRangePicker, DateRangePickerValue } from '@mantine/dates'
@@ -13,13 +11,16 @@ const useStyles = createStyles((theme) => ({
   }
 }))
 
-export function Filter() {
-  const { classes } = useStyles()
+interface FilterPrefs {
+  dates: [Date | null, Date | null]
+  onChangeDate?(value: DateRangePickerValue): void
+  onClickFilter: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void
+}
 
-  const [value, setValue] = useState<DateRangePickerValue>([
-    new Date(2021, 11, 1),
-    new Date(2021, 11, 5)
-  ])
+export function Filter(props: FilterPrefs) {
+  const { classes } = useStyles()
 
   return (
     <Flex justify="space-between" wrap="wrap">
@@ -51,10 +52,10 @@ export function Filter() {
           })}
           radius="md"
           inputFormat="DD MMM, YYYY"
-          value={value}
-          onChange={setValue}
+          value={props.dates}
+          onChange={props.onChangeDate}
         />
-        <Button variant="default" radius="md">
+        <Button variant="default" radius="md" onClick={props.onClickFilter}>
           Filter
         </Button>
       </Group>
