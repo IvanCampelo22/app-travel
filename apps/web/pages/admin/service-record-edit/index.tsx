@@ -187,7 +187,6 @@ const IndexPage: NextPageWithLayout = () => {
   })
 
   const updateProducts = useMutation(() => {
-    formProducts.setFieldValue('data.0.bookingId', linkParams.bookingId);
     return fetch(`${API_URL}/bookingproducts`, {
       method: 'PATCH',
       body: JSON.stringify(formProducts.values.data),
