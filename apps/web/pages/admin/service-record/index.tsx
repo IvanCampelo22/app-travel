@@ -35,7 +35,6 @@ import { AdminLayout, Meta, NextPageWithLayout } from '@web/base-ui'
 import { CustomerServiceResume } from '@web/customer-service-resume'
 import { Header } from '@web/header'
 import { RoomPrefs } from '@web/room-prefs'
-import { useRouter } from 'next/router'
 
 const queryClient = new QueryClient()
 
@@ -109,19 +108,17 @@ const IndexPage: NextPageWithLayout = () => {
   const [opened, setOpened] = useState<boolean>(false)
   const [rooms, setRooms] = useState<any[]>([])
 
-  const router = useRouter();
-  const linkParams = router.query;
-
-  const [newBooking, getClients, getBooking] = useQueries({
+  const [newBooking, getClients, getBookingProducts] = useQueries({
     queries: [
       {
         queryKey: ['newBooking'],
         staleTime: Infinity,
+        cacheTime: 0,
+        refetchOnMount: 'always',
         queryFn: () =>
           fetch(`${API_URL}/bookings/new`)
             .then((res) => res.json())
             .catch(() => alert('Erro ao criar booking')),
-        enabled: !linkParams.bookingId ? true : false
       },
 
       {
@@ -133,44 +130,34 @@ const IndexPage: NextPageWithLayout = () => {
       },
 
       {
-        queryKey: ['getBooking'],
-        queryFn: () =>
-          fetch(`${API_URL}/bookings/${linkParams.bookingId}`)
-            .then((res) => res.json())
-            .catch(() => alert('Erro ao buscar usuários')),
-        enabled: linkParams.bookingId ? true : false
-      },
+        queryKey: ['getBookingProducts'],
+        queryFn: async () => {
+          if (newBooking.isSuccess) {
+            return fetch(`${API_URL}/bookingproducts/${newBooking.data.id}`)
+              .then((res) => res.json())
+              .catch(() => alert('Erro ao buscar produtos'));
+          } else {
+            return null
+          }
+        }
+      }
     ],
-  });
+  })
 
   useEffect(() => {
-    if (!linkParams.bookingId) {
-      newBooking.refetch();
+    if (getBookingProducts.data) {
+      formProducts.setValues({
+        data: getBookingProducts.data
+      });
     }
-  }, []);
+  }, [getBookingProducts.data])
 
   const bookingUpdate = {
-    ...newBooking,
     data: {
-      customerName: '',
-      customerEmail: '',
-      customerPhone: '',
+      ...newBooking.data,
       products: {
         createMany: {
-          data: [
-            {
-              tenantId: 1,
-              accountId: 1,
-              ownerId: 1,
-              category: 'Accommodation',
-              accommodationType: '',
-              toLocation: '',
-              startDate: new Date(),
-              endDate: new Date(),
-              hotelName: '',
-              hotelMealPlan: ''
-            }
-          ]
+          data: []
         }
       }
     }
@@ -189,7 +176,7 @@ const IndexPage: NextPageWithLayout = () => {
 
   const clients = !getClients.isLoading ? getClients.data.map((client) => client.name) : []
 
-  const formProduct = useForm<IBooking>({
+  const formBooking = useForm<IBooking>({
     validate: zodResolver(schemaProduct),
     initialValues: bookingUpdate
   })
@@ -199,18 +186,52 @@ const IndexPage: NextPageWithLayout = () => {
     initialValues: clientCreate
   })
 
-  const selectClient = (name) => {
-    const client = getClients.data.filter(client => client.name === name);
+  const formProducts = useForm({
+    initialValues: {
+      data: [
+        {
+          tenantId: 1,
+          accountId: 1,
+          ownerId: 1,
+          category: 'Accommodation',
+          accommodationType: '',
+          toLocation: '',
+          startDate: '',
+          endDate: '',
+          hotelName: '',
+          hotelMealPlan: ''
+        }
+      ]
+    }
+  })
 
-    formProduct.setFieldValue('data.customerName', client[0].name);
-    formProduct.setFieldValue('data.customerEmail', client[0].email);
-    formProduct.setFieldValue('data.customerPhone', client[0].phone);
+  const selectClient = (name) => {
+    const client = getClients.data.filter(client => client.name === name)
+
+    formBooking.setFieldValue('data.customerName', client[0].name)
+    formBooking.setFieldValue('data.customerEmail', client[0].email)
+    formBooking.setFieldValue('data.customerPhone', client[0].phone)
   }
 
-  const newProduct = useMutation(() => {
-    return fetch(`${API_URL}/bookings/${!linkParams.bookingId ? newBooking.data.id : linkParams.bookingId}`, {
+  const saveChanges = useMutation(() => {
+    return fetch(`${API_URL}/bookings/${newBooking.data.id}`, {
       method: 'PATCH',
-      body: JSON.stringify(formProduct.values.data),
+      body: JSON.stringify(formBooking.values.data),
+      headers: { 'Content-type': 'application/json;charset=UTF-8' }
+    })
+      .then(() => {
+        alert('Novo produto adicionado')
+        getBookingProducts.refetch()
+        updateProducts.mutate()
+        formBooking.setFieldValue('data.products.createMany.data', []);
+      })
+      .catch(() => alert('Erro ao adicionar produto'))
+  })
+
+  const updateProducts = useMutation(() => {
+    return fetch(`${API_URL}/bookingproducts`, {
+      method: 'PATCH',
+      body: JSON.stringify(formProducts.values.data),
       headers: { 'Content-type': 'application/json;charset=UTF-8' }
     })
       .then(() => {
@@ -231,6 +252,30 @@ const IndexPage: NextPageWithLayout = () => {
       })
       .catch(() => alert('Erro ao adicionar cliente'))
   })
+
+  const formatDate = (dateString) => {
+    const match = dateString.match(/^(\d{4})-(\d{2})-(\d{2}).*$/)
+    const year = match[1]
+    const month = match[2]
+    const day = match[3]
+
+    return `${year}/${month}/${day}`
+  }
+
+  const formatDateDayMonthYearTime = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = date.toLocaleString('en-US', { month: 'short' }).toUpperCase();
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hour = String(date.getUTCHours()).padStart(2, '0');
+    const minute = String(date.getUTCMinutes()).padStart(2, '0');
+    const second = String(date.getUTCSeconds()).padStart(2, '0');
+    const formattedDateString = `${year}${month}${day}${hour}${minute}${second}`;
+
+    return formattedDateString;
+  };
+
+  if (newBooking.isLoading) return <p>Loading...</p>
 
   return (
     <Container size="xl" py="md">
@@ -263,8 +308,8 @@ const IndexPage: NextPageWithLayout = () => {
         </Box>
       </Drawer>
       <Header
-        title={linkParams.bookingId ? 'Edit Booking' : 'New Booking'}
-        subtitle={`12FEV20022020003 - 12/12/2012`}
+        title={'New Booking'}
+        subtitle={`${formatDateDayMonthYearTime(newBooking.data?.createdAt)} - ${formatDate(newBooking.data?.createdAt)}`}
         justify="space-between"
       >
         <Link href="/admin/customer-service">
@@ -275,8 +320,9 @@ const IndexPage: NextPageWithLayout = () => {
       <Grid mt={36} grow>
         <Grid.Col lg={7}>
           <form
-            onSubmit={formProduct.onSubmit(() => {
-              newProduct.mutate()
+            id="newProduct"
+            onSubmit={formBooking.onSubmit(() => {
+              saveChanges.mutate()
             })}
           >
             <Paper withBorder p="md">
@@ -316,105 +362,226 @@ const IndexPage: NextPageWithLayout = () => {
                   subtitle="Add one or more products"
                   subHead={true}
                   justify="space-between"
-                />
+                >
+                  <Button color="blue.8"
+                    onClick={() =>
+                      formBooking.insertListItem('data.products.createMany.data', {
+                        tenantId: 1,
+                        accountId: 1,
+                        ownerId: 1,
+                        category: 'Accommodation',
+                        accommodationType: '',
+                        toLocation: '',
+                        startDate: '',
+                        endDate: '',
+                        hotelName: '',
+                        hotelMealPlan: ''
+                      })
+                    }>New product</Button>
+                </Header>
                 <Divider color="gray.3" />
-                <Select
-                  placeholder="Selecione o produto"
-                  styles={(theme) => ({
-                    error: {
-                      display: 'none'
-                    }
-                  })}
-                  data={[{ value: 'Accommodation', label: 'Accommodation' }]}
-                  {...formProduct.getInputProps(
-                    'data.products.createMany.data.0.category'
-                  )}
-                />
-                <Group grow>
-                  <Select
-                    placeholder="Select hosting type"
-                    styles={(theme) => ({
-                      error: {
-                        display: 'none'
-                      }
-                    })}
-                    data={[{ value: 'Hotel', label: 'Hotel' }]}
-                    {...formProduct.getInputProps(
-                      'data.products.createMany.data.0.accommodationType'
-                    )}
-                  />
-                  <Select
-                    placeholder="Select the city"
-                    styles={(theme) => ({
-                      error: {
-                        display: 'none'
-                      }
-                    })}
-                    data={[{ value: 'Nova York', label: 'Nova York' }]}
-                    {...formProduct.getInputProps(
-                      'data.products.createMany.data.0.toLocation'
-                    )}
-                  />
-                </Group>
-                <Group grow>
-                  <DateRangePicker
-                    clearable={false}
-                    icon={<IconCalendar size={18} />}
-                    inputFormat="DD/MM/YYYY"
-                    placeholder="Departure and return date"
-                    value={[new Date(), new Date()]}
-                    onChange={(e) => {
-                      formProduct.setFieldValue(
-                        'data.products.createMany.data.0.startDate',
-                        e[0]
-                      )
-                      formProduct.setFieldValue(
-                        'data.products.createMany.data.0.endDate',
-                        e[1]
-                      )
-                    }}
-                  />
-                  <Select
-                    placeholder="Select the hotel"
-                    styles={(theme) => ({
-                      error: {
-                        display: 'none'
-                      }
-                    })}
-                    data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
-                    {...formProduct.getInputProps(
-                      'data.products.createMany.data.0.hotelName'
-                    )}
-                  />
-                </Group>
-                <Group grow>
-                  <Select
-                    placeholder="Meal plan"
-                    styles={(theme) => ({
-                      error: {
-                        display: 'none'
-                      }
-                    })}
-                    data={[{ value: 'Half Board', label: 'Half Board' }]}
-                    {...formProduct.getInputProps(
-                      'data.products.createMany.data.0.hotelMealPlan'
-                    )}
-                  />
-                  <NumberInput
-                    min={1}
-                    max={7}
-                    placeholder="Quartos"
-                    onChange={(e) =>
-                      e > rooms.length
-                        ? setRooms([...rooms, [e]])
-                        : setRooms(rooms.slice(0, -1))
-                    }
-                  />
-                </Group>
-                {rooms.map((room, i) => {
-                  return <RoomPrefs key={i} />
+                {formBooking.values.data.products.createMany.data.map((product, index) => {
+                  return(
+                    <Flex gap="xl" direction="column">
+                      <Select
+                        key={index}
+                        placeholder="Selecione o produto"
+                        styles={(theme) => ({
+                          error: {
+                            display: 'none'
+                          }
+                        })}
+                        data={[{ value: 'Accommodation', label: 'Accommodation' }]}
+                        {...formBooking.getInputProps(
+                          `data.products.createMany.data.${index}.category`
+                        )}
+                      />
+                      <Group grow>
+                        <Select
+                          placeholder="Select hosting type"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Hotel', label: 'Hotel' }]}
+                          {...formBooking.getInputProps(
+                            `data.products.createMany.data.${index}.accommodationType`
+                          )}
+                        />
+                        <Select
+                          placeholder="Select the city"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Nova York', label: 'Nova York' }]}
+                          {...formBooking.getInputProps(
+                            `data.products.createMany.data.${index}.toLocation`
+                          )}
+                        />
+                      </Group>
+                      <Group grow>
+                        <DateRangePicker
+                          clearable={false}
+                          icon={<IconCalendar size={18} />}
+                          inputFormat="DD/MM/YYYY"
+                          placeholder="Departure and return date"
+                          onChange={(e) => {
+                            formBooking.setFieldValue(
+                              `data.products.createMany.data.${index}.startDate`,
+                              e[0]
+                            )
+                            formBooking.setFieldValue(
+                              `data.products.createMany.data.${index}.endDate`,
+                              e[1]
+                            )
+                          }}
+                        />
+                        <Select
+                          placeholder="Select the hotel"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
+                          {...formBooking.getInputProps(
+                            `data.products.createMany.data.${index}.hotelName`
+                          )}
+                        />
+                      </Group>
+                      <Group grow>
+                        <Select
+                          placeholder="Meal plan"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Half Board', label: 'Half Board' }]}
+                          {...formBooking.getInputProps(
+                            `data.products.createMany.data.${index}.hotelMealPlan`
+                          )}
+                        />
+                        <NumberInput
+                          min={1}
+                          max={7}
+                          placeholder="Quartos"
+                          onChange={(e) =>
+                            e > rooms.length
+                              ? setRooms([...rooms, [e]])
+                              : setRooms(rooms.slice(0, -1))
+                          }
+                        />
+                      </Group>
+                      {rooms.map((room, i) => {
+                        return <RoomPrefs key={i} />
+                      })}
+                    </Flex>
+                  )
                 })}
-                <Group position="right">
+                {getBookingProducts.data !== null && getBookingProducts.data ? getBookingProducts.data.map((bookingProduct, i) => {
+                  return (
+                    <Flex key={bookingProduct.id} gap="xl" mt="xl" direction="column">
+                      <Select
+                        placeholder="Selecione o produto"
+                        styles={(theme) => ({
+                          error: {
+                            display: 'none'
+                          }
+                        })}
+                        data={[{ value: 'Accommodation', label: 'Accommodation' }]}
+                        {...formProducts.getInputProps(
+                          `data.${i}.category`
+                        )}
+                      />
+                      <Group grow>
+                        <Select
+                          placeholder="Select hosting type"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Hotel', label: 'Hotel' }]}
+                          {...formProducts.getInputProps(
+                            `data.${i}.accommodationType`
+                          )}
+                        />
+                        <Select
+                          placeholder="Select the city"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Nova York', label: 'Nova York' }]}
+                          {...formProducts.getInputProps(
+                            `data.${i}.toLocation`
+                          )}
+                        />
+                      </Group>
+                      <Group grow>
+                        <DateRangePicker
+                          clearable={false}
+                          icon={<IconCalendar size={18} />}
+                          inputFormat="DD/MM/YYYY"
+                          placeholder="Departure and return date"
+                          onChange={(e) => {
+                            formProducts.setFieldValue(
+                              `data.${i}.startDate`,
+                              e[0]
+                            )
+                            formProducts.setFieldValue(
+                              `data.${i}.endDate`,
+                              e[1]
+                            )
+                          }}
+                          defaultValue={[new Date(bookingProduct.startDate), new Date(bookingProduct.endDate)]}
+                        />
+                        <Select
+                          placeholder="Select the hotel"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Hilton Garden', label: 'Hilton Garden' }]}
+                          {...formProducts.getInputProps(
+                            `data.${i}.hotelName`
+                          )}
+                        />
+                      </Group>
+                      <Group grow>
+                        <Select
+                          placeholder="Meal plan"
+                          styles={(theme) => ({
+                            error: {
+                              display: 'none'
+                            }
+                          })}
+                          data={[{ value: 'Half Board', label: 'Half Board' }]}
+                          {...formProducts.getInputProps(
+                            `data.${i}.hotelMealPlan`
+                          )}
+                        />
+                        <NumberInput
+                          min={1}
+                          max={7}
+                          placeholder="Quartos"
+                          onChange={(e) =>
+                            e > rooms.length
+                              ? setRooms([...rooms, [e]])
+                              : setRooms(rooms.slice(0, -1))
+                          }
+                        />
+                      </Group>
+                    </Flex>
+                  )
+                }) : null}
+                <Group position="right" >
                   <Button color="blue.8" type="submit">
                     Save changes
                   </Button>
