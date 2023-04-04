@@ -40,7 +40,6 @@ const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0)
 
 const IndexPage: NextPageWithLayout = () => {
   const API_URL = process.env.NEXT_PUBLIC_SERVER_URL
-  console.log(API_URL)
 
   const [dates, setDates] = useState<[Date | null, Date | null]>([firstDayOfMonth, lastDayOfMonth]);
   const [page, setPage] = useState<number>(1);
