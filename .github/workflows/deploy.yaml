@@ -18,7 +18,7 @@ env:
   SERVER_ECS_CLUSTER: v10-eng-cluster
   SERVER_ECS_TASK_DEFINITION: v10-eng-dev-backend-ts
   SERVER_CONTAINER_NAME: backend-ts
-  NEXT_PUBLIC_API_URL: https://backend.dev.viagem10.com/api
+  NEXT_PUBLIC_SERVER_URL: https://backend.dev.viagem10.com/api
   DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
   NODE_ENV: test
 
@@ -98,7 +98,7 @@ jobs:
 
       - name: Build Web
         env:
-          NEXT_PUBLIC_API_URL: https://backend.dev.viagem10.com/api
+          NEXT_PUBLIC_SERVER_URL: https://backend.dev.viagem10.com/api
         run: ./build-web.sh
 
       - name: Build, tag, and push image to Amazon ECR for WEB
