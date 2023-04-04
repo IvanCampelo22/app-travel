@@ -7,7 +7,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:4200',
-      'https://backend.dev.viagem10.com/',
+      'http://web.dev.viagem10.com',
       'https://viagem10-monorepo-git-main-fabianofsantos.vercel.app',
       'https://viagem10-monorepo.vercel.app'
     ],
