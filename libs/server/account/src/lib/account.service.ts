@@ -12,9 +12,12 @@ export class AccountService {
   ) {}
 
   async create(input: CreateAccountDto) {
-    return this.db.account.create({ data: { ...input } })
+    return await this.db.account.create({
+      data: {
+        ...input
+      }
+    })
   }
-
   async findMany() {
     return this.db.account.findMany()
   }

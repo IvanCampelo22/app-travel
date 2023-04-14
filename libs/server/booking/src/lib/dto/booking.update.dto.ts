@@ -1,14 +1,21 @@
+import { ProductCategory } from '@prisma/client'
 import { Decimal } from '@prisma/client/runtime'
 import {
   IsBoolean,
   IsDate,
   IsDecimal,
+  IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString
 } from 'class-validator'
 
 export class UpdateBookingDto {
+  @IsOptional()
+  @IsInt()
+  id?: number
+
   @IsOptional()
   @IsNumber()
   tenantId?: number
@@ -36,6 +43,10 @@ export class UpdateBookingDto {
   @IsOptional()
   @IsString()
   customerPhone?: string
+
+  @IsOptional()
+  @IsEnum(ProductCategory)
+  category?: ProductCategory
 
   @IsOptional()
   @IsString()

@@ -4,12 +4,17 @@ import {
   IsBoolean,
   IsDate,
   IsDecimal,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString
 } from 'class-validator'
 
 export class CreateBookingDto {
+  @IsOptional()
+  @IsInt()
+  id?: number
+
   @IsOptional()
   @IsNumber()
   tenantId?: number

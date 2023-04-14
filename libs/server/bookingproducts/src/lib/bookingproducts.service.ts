@@ -4,7 +4,6 @@ import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
 import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
 import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
-
 @Injectable()
 export class BookingProductService {
   constructor(
@@ -21,7 +20,6 @@ export class BookingProductService {
       data
     })
   }
-
   async find(id: number) {
     return await this.service.bookingProduct.findUnique({ where: { id } })
   }

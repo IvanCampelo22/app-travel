@@ -24,7 +24,8 @@ export class BookingService {
     const booking = this.db.booking.create({
       data: {
         tenantId: account.tenantId,
-        accountId: account.id
+        accountId: account.id,
+        products: { createMany: { data: [] } }
       }
     })
     return booking

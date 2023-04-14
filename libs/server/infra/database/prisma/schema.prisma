@@ -238,78 +238,65 @@ enum AccommodationType {
 
 model BookingProduct {
   /// @zod.custom.omit([model, input])
-  id                          Int                  @id @default(autoincrement())
+  id                          Int                @id @default(autoincrement())
   tenantId                    Int
-  tenant                      Tenant?              @relation(fields: [tenantId], references: [id], name: "bookingProducts")
+  tenant                      Tenant?            @relation(fields: [tenantId], references: [id], name: "bookingProducts")
   bookingId                   Int
-  booking                     Booking?             @relation(fields: [bookingId], references: [id], name: "products")
+  booking                     Booking?           @relation(fields: [bookingId], references: [id], name: "products")
   accountId                   Int
-  account                     Account?             @relation(fields: [accountId], references: [id], name: "bookingProducts")
+  account                     Account?           @relation(fields: [accountId], references: [id], name: "bookingProducts")
   supplierId                  Int?
-  supplierName                String?              @db.VarChar(128)
+  supplierName                String?            @db.VarChar(128)
   ownerId                     Int
   category                    ProductCategory
   description                 String?
-  startDate                   DateTime             @db.Date
-  endDate                     DateTime             @db.Date
-  fromLocation                String?              @db.VarChar(64)
-  toLocation                  String               @db.VarChar(64)
+  startDate                   DateTime           @db.Date
+  endDate                     DateTime           @db.Date
+  fromLocation                String?            @db.VarChar(64)
+  toLocation                  String             @db.VarChar(64)
   termsAndConditions          String?
-  locatorCode                 String?              @db.VarChar(14)
-  productCost                 Decimal?             @db.Money
-  tenantMarkup                Decimal?             @db.Money
-  agencyMarkup                Decimal?             @db.Money
-  agentMarkup                 Decimal?             @db.Money
-  localTaxes                  Decimal?             @db.Money
-  stateTaxes                  Decimal?             @db.Money
-  federalTaxes                Decimal?             @db.Money
-  additionalFees              Decimal?             @db.Money
-  discountPercent             Decimal?             @db.Decimal(3, 1)
-  discount                    Decimal?             @db.Money
-  finalPrice                  Decimal?             @db.Money
-  paymentDueDate              DateTime?            @db.Date
-  paidDate                    DateTime?            @db.Date
-  paymentAmount               Decimal?             @db.Money
+  locatorCode                 String?            @db.VarChar(14)
+  productCost                 Decimal?           @db.Money
+  tenantMarkup                Decimal?           @db.Money
+  agencyMarkup                Decimal?           @db.Money
+  agentMarkup                 Decimal?           @db.Money
+  localTaxes                  Decimal?           @db.Money
+  stateTaxes                  Decimal?           @db.Money
+  federalTaxes                Decimal?           @db.Money
+  additionalFees              Decimal?           @db.Money
+  discountPercent             Decimal?           @db.Decimal(3, 1)
+  discount                    Decimal?           @db.Money
+  finalPrice                  Decimal?           @db.Money
+  paymentDueDate              DateTime?          @db.Date
+  paidDate                    DateTime?          @db.Date
+  paymentAmount               Decimal?           @db.Money
   voucherFilePath             String?
   receiptFilePath             String?
   invoiceFilePath             String?
-  status                      String?              @db.VarChar(10)
-  hotelName                   String?              @db.VarChar(128)
+  status                      String?            @db.VarChar(10)
+  hotelName                   String?            @db.VarChar(128)
   hotelStarRating             Int?
-  hotelMealPlan               String?              @db.VarChar(64)
+  hotelMealPlan               String?            @db.VarChar(64)
   accommodationType           AccommodationType?
+  roomCategory                RoomCategory?
+  adultsCount                 Int
+  minorsCounts                Int
+  ageOfMinors                 Int[]
   bookingGroupId              Int?
-  paymentType                 String?              @db.VarChar(64)
+  paymentType                 String?            @db.VarChar(64)
   paymentDescription          String?
-  creditCardType              String?              @db.VarChar(32)
+  creditCardType              String?            @db.VarChar(32)
   creditCardLastFourDigits    Int?
   creditCardAuthorizationCode String?
-  createdAt                   DateTime?            @default(now())
-  createdBy                   String?              @db.VarChar(32)
-  modifiedAt                  DateTime             @updatedAt
-  modifiedBy                  String?              @db.VarChar(32)
-  isActive                    Boolean?             @default(true)
-  rooms                       BookingProductRoom[] @relation("rooms")
+  createdAt                   DateTime?          @default(now())
+  createdBy                   String?            @db.VarChar(32)
+  modifiedAt                  DateTime           @updatedAt
+  modifiedBy                  String?            @db.VarChar(32)
+  isActive                    Boolean?           @default(true)
 }
 
 enum RoomCategory {
   SuiteMaster
   SuitePremium
   SuiteJunior
-}
-
-model BookingProductRoom {
-  /// @zod.custom.omit([model, input])
-  id               Int             @id @default(autoincrement())
-  bookingProductId Int
-  bookingProduct   BookingProduct? @relation(fields: [bookingProductId], references: [id], name: "rooms")
-  category         RoomCategory
-  adultsCount      Int
-  minorsCount      Int             @default(0)
-  ageOfMinors      Int[]
-  createdAt        DateTime?       @default(now())
-  createdBy        String?         @db.VarChar(32)
-  modifiedAt       DateTime        @updatedAt
-  modifiedBy       String?         @db.VarChar(32)
-  isActive         Boolean?        @default(true)
 }

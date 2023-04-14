@@ -11,6 +11,10 @@ import {
 
 export class CreateAccountDto {
   @IsInt()
+  @IsOptional()
+  id?: number
+
+  @IsInt()
   tenantId: number
 
   @IsNumber()

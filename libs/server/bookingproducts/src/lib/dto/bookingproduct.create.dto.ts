@@ -5,6 +5,7 @@ import {
   IsDate,
   IsDecimal,
   IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString
@@ -15,13 +16,13 @@ export class CreateBookingProductDto {
   @IsNumber()
   id?: number
 
-  @IsNumber()
+  @IsInt()
   tenantId: number
 
-  @IsNumber()
+  @IsInt()
   bookingId: number
 
-  @IsNumber()
+  @IsInt()
   accountId: number
 
   @IsOptional()

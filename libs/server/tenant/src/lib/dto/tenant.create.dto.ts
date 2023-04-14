@@ -1,6 +1,10 @@
-import { IsBoolean, IsDate, IsOptional, IsString } from 'class-validator'
+import { IsBoolean, IsDate, IsInt, IsOptional, IsString } from 'class-validator'
 
 export class CreateTenantDto {
+  @IsOptional()
+  @IsInt()
+  id?: number
+
   @IsString()
   name: string
 

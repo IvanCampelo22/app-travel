@@ -11,7 +11,6 @@ import {
 import { BookingProductService } from './bookingproducts.service'
 import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
 import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
-
 @Controller('bookingproducts')
 export class BookingProductControllers {
   constructor(private readonly service: BookingProductService) {}
@@ -22,8 +21,8 @@ export class BookingProductControllers {
   }
 
   @Post()
-  async createMany(@Body() data: CreateBookingProductDto[]) {
-    return this.service.createMany(data)
+  async createMany(@Body('data') data: CreateBookingProductDto[]) {
+    return await this.service.createMany(data)
   }
 
   @Get(':id')
