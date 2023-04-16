@@ -62,10 +62,9 @@ describe('Booking Controller', () => {
       expect(booking.status).toEqual(BookingStatus.WaitingService)
       expect(booking.createdAt).toBeDefined()
 
-      const { ok, body } = await supertest(app.getHttpServer()).get(PATH)
+      const response = await supertest(app.getHttpServer()).get(PATH)
 
-      expect(ok).toBeTruthy()
-      expect(body.length).toBe(1)
+      expect(response.body.bookings).toHaveLength(1)
     })
   })
   describe('GET /index', () => {
@@ -73,10 +72,8 @@ describe('Booking Controller', () => {
       await bookingService.new()
       await bookingService.new()
 
-      const { ok, body } = await supertest(app.getHttpServer()).get(PATH)
-
-      expect(ok).toBeTruthy()
-      expect(body.length).toBe(2)
+      const response = await supertest(app.getHttpServer()).get(PATH)
+      expect(response.body.bookings).toHaveLength(2)
     })
     it('should return filtered bookings', async () => {
       const startDate = new Date('2021-03-02')
@@ -90,11 +87,11 @@ describe('Booking Controller', () => {
           `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
         )
         .expect(200)
-      expect(response.body).toHaveLength(2)
+      expect(response.body.bookings).toHaveLength(2)
       const filteredResponse = await request(app.getHttpServer())
         .get(`/bookings?start_date=${startDate.toISOString()}`)
         .expect(200)
-      expect(filteredResponse.body).toHaveLength(2)
+      expect(filteredResponse.body.bookings).toHaveLength(2)
     })
     it('should return 0 bookings objects', async () => {
       const startDate = new Date('2025-03-02')
@@ -108,11 +105,11 @@ describe('Booking Controller', () => {
           `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
         )
         .expect(200)
-      expect(response.body).toHaveLength(0)
+      expect(response.body.bookings).toHaveLength(0)
       const filteredResponse = await request(app.getHttpServer())
         .get(`/bookings?start_date=${startDate.toISOString()}`)
         .expect(200)
-      expect(filteredResponse.body).toHaveLength(0)
+      expect(filteredResponse.body.bookings).toHaveLength(0)
     })
     it('should work pagination', async () => {
       for (let i = 0; i < 23; i++) {
@@ -126,7 +123,7 @@ describe('Booking Controller', () => {
           `/bookings?pageNumber=${page_Number.toString()}&pageSize=${page_Size.toString()}`
         )
         .expect(200)
-      expect(response.body).toHaveLength(10)
+      expect(response.body.bookings).toHaveLength(10)
     })
   })
 

@@ -280,7 +280,7 @@ model BookingProduct {
   accommodationType           AccommodationType?
   roomCategory                RoomCategory?
   adultsCount                 Int
-  minorsCounts                Int
+  minorsCount                 Int
   ageOfMinors                 Int[]
   bookingGroupId              Int?
   paymentType                 String?            @db.VarChar(64)

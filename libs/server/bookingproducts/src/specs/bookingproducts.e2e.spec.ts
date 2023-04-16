@@ -110,7 +110,10 @@ describe('BookingProducts Controller', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new york'
+          toLocation: 'new york',
+          adultsCount: 1,
+          minorsCount: 2,
+          ageOfMinors: [1, 2, 3]
         }
       })
       await db.bookingProduct.create({
@@ -122,7 +125,10 @@ describe('BookingProducts Controller', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'california'
+          toLocation: 'california',
+          adultsCount: 1,
+          minorsCount: 2,
+          ageOfMinors: [1, 2, 3]
         }
       })
 
@@ -179,38 +185,49 @@ describe('BookingProducts Controller', () => {
 
       const { body } = await supertest(app.getHttpServer())
         .post(PATH)
-        .send([
-          {
-            tenantId: tenant.id,
-            bookingId: booking.id,
-            accountId: account.id,
-            ownerId: 1,
-            category: 'Accommodation',
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-            toLocation: 'california'
-          },
-          {
-            tenantId: tenant.id,
-            bookingId: booking.id,
-            accountId: account.id,
-            ownerId: 1,
-            category: 'Accommodation',
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-            toLocation: 'Boston'
-          },
-          {
-            tenantId: tenant.id,
-            bookingId: booking.id,
-            accountId: account.id,
-            ownerId: 1,
-            category: 'Accommodation',
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-            toLocation: 'Kansas'
-          }
-        ])
+        .send({
+          data: [
+            {
+              tenantId: tenant.id,
+              bookingId: booking.id,
+              accountId: account.id,
+              ownerId: 1,
+              category: 'Accommodation',
+              startDate: startDate.toISOString(),
+              endDate: endDate.toISOString(),
+              toLocation: 'california',
+              adultsCount: 1,
+              minorsCount: 3,
+              ageOfMinors: [1, 2, 3]
+            },
+            {
+              tenantId: tenant.id,
+              bookingId: booking.id,
+              accountId: account.id,
+              ownerId: 1,
+              category: 'Accommodation',
+              startDate: startDate.toISOString(),
+              endDate: endDate.toISOString(),
+              toLocation: 'Boston',
+              adultsCount: 1,
+              minorsCount: 3,
+              ageOfMinors: [1, 2, 3]
+            },
+            {
+              tenantId: tenant.id,
+              bookingId: booking.id,
+              accountId: account.id,
+              ownerId: 1,
+              category: 'Accommodation',
+              startDate: startDate.toISOString(),
+              endDate: endDate.toISOString(),
+              toLocation: 'Kansas',
+              adultsCount: 1,
+              minorsCount: 3,
+              ageOfMinors: [1, 2, 3]
+            }
+          ]
+        })
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)
 
@@ -270,7 +287,10 @@ describe('BookingProducts Controller', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new york'
+          toLocation: 'new york',
+          adultsCount: 1,
+          minorsCount: 2,
+          ageOfMinors: [1, 2, 3]
         }
       })
 
@@ -342,7 +362,10 @@ describe('BookingProducts Controller', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new york'
+          toLocation: 'new york',
+          adultsCount: 1,
+          minorsCount: 2,
+          ageOfMinors: [1, 2, 3]
         }
       })
       const { body, ok } = await request(app.getHttpServer())

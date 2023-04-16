@@ -16,9 +16,7 @@ export class BookingProductService {
   }
 
   async createMany(data: CreateBookingProductDto[]) {
-    return this.service.bookingProduct.createMany({
-      data
-    })
+    return this.service.bookingProduct.createMany({ data })
   }
   async find(id: number) {
     return await this.service.bookingProduct.findUnique({ where: { id } })

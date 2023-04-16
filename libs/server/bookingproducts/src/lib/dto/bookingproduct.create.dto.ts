@@ -1,4 +1,8 @@
-import { AccommodationType, ProductCategory } from '@prisma/client'
+import {
+  AccommodationType,
+  ProductCategory,
+  RoomCategory
+} from '@prisma/client'
 import { Decimal } from '@prisma/client/runtime'
 import {
   IsBoolean,
@@ -152,6 +156,19 @@ export class CreateBookingProductDto {
   @IsOptional()
   @IsEnum(AccommodationType)
   acommodationType?: AccommodationType
+
+  @IsOptional()
+  @IsEnum(RoomCategory)
+  roomCategory?: RoomCategory
+
+  @IsInt()
+  adultsCount: number
+
+  @IsInt()
+  minorsCount: number
+
+  @IsInt()
+  ageOfMinors: number[]
 
   @IsOptional()
   @IsNumber()

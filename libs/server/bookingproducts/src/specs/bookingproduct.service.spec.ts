@@ -55,7 +55,6 @@ describe('BookingProduct Service', () => {
     await db.booking.deleteMany({})
     await db.account.deleteMany({})
     await db.tenant.deleteMany({})
-    await db.bookingProductRoom.deleteMany({})
   })
 
   afterAll(() => {
@@ -111,7 +110,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new york'
+          toLocation: 'new york',
+          adultsCount: 1,
+          minorsCount: 3,
+          ageOfMinors: [1, 2, 3]
         }
       })
       await db.bookingProduct.create({
@@ -123,7 +125,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new york'
+          toLocation: 'new york',
+          adultsCount: 1,
+          minorsCount: 3,
+          ageOfMinors: [1, 2, 3]
         }
       })
 
@@ -178,7 +183,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'california'
+          toLocation: 'california',
+          adultsCount: 1,
+          minorsCount: 3,
+          ageOfMinors: [1, 2, 3]
         },
         {
           tenantId: tenant.id,
@@ -188,7 +196,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new york'
+          toLocation: 'new york',
+          adultsCount: 1,
+          minorsCount: 3,
+          ageOfMinors: [1, 2, 3]
         },
         {
           tenantId: tenant.id,
@@ -198,7 +209,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new orleans'
+          toLocation: 'new orleans',
+          adultsCount: 1,
+          minorsCount: 3,
+          ageOfMinors: [1, 2, 3]
         }
       ]
 
@@ -259,7 +273,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'california'
+          toLocation: 'california',
+          adultsCount: 1,
+          minorsCount: 3,
+          ageOfMinors: [1, 2, 3]
         }
       ]
       await bookingProductService.createMany(bookingproduct)
@@ -319,7 +336,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'new york'
+          toLocation: 'new york',
+          adultsCount: 1,
+          minorsCount: 3,
+          ageOfMinors: [1, 2, 3]
         }
       ]
       await bookingProductService.createMany(bookingproduct)
@@ -383,7 +403,10 @@ describe('BookingProduct Service', () => {
           category: 'Accommodation',
           startDate: new Date(Date.now()),
           endDate: new Date(Date.now()),
-          toLocation: 'california'
+          toLocation: 'california',
+          adultsCount: 1,
+          minorsCount: 2,
+          ageOfMinors: [1, 2, 3]
         }
       ]
       await bookingProductService.createMany(bookingproduct)
