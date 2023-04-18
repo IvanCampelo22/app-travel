@@ -16,7 +16,7 @@ const updateOneBooking = (id: number): Prisma.BookingUpdateArgs => {
               endDate: Date.now().toPrecision(),
               adultsCount: 2,
               minorsCount: 2,
-              ageOfMinors: [1, 2]
+              ageOfMinors: [1, 3]
             }
           ]
         }
