@@ -51,6 +51,8 @@ model Tenant {
   bookings           Booking[]         @relation("bookings")
   bookingTravelers   BookingTraveler[] @relation("bookingTravelers")
   bookingProducts    BookingProduct[]  @relation("bookingProducts")
+  productTenants     Product[]         @relation("productTenants")
+  clientTenants      Client[]          @relation("clientTenants")
 
   @@unique([email])
 }
@@ -97,49 +99,52 @@ enum AccountCategory {
 
 model Account {
   /// @zod.custom.omit([model, input])
-  id                 Int               @id @default(autoincrement())
+  id                 Int                 @id @default(autoincrement())
   tenantId           Int
-  tenant             Tenant            @relation(fields: [tenantId], references: [id], name: "accounts")
+  tenant             Tenant              @relation(fields: [tenantId], references: [id], name: "accounts")
   parentId           Int?
-  parent             Account?          @relation(fields: [parentId], references: [id], name: "childAccounts")
+  parent             Account?            @relation(fields: [parentId], references: [id], name: "childAccounts")
   ownerId            Int
-  childAccounts      Account[]         @relation("childAccounts")
-  accountUsers       User[]            @relation("accountUsers")
-  name               String            @db.VarChar(64)
+  childAccounts      Account[]           @relation("childAccounts")
+  accountUsers       User[]              @relation("accountUsers")
+  name               String              @db.VarChar(64)
   category           AccountCategory
-  dobName            String?           @db.VarChar(64)
-  taxId              String?           @db.VarChar(24)
-  ssn                String?           @db.VarChar(24)
-  brand              String?           @db.VarChar(64)
+  dobName            String?             @db.VarChar(64)
+  taxId              String?             @db.VarChar(24)
+  ssn                String?             @db.VarChar(24)
+  brand              String?             @db.VarChar(64)
   /// @zod.string.email()
-  email              String            @db.VarChar(64)
-  phone              String?           @db.VarChar(32)
-  mobilePhone        String?           @db.VarChar(32)
-  fax                String?           @db.VarChar(64)
+  email              String              @db.VarChar(64)
+  phone              String?             @db.VarChar(32)
+  mobilePhone        String?             @db.VarChar(32)
+  fax                String?             @db.VarChar(64)
   billingAdresses    Json?
   shippingAdresses   Json?
   termsAndConditions String?
   privacyPolicy      String?
-  bankName           String?           @db.VarChar(64)
+  bankName           String?             @db.VarChar(64)
   branch             String?
-  bankAccount        String?           @db.VarChar(64)
+  bankAccount        String?             @db.VarChar(64)
   notes              String?
-  countryCode        String?           @db.VarChar(2)
-  currencyCode       String?           @db.VarChar(3)
-  locale             String?           @db.VarChar(6)
-  timeZone           String?           @db.VarChar(20)
+  countryCode        String?             @db.VarChar(2)
+  currencyCode       String?             @db.VarChar(3)
+  locale             String?             @db.VarChar(6)
+  timeZone           String?             @db.VarChar(20)
   referralSource     String?
-  domain             String?           @db.VarChar(64)
+  domain             String?             @db.VarChar(64)
   siteConfig         String?
-  createdAt          DateTime?         @default(now())
-  createdBy          String?           @db.VarChar(32)
-  modifiedAt         DateTime          @updatedAt
-  modifiedBy         String?           @db.VarChar(32)
-  isActive           Boolean?          @default(true)
-  bookings           Booking[]         @relation("bookings")
-  purchasing         Booking[]         @relation("purchasing")
-  bookingTravelers   BookingTraveler[] @relation("bookingTravelers")
-  bookingProducts    BookingProduct[]  @relation("bookingProducts")
+  createdAt          DateTime?           @default(now())
+  createdBy          String?             @db.VarChar(32)
+  modifiedAt         DateTime            @updatedAt
+  modifiedBy         String?             @db.VarChar(32)
+  isActive           Boolean?            @default(true)
+  bookings           Booking[]           @relation("bookings")
+  purchasing         Booking[]           @relation("purchasing")
+  bookingTravelers   BookingTraveler[]   @relation("bookingTravelers")
+  bookingProducts    BookingProduct[]    @relation("bookingProducts")
+  products           Product[]           @relation("products")
+  accountReceivables AccountReceivable[] @relation("accountReceivables")
+  clientAccount      Client[]            @relation("clientAccount")
 
   @@unique([name])
 }
@@ -158,47 +163,49 @@ enum BookingStatus {
 
 model Booking {
   /// @zod.custom.omit([model, input])
-  id                 Int               @id @default(autoincrement())
+  id                 Int                 @id @default(autoincrement())
   tenantId           Int
-  tenant             Tenant            @relation(fields: [tenantId], references: [id], name: "bookings")
+  tenant             Tenant              @relation(fields: [tenantId], references: [id], name: "bookings")
   accountId          Int
-  account            Account           @relation(fields: [accountId], references: [id], name: "bookings")
+  account            Account             @relation(fields: [accountId], references: [id], name: "bookings")
   customerId         Int?
-  customer           Account?          @relation(fields: [customerId], references: [id], name: "purchasing")
+  customer           Account?            @relation(fields: [customerId], references: [id], name: "purchasing")
   ownerId            Int?
-  customerName       String?           @db.VarChar(128)
+  customerName       String?             @db.VarChar(128)
   /// @zod.string.email()
-  customerEmail      String?           @db.VarChar(64)
-  customerPhone      String?           @db.VarChar(32)
-  postalCode         String?           @db.VarChar(32)
-  fromCity           String?           @db.VarChar(64)
-  toCity             String?           @db.VarChar(64)
+  customerEmail      String?             @db.VarChar(64)
+  customerPhone      String?             @db.VarChar(32)
+  postalCode         String?             @db.VarChar(32)
+  fromCity           String?             @db.VarChar(64)
+  toCity             String?             @db.VarChar(64)
   travelDate         DateTime?
-  travelPeriod       String?           @db.VarChar(12)
+  travelPeriod       String?             @db.VarChar(12)
   adultsCount        Int?
   childrenCount      Int?
   seniorsCount       Int?
   requestDescription String?
-  status             BookingStatus?    @default(WaitingService)
-  locatorCode        String?           @db.VarChar(14)
-  totalPrice         Decimal?          @db.Money
-  totalCost          Decimal?          @db.Money
-  paymentType        String?           @db.VarChar(10)
-  paymentStatus      String?           @db.VarChar(10)
+  status             BookingStatus?      @default(WaitingService)
+  locatorCode        String?             @db.VarChar(14)
+  totalPrice         Decimal?            @db.Money
+  totalCost          Decimal?            @db.Money
+  paymentType        String?             @db.VarChar(10)
+  paymentStatus      String?             @db.VarChar(10)
   paymentDateTime    DateTime?
-  discountPercent    Decimal?          @db.Decimal(3, 1)
-  discountAmount     Decimal?          @db.Money
-  paymentAmount      Decimal?          @db.Money
+  discountPercent    Decimal?            @db.Decimal(3, 1)
+  discountAmount     Decimal?            @db.Money
+  paymentAmount      Decimal?            @db.Money
   voucherFilePath    String?
   receiptFilePath    String?
   invoiceFilePath    String?
-  createdAt          DateTime?         @default(now())
-  createdBy          String?           @db.VarChar(32)
-  modifiedAt         DateTime?         @updatedAt
-  modifiedBy         String?           @db.VarChar(32)
-  isActive           Boolean?          @default(true)
-  travelers          BookingTraveler[] @relation("travelers")
-  products           BookingProduct[]  @relation("products")
+  createdAt          DateTime?           @default(now())
+  createdBy          String?             @db.VarChar(32)
+  modifiedAt         DateTime?           @updatedAt
+  modifiedBy         String?             @db.VarChar(32)
+  isActive           Boolean?            @default(true)
+  travelers          BookingTraveler[]   @relation("travelers")
+  products           BookingProduct[]    @relation("products")
+  accountPayables    AccountPayable[]    @relation("accountPayables")
+  bookingReceivable  AccountReceivable[] @relation("bookingReceivable")
 }
 
 model BookingTraveler {
@@ -293,10 +300,123 @@ model BookingProduct {
   modifiedAt                  DateTime           @updatedAt
   modifiedBy                  String?            @db.VarChar(32)
   isActive                    Boolean?           @default(true)
+  accountPayables             AccountPayable[]   @relation("accountPayables")
 }
 
 enum RoomCategory {
   SuiteMaster
   SuitePremium
   SuiteJunior
+}
+
+model AccountPayable {
+  id                 Int             @id @default(autoincrement())
+  bookingProductId   Int
+  bookingProduct     BookingProduct? @relation(fields: [bookingProductId], references: [id], name: "accountPayables")
+  bookingId          Int
+  booking            Booking?        @relation(fields: [bookingId], references: [id], name: "accountPayables")
+  productId          Int
+  product            Product?        @relation(fields: [productId], references: [id], name: "payables")
+  payableAccountId   Int?
+  payableDescription String          @db.VarChar(256)
+  payableAmount      Decimal?        @db.Money
+  payableDueDate     DateTime        @db.Date
+  paymentDate        DateTime?       @db.Date
+  createdAt          DateTime?       @default(now())
+  createdBy          String?         @db.VarChar(32)
+  modifiedAt         DateTime        @updatedAt
+  modifiedBy         String?         @db.VarChar(32)
+  isActive           Boolean?        @default(true)
+}
+
+model AccountReceivable {
+  id                    Int       @id @default(autoincrement())
+  bookingId             Int
+  booking               Booking?  @relation(fields: [bookingId], references: [id], name: "bookingReceivable")
+  clientId              Int
+  client                Client?   @relation(fields: [clientId], references: [id], name: "receivableClients")
+  productId             Int
+  product               Product?  @relation(fields: [productId], references: [id], name: "productReceivables")
+  accountId             Int
+  account               Account?  @relation(fields: [accountId], references: [id], name: "accountReceivables")
+  receivableDescription String?   @db.VarChar(256)
+  receivableAmount      Decimal?  @db.Money
+  receivableDueDate     DateTime  @db.Date
+  receivableDate        DateTime? @db.Date
+  createdAt             DateTime? @default(now())
+  createdBy             String?   @db.VarChar(32)
+  modifiedAt            DateTime  @updatedAt
+  modifiedBy            String?   @db.VarChar(32)
+  isActive              Boolean?  @default(true)
+}
+
+model Product {
+  id                  Int                 @id @default(autoincrement())
+  accountId           Int
+  account             Account?            @relation(fields: [accountId], references: [id], name: "products")
+  tenantId            Int
+  tenant              Tenant?             @relation(fields: [tenantId], references: [id], name: "productTenants")
+  product_name        String?             @db.VarChar(256)
+  product_description String?             @db.Text
+  product_type        String?             @db.VarChar(64)
+  supplier_account    Int?
+  maxStock            Decimal?            @db.Money
+  available_stock     Int?
+  createdAt           DateTime?           @default(now())
+  createdBy           String?             @db.VarChar(32)
+  modifiedAt          DateTime            @updatedAt
+  modifiedBy          String?             @db.VarChar(32)
+  isActive            Boolean?            @default(true)
+  payables            AccountPayable[]    @relation("payables")
+  productReceivbales  AccountReceivable[] @relation("productReceivables")
+}
+
+model Client {
+  id                Int                 @id @default(autoincrement())
+  accountId         Int
+  account           Account?            @relation(fields: [accountId], references: [id], name: "clientAccount")
+  tenantId          Int
+  tenant            Tenant?             @relation(fields: [tenantId], references: [id], name: "clientTenants")
+  prefix            String?             @db.Text
+  firstName         String              @db.VarChar(64)
+  middleName        String?             @db.VarChar(64)
+  lastName          String              @db.VarChar(64)
+  suffix            String?             @db.VarChar(256)
+  email             String              @db.VarChar(256)
+  phone             String?             @db.VarChar(256)
+  mobilePhone       String?             @db.VarChar(256)
+  mailingAdress1    String?             @db.Text
+  mailingAdress2    String?             @db.Text
+  mailingAdress3    String?             @db.Text
+  mailingCity       String?             @db.VarChar(64)
+  mailingState      String?             @db.VarChar(2)
+  mailingCountry    String?             @db.VarChar(64)
+  mailingPostalCode String?             @db.VarChar(64)
+  otherAdress1      String?             @db.Text
+  otherAdress2      String?             @db.Text
+  otherAdress3      String?             @db.Text
+  otherCity         String?             @db.VarChar(64)
+  otherState        String?             @db.VarChar(2)
+  otherCountry      String?             @db.VarChar(64)
+  otherPostalCode   String?             @db.VarChar(64)
+  gender            String?             @db.Text
+  date_of_birth     DateTime            @db.Date
+  ccName            String?             @db.VarChar(64)
+  ccNumber          String?             @db.VarChar(256)
+  ccExpire          String?             @db.VarChar(4)
+  ccCvv2            String?             @db.VarChar(64)
+  ccApproval        String?             @db.VarChar(64)
+  bankName          String?             @db.Text
+  branchName        String?             @db.Text
+  bankAccount       String?             @db.VarChar(256)
+  notes             String?             @db.Text
+  ownerUserId       String              @db.Text
+  createdAt         DateTime?           @default(now())
+  createdBy         String?             @db.VarChar(32)
+  modifiedAt        DateTime            @updatedAt
+  modifiedBy        String?             @db.VarChar(32)
+  isActive          Boolean?            @default(true)
+  receivableClients AccountReceivable[] @relation("receivableClients")
+
+  @@unique([email])
 }
