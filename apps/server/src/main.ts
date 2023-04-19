@@ -8,6 +8,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:4200',
       'http://web.dev.viagem10.com',
+      'https://web.dev.viagem10.com',
       'https://viagem10-monorepo-git-main-fabianofsantos.vercel.app',
       'https://viagem10-monorepo.vercel.app'
     ],
