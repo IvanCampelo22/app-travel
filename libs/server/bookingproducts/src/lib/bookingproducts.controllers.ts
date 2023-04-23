@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   NotFoundException,
   Param,
   Patch,
@@ -17,7 +18,11 @@ export class BookingProductControllers {
 
   @Get('booking/:bookingId')
   async index(@Param('bookingId') bookingId?: string) {
-    return this.service.findMany(Number(bookingId))
+    try {
+      return this.service.findMany(Number(bookingId))
+    } catch (error: any) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   @Post()
