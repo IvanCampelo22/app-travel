@@ -10,8 +10,6 @@ import {
   IsString
 } from 'class-validator'
 
-import { CreateBookingProductDto } from '@server/bookingproducts'
-
 export class CreateBookingDto {
   @IsOptional()
   @IsInt()
@@ -139,7 +137,4 @@ export class CreateBookingDto {
   @IsOptional()
   @IsBoolean()
   isActive?: boolean
-
-  @IsOptional()
-  products?: CreateBookingProductDto[]
 }

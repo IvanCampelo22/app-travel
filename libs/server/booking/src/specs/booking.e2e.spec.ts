@@ -127,13 +127,32 @@ describe('Booking Controller', () => {
     })
   })
 
-  describe('GET /find', () => {
+  describe('GET /update', () => {
     it('suscefully', async () => {
       const booking = await bookingService.new()
-      const updateBooking = await bookingService.update(booking.id, {
-        customerEmail: 'james@gmail.com'
-      })
-      const findBooking = await bookingService.find(updateBooking.id)
+      await bookingService.update(
+        booking.id,
+        {
+          customerEmail: 'james@gmail.com'
+        },
+        [
+          {
+            tenantId: 1,
+            accountId: 1,
+            bookingId: 1,
+            ownerId: 1,
+            category: 'Accommodation',
+            startDate: new Date(Date.now()),
+            endDate: new Date(Date.now()),
+            toLocation: 'New York',
+            adultsCount: 2,
+            minorsCount: 2,
+            ageOfMinors: [2]
+          }
+        ]
+      )
+      const test = await db.booking.findMany()
+      const findBooking = await bookingService.find(test[0].id)
       const { ok } = await supertest(app.getHttpServer()).get(PATH)
       expect(ok).toBeTruthy()
       expect(findBooking?.customerEmail).toEqual('james@gmail.com')

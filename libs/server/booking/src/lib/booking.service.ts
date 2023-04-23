@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common'
-import { CreateBookingProductDto } from '@server/bookingproducts'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
 import { UpdateBookingDto } from './dto/booking.update.dto'
@@ -81,56 +80,17 @@ export class BookingService {
         }
       }
     }
-    const result = await this.db.booking.findMany({
+    return await this.db.booking.findMany({
       where,
       skip,
-      take,
-      include: { products: true }
+      take
     })
-    const test = result.map((result) => {
-      const product = result.products.map((room) => ({
-        category: room.accountId,
-        adultsCount: room.adultsCount,
-        minorsCount: room.minorsCount,
-        ageOfMinors: room.ageOfMinors
-      }))
-
-      return {
-        ...result,
-        product: product
-      }
-    })
-    return test
   }
 
-  async update(
-    id: number,
-    input: UpdateBookingDto,
-    bookingProducts: CreateBookingProductDto[]
-  ) {
-    if (bookingProducts !== undefined) {
-      const products = bookingProducts.map((product) => ({
-        tenantId: product.tenantId,
-        bookingId: product.bookingId,
-        accountId: product.accountId,
-        supplierId: product.supplierId,
-        supplierName: product.supplierName,
-        ownerId: product.ownerId,
-        category: product.category,
-        startDate: product.startDate,
-        endDate: product.endDate,
-        toLocation: product.toLocation,
-        roomCategory: product.roomCategory,
-        adultsCount: product.adultsCount,
-        minorsCount: product.minorsCount,
-        ageOfMinors: product.ageOfMinors
-      }))
-      await this.db.$transaction([
-        this.db.booking.update({ where: { id }, data: { ...input } }),
-        this.db.bookingProduct.createMany({ data: products })
-      ])
-    }
+  async update(id: number, input: UpdateBookingDto) {
+    return this.db.booking.update({ where: { id }, data: { ...input } })
   }
+
   async destroy(id: number) {
     const booking = await this.db.booking.update({
       where: { id },
