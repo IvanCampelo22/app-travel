@@ -9,6 +9,7 @@ import {
   Query
 } from '@nestjs/common'
 import { Booking } from '@prisma/client'
+import { CreateBookingProductDto } from '@server/bookingproducts'
 import { BookingService } from './booking.service'
 import { UpdateBookingDto } from './dto/booking.update.dto'
 
@@ -56,12 +57,12 @@ export class BookingController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() input: UpdateBookingDto) {
-    try {
-      return await this.service.update(Number(id), input)
-    } catch (error) {
-      throw new NotFoundException('Not Found')
-    }
+  async update(
+    @Param('id') id: string,
+    @Body() input: UpdateBookingDto,
+    @Body('bookingProducts') bookingProducts: CreateBookingProductDto[]
+  ) {
+    return await this.service.update(Number(id), input, bookingProducts)
   }
 
   @Delete(':id')

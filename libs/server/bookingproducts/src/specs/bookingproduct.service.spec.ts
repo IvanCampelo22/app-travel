@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { Account, BookingStatus, Tenant } from '@prisma/client'
+import { Account, Tenant } from '@prisma/client'
 import { AccountModule, AccountService } from '@server/account'
-import { BookingModule, BookingService } from '@server/booking'
 import { CoreModule } from '@server/core'
 import {
   DatabaseModule,
@@ -15,7 +14,6 @@ import { BookingProductService } from './../lib/bookingproducts.service'
 import { CreateBookingProductDto } from './../lib/dto/bookingproduct.create.dto'
 describe('BookingProduct Service', () => {
   let bookingProductService: BookingProductService
-  let bookingService: BookingService
   let moduleRef: TestingModule
   let db: DatabaseService
   let franchise: Tenant
@@ -30,7 +28,6 @@ describe('BookingProduct Service', () => {
         CoreModule,
         DatabaseModule,
         BookingproductsModule,
-        BookingModule,
         TenantModule,
         AccountModule,
         UserModule
@@ -43,7 +40,6 @@ describe('BookingProduct Service', () => {
     bookingProductService = moduleRef.get<BookingProductService>(
       BookingProductService
     )
-    bookingService = moduleRef.get<BookingService>(BookingService)
     accountService = moduleRef.get<AccountService>(AccountService)
     tenantService = moduleRef.get<TenantService>(TenantService)
     userService = moduleRef.get<UserService>(UserService)
@@ -86,12 +82,9 @@ describe('BookingProduct Service', () => {
         email: 'nath@gmail.com'
       })
 
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
@@ -159,12 +152,9 @@ describe('BookingProduct Service', () => {
       const tenant = await db.tenant.create({
         data: { name: 'Nath', email: 'nath@gmail.com' }
       })
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
@@ -249,12 +239,9 @@ describe('BookingProduct Service', () => {
       const tenant = await db.tenant.create({
         data: { name: 'Nath', email: 'nath@gmail.com' }
       })
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
@@ -311,12 +298,9 @@ describe('BookingProduct Service', () => {
       const tenant = await db.tenant.create({
         data: { name: 'Nath', email: 'nath@gmail.com' }
       })
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
@@ -378,12 +362,9 @@ describe('BookingProduct Service', () => {
       const tenant = await db.tenant.create({
         data: { name: 'Nath', email: 'nath@gmail.com' }
       })
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,

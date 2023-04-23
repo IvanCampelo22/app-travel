@@ -18,6 +18,12 @@
     "strict": true,
     "paths": {
       "@common/validation": ["libs/common/validation/src/index.ts"],
+      "@server/product": ["libs/server/product/src/index.ts"],
+      "@server/client": ["libs/server/client/src/index.ts"],
+      "@server/accountpayable": ["libs/server/account-payable/src/index.ts"],
+      "@server/accountreceivable": [
+        "libs/server/account-receivable/src/index.ts"
+      ],
       "@server/account": ["libs/server/account/src/index.ts"],
       "@server/account/fixtures": ["libs/server/account/src/specs/index.ts"],
       "@server/booking": ["libs/server/booking/src/index.ts"],
@@ -29,6 +35,14 @@
       "@server/tenant/fixtures": ["libs/server/tenant/src/specs/index.ts"],
       "@server/user": ["libs/server/user/src/index.ts"],
       "@viagem10-monorepo/account": ["libs/account/src/index.ts"],
+      "@viagem10-monorepo/account-payable": [
+        "libs/account-payable/src/index.ts"
+      ],
+      "@viagem10-monorepo/account-receivable": [
+        "libs/account-receivable/src/index.ts"
+      ],
+      "@viagem10-monorepo/client": ["libs/client/src/index.ts"],
+      "@viagem10-monorepo/product": ["libs/product/src/index.ts"],
       "@web/base-ui": ["libs/web/base-ui/src/index.ts"],
       "@web/base-ui/utils": ["libs/web/base-ui/src/utils/index.ts"],
       "@web/childe-age": ["libs/web/childe-age/src/index.ts"],

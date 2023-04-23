@@ -1,8 +1,7 @@
 import { INestApplication } from '@nestjs/common'
 import { Test, TestingModule } from '@nestjs/testing'
-import { Account, BookingStatus, Tenant } from '@prisma/client'
+import { Account, Tenant } from '@prisma/client'
 import { AccountModule, AccountService } from '@server/account'
-import { BookingModule, BookingService } from '@server/booking'
 import { CoreModule } from '@server/core'
 import { TenantModule, TenantService } from '@server/tenant'
 import * as request from 'supertest'
@@ -20,7 +19,6 @@ describe('BookingProducts Controller', () => {
 
   let app: INestApplication
   let moduleRef: TestingModule
-  let bookingService: BookingService
   let accountService: AccountService
   let tenantService: TenantService
   const PATH = '/bookingproducts'
@@ -33,7 +31,6 @@ describe('BookingProducts Controller', () => {
       imports: [
         CoreModule,
         DatabaseModule,
-        BookingModule,
         BookingproductsModule,
         TenantModule,
         AccountModule
@@ -46,8 +43,6 @@ describe('BookingProducts Controller', () => {
     app = moduleRef.createNestApplication()
 
     await app.init()
-
-    bookingService = moduleRef.get<BookingService>(BookingService)
 
     accountService = moduleRef.get<AccountService>(AccountService)
     tenantService = moduleRef.get<TenantService>(TenantService)
@@ -86,12 +81,9 @@ describe('BookingProducts Controller', () => {
         email: 'nath@gmail.com'
       })
 
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
@@ -165,12 +157,9 @@ describe('BookingProducts Controller', () => {
         }
       })
 
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
@@ -263,12 +252,9 @@ describe('BookingProducts Controller', () => {
         email: 'nath@gmail.com'
       })
 
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
@@ -338,12 +324,9 @@ describe('BookingProducts Controller', () => {
         email: 'nath@gmail.com'
       })
 
-      const booking = await bookingService.new()
-      expect(booking.id).toBeDefined()
-      expect(booking.tenantId).toEqual(franchise.id)
-      expect(booking.accountId).toEqual(agency.id)
-      expect(booking.status).toEqual(BookingStatus.WaitingService)
-      expect(booking.createdAt).toBeDefined()
+      const booking = await db.booking.create({
+        data: { tenantId: franchise.id, accountId: agency.id }
+      })
 
       const account = await accountService.create({
         tenantId: tenant.id,
