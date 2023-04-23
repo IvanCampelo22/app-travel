@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post
+} from '@nestjs/common'
 import { CreateAccountReceivableDto } from '../dto/account-receivable.create.dto'
 import { AccountReceivableService } from './account-receivable.service'
 
@@ -14,22 +22,25 @@ export class AccountReceivableController {
   }
 
   @Get(':id')
-  async findOne(id: number) {
+  async findOne(@Param(':id') id: number) {
     return await this.accountReceivableService.findOne(id)
   }
 
   @Post()
-  async create(input: CreateAccountReceivableDto) {
+  async create(@Body() input: CreateAccountReceivableDto) {
     return await this.accountReceivableService.create(input)
   }
 
   @Patch(':id')
-  async update(id: number, input: CreateAccountReceivableDto) {
+  async update(
+    @Param(':id') id: number,
+    @Body() input: CreateAccountReceivableDto
+  ) {
     return await this.accountReceivableService.update(id, input)
   }
 
   @Delete(':id')
-  async destroy(id: number) {
+  async destroy(@Param(':id') id: number) {
     return await this.accountReceivableService.destroy(id)
   }
 }

@@ -351,24 +351,24 @@ model AccountReceivable {
 }
 
 model Product {
-  id                  Int                 @id @default(autoincrement())
-  accountId           Int
-  account             Account?            @relation(fields: [accountId], references: [id], name: "products")
-  tenantId            Int
-  tenant              Tenant?             @relation(fields: [tenantId], references: [id], name: "productTenants")
-  product_name        String?             @db.VarChar(256)
-  product_description String?             @db.Text
-  product_type        String?             @db.VarChar(64)
-  supplier_account    Int?
-  maxStock            Decimal?            @db.Money
-  available_stock     Int?
-  createdAt           DateTime?           @default(now())
-  createdBy           String?             @db.VarChar(32)
-  modifiedAt          DateTime            @updatedAt
-  modifiedBy          String?             @db.VarChar(32)
-  isActive            Boolean?            @default(true)
-  payables            AccountPayable[]    @relation("payables")
-  productReceivbales  AccountReceivable[] @relation("productReceivables")
+  id                 Int                 @id @default(autoincrement())
+  accountId          Int
+  account            Account?            @relation(fields: [accountId], references: [id], name: "products")
+  tenantId           Int
+  tenant             Tenant?             @relation(fields: [tenantId], references: [id], name: "productTenants")
+  productName        String?             @db.VarChar(256)
+  productDescription String?             @db.Text
+  productType        String?             @db.VarChar(64)
+  supplierAccount    Int?
+  maxStock           Decimal?            @db.Money
+  available_stock    Int?
+  createdAt          DateTime?           @default(now())
+  createdBy          String?             @db.VarChar(32)
+  modifiedAt         DateTime            @updatedAt
+  modifiedBy         String?             @db.VarChar(32)
+  isActive           Boolean?            @default(true)
+  payables           AccountPayable[]    @relation("payables")
+  productReceivbales AccountReceivable[] @relation("productReceivables")
 }
 
 model Client {
@@ -400,7 +400,7 @@ model Client {
   otherCountry      String?             @db.VarChar(64)
   otherPostalCode   String?             @db.VarChar(64)
   gender            String?             @db.Text
-  date_of_birth     DateTime            @db.Date
+  dateOfBirth       DateTime            @db.Date
   ccName            String?             @db.VarChar(64)
   ccNumber          String?             @db.VarChar(256)
   ccExpire          String?             @db.VarChar(4)
