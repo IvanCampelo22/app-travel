@@ -15,7 +15,7 @@ import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
 export class BookingProductControllers {
   constructor(private readonly service: BookingProductService) {}
 
-  @Get(':bookingId')
+  @Get('booking/:bookingId')
   async index(@Param('bookingId') bookingId?: string) {
     return this.service.findMany(Number(bookingId))
   }
