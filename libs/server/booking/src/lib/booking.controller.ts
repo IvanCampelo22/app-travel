@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   NotFoundException,
   Param,
   Patch,
@@ -57,7 +58,11 @@ export class BookingController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() input: UpdateBookingDto) {
-    return await this.service.update(Number(id), input)
+    try {
+      return await this.service.update(Number(id), input)
+    } catch (error: any) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   @Delete(':id')
