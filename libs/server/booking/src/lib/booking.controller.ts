@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   HttpException,
+  HttpStatus,
   NotFoundException,
   Param,
   Patch,
@@ -61,7 +62,10 @@ export class BookingController {
     try {
       return await this.service.update(Number(id), input)
     } catch (error: any) {
-      throw new HttpException(error.message, error.status)
+      throw new HttpException(
+        error.message,
+        error.status || HttpStatus.BAD_REQUEST
+      )
     }
   }
 

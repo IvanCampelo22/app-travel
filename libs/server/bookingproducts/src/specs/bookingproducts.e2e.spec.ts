@@ -125,7 +125,7 @@ describe('BookingProducts Controller', () => {
       })
 
       const { ok, body } = await request(app.getHttpServer()).get(
-        `${PATH}/${booking.id}`
+        `${PATH}/booking/${booking.id}`
       )
       console.log(body)
       expect(ok).toBeTruthy()

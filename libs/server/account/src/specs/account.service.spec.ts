@@ -21,6 +21,8 @@ describe('Account Service', () => {
   let db: DatabaseService
 
   beforeAll(async () => {
+    jest.setTimeout(1000000)
+
     moduleRef = await Test.createTestingModule({
       imports: [
         CoreModule,

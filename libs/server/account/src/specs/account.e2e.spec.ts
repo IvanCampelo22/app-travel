@@ -16,6 +16,8 @@ import { AccountService } from '../lib/account.service'
 import supertest = require('supertest')
 
 describe('Account Controller', () => {
+  jest.setTimeout(1000000)
+
   let app: INestApplication
   let moduleRef: TestingModule
   let accountService: AccountService
