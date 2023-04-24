@@ -27,7 +27,11 @@ export class BookingProductControllers {
 
   @Post()
   async createMany(@Body('data') data: CreateBookingProductDto[]) {
-    return await this.service.createMany(data)
+    try {
+      return await this.service.createMany(data)
+    } catch (error: any) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   @Get(':id')
