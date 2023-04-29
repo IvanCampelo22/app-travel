@@ -84,12 +84,14 @@ describe('Booking Controller', () => {
       booking2.createdAt = new Date(Date.now())
       const response = await request(app.getHttpServer())
         .get(
-          `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
+          `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}&page=1&size%20=10`
         )
         .expect(200)
       expect(response.body.bookings).toHaveLength(2)
       const filteredResponse = await request(app.getHttpServer())
-        .get(`/bookings?start_date=${startDate.toISOString()}`)
+        .get(
+          `/bookings?start_date=${startDate.toISOString()}&end_date=${endDate.toISOString()}`
+        )
         .expect(200)
       expect(filteredResponse.body.bookings).toHaveLength(2)
     })
@@ -181,13 +183,16 @@ describe('Booking Controller', () => {
       const endDate = new Date(Date.now())
       const page = 0
       const size = 10
-      const booking = (
-        await bookingService.findMany(startDate, endDate, page, size)
-      )[0]
+      const booking = await bookingService.findMany(
+        startDate,
+        endDate,
+        page,
+        size
+      )
       console.log('boking', booking)
 
       const { ok, body } = await request(app.getHttpServer())
-        .delete(`${PATH}/${booking.id}`)
+        .delete(`${PATH}/${booking.bookings[0].id}`)
         .send({})
         .set('Accept', 'application/json')
         .expect('Content-Type', /json/)

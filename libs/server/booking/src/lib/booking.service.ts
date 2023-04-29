@@ -62,31 +62,61 @@ export class BookingService {
   async findMany(
     startDate: Date | null,
     endDate: Date | null,
-    skip: number,
-    take: number
+    page: number,
+    size: number
   ) {
     const where: Record<string, any> = {}
-    if (startDate) {
+
+    if (startDate && endDate) {
       where['createdAt'] = {
-        gte: startDate
+        gte: startDate,
+        lte: endDate
+      }
+    } else if (startDate) {
+      where['createdAt'] = {
+        gte: startDate,
+        lte: new Date(startDate.getTime() + 86400000)
+      }
+    } else if (endDate) {
+      where['createdAt'] = {
+        gte: new Date(endDate.getTime() - 86400000),
+        lte: endDate
       }
     }
-    if (endDate) {
-      if (where['createdAt']) {
-        where['createdAt']['lte'] = endDate
-      } else {
-        where['createdAt'] = {
-          lte: endDate
-        }
+
+    if (!endDate && startDate) {
+      where['createdAt'] = {
+        gte: startDate,
+        lte: new Date(startDate.getTime() + 86400000)
       }
     }
-    return await this.db.booking.findMany({
+
+    const totalCount = await this.db.booking.count({ where })
+    const totalPages = Math.ceil(totalCount / size)
+
+    if (page > totalPages) {
+      page = totalPages
+    }
+
+    const skip = Math.max((page - 1) * size, 0)
+
+    if (size <= 0) {
+      throw new Error(
+        'Invalid value for size argument: must be greater than zero'
+      )
+    }
+
+    const bookings = await this.db.booking.findMany({
       where,
       skip,
-      take
+      take: size
     })
-  }
 
+    return {
+      bookings,
+      totalPages
+    }
+  }
   async update(id: number, input: UpdateBookingDto) {
     return this.db.booking.update({ where: { id }, data: { ...input } })
   }

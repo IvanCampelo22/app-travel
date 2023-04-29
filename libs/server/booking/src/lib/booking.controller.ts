@@ -32,22 +32,16 @@ export class BookingController {
   ): Promise<{ bookings: Booking[]; totalPages: number }> {
     const parsedStartDate = startDate ? new Date(startDate) : null
     const parsedEndDate = endDate ? new Date(endDate) : null
-    const skip = (parseInt(page || '1', 10) - 1) * parseInt(size || '10', 10)
-    const take = parseInt(size || '10', 10)
-    const totalPages = await this.service.getTotalPages(
+    const parsedPage = page ? parseInt(page, 10) : 1
+    const parsedSize = size ? parseInt(size, 10) : 10
+    const { bookings, totalPages } = await this.service.findMany(
       parsedStartDate,
       parsedEndDate,
-      take
-    )
-    const bookings = await this.service.findMany(
-      parsedStartDate,
-      parsedEndDate,
-      skip,
-      take
+      parsedPage,
+      parsedSize
     )
     return { bookings, totalPages }
   }
-
   @Get(':id')
   async getOne(@Param('id') id: string) {
     try {

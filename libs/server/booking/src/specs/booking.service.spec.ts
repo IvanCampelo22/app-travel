@@ -115,13 +115,19 @@ describe('new', () => {
         10
       )
 
-      expect(objsBooking.length).toBe(2)
-      if (objsBooking[0].createdAt && objsBooking[0].createdAt >= startDate) {
-        expect(objsBooking[0].createdAt <= endDate).toBe(true)
+      expect(objsBooking.bookings.length).toBe(2)
+      if (
+        objsBooking.bookings[0].createdAt &&
+        objsBooking.bookings[0].createdAt >= startDate
+      ) {
+        expect(objsBooking.bookings[0].createdAt <= endDate).toBe(true)
       }
 
-      if (objsBooking[1].createdAt && objsBooking[1].createdAt >= startDate) {
-        expect(objsBooking[1].createdAt <= endDate).toBe(true)
+      if (
+        objsBooking.bookings[1].createdAt &&
+        objsBooking.bookings[1].createdAt >= startDate
+      ) {
+        expect(objsBooking.bookings[1].createdAt <= endDate).toBe(true)
       }
     })
   })
