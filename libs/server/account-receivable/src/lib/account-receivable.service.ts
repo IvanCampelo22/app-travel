@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
-import { CreateAccountReceivableDto } from '../dto/account-receivable.create.dto'
-import { UpdateAccountReceivableDto } from '../dto/account-receivable.update.dto'
+import { CreateAccountReceivableDto } from './dto/account-receivable.create.dto'
+import { UpdateAccountReceivableDto } from './dto/account-receivable.update.dto'
 
 @Injectable()
 export class AccountReceivableService {

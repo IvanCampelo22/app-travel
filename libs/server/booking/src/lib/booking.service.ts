@@ -91,8 +91,18 @@ export class BookingService {
       }
     }
 
-    const totalCount = await this.db.booking.count({ where })
-    const totalPages = Math.ceil(totalCount / size)
+    const countWhere: Record<string, any> = { ...where }
+    const totalCount = await this.db.booking.count({ where: countWhere })
+
+    if (totalCount === 0) {
+      return {
+        bookings: [],
+        totalPages: 0
+      }
+    }
+
+    const totalFilteredItems = await this.db.booking.count({ where })
+    const totalPages = Math.ceil(totalFilteredItems / size)
 
     if (page > totalPages) {
       page = totalPages
@@ -117,6 +127,7 @@ export class BookingService {
       totalPages
     }
   }
+
   async update(id: number, input: UpdateBookingDto) {
     return this.db.booking.update({ where: { id }, data: { ...input } })
   }

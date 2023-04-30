@@ -1,7 +1,7 @@
 /* eslint-disable */
 export default {
   displayName: 'client',
-  preset: '../../jest.preset.js',
+  preset: '../../../jest.preset.js',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json'
@@ -12,5 +12,6 @@ export default {
     '^.+\\.[tj]s$': 'ts-jest'
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageDirectory: '../../coverage/libs/client'
+  coverageDirectory: '../../../coverage/libs/server/client',
+  testTimeout: 60 * 100
 }
