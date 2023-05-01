@@ -91,6 +91,8 @@ export class BookingService {
       }
     }
 
+    where['isActive'] = true
+
     const totalCount = await this.db.booking.count({ where })
     const totalPages = Math.ceil(totalCount / size)
     const adjustedPage = Math.min(page, totalPages)
