@@ -91,30 +91,17 @@ export class BookingService {
       }
     }
 
-    const countWhere: Record<string, any> = { ...where }
-    const totalCount = await this.db.booking.count({ where: countWhere })
-
-    if (totalCount === 0) {
-      return {
-        bookings: [],
-        totalPages: 0
-      }
-    }
-
-    const totalFilteredItems = await this.db.booking.count({ where })
-    const totalPages = Math.ceil(totalFilteredItems / size)
-
-    if (page > totalPages) {
-      page = totalPages
-    }
-
-    const skip = Math.max((page - 1) * size, 0)
+    const totalCount = await this.db.booking.count({ where })
+    const totalPages = Math.ceil(totalCount / size)
+    const adjustedPage = Math.min(page, totalPages)
 
     if (size <= 0) {
       throw new Error(
         'Invalid value for size argument: must be greater than zero'
       )
     }
+
+    const skip = Math.max((adjustedPage - 1) * size, 0)
 
     const bookings = await this.db.booking.findMany({
       where,
@@ -127,7 +114,6 @@ export class BookingService {
       totalPages
     }
   }
-
   async update(id: number, input: UpdateBookingDto) {
     return this.db.booking.update({ where: { id }, data: { ...input } })
   }

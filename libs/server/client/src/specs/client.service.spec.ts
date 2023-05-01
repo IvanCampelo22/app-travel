@@ -10,6 +10,7 @@ import { TenantModule } from '@server/tenant'
 import { UserModule } from '@server/user'
 import { ClientModule } from '../lib/client.module'
 import { ClientService } from '../lib/client.service'
+import { CreateClientDto } from '../lib/dto/client.create.dto'
 
 describe('BookingProduct Service', () => {
   let moduleRef: TestingModule
@@ -87,6 +88,35 @@ describe('BookingProduct Service', () => {
 
       const clients = await clientService.findAll()
       expect(clients.length).toEqual(2)
+    })
+  })
+
+  describe('create', () => {
+    it('should create a client', async () => {
+      const tenant = await db.tenant.create({
+        data: { name: 'tenant1', email: '' }
+      })
+      const account = await db.account.create({
+        data: {
+          tenantId: tenant.id,
+          name: 'account1',
+          email: 'account1@gmail.com',
+          ownerId: 1,
+          category: 'Agency'
+        }
+      })
+      const createClient: CreateClientDto = {
+        accountId: account.id,
+        tenantId: tenant.id,
+        firstName: 'pedro',
+        lastName: 'julio',
+        email: 'pedro@gmail.com',
+        dateOfBirth: new Date(Date.now()),
+        ownerUserId: '1'
+      }
+
+      const client = await clientService.create(createClient)
+      expect(client.firstName).toBe('pedro')
     })
   })
 })
