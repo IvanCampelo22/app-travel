@@ -6,7 +6,7 @@
         "logDriver": "awslogs",
         "options": {
           "awslogs-group": "/ecs/v10-eng-dev-frontend-node",
-          "awslogs-region": "sa-east-1",
+          "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
       },
@@ -17,7 +17,7 @@
           "containerPort": 3000
         }
       ],
-      "image": "060454264788.dkr.ecr.sa-east-1.amazonaws.com/v10-eng-dev-frontend-node:757b8ad388a58a613b842129c9df880afb9f5de9",
+      "image": "060454264788.dkr.ecr.us-east-1.amazonaws.com/v10-eng-dev-frontend-node:latest",
       "name": "frontend-node"
     }
   ],
