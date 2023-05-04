@@ -7,13 +7,13 @@ on:
       - development
 
 env:
-  AWS_REGION: sa-east-1
-  WEB_ECR_REPOSITORY: 060454264788.dkr.ecr.sa-east-1.amazonaws.com/v10-eng-dev-frontend-node
+  AWS_REGION: us-east-1
+  WEB_ECR_REPOSITORY: 060454264788.dkr.ecr.us-east-1.amazonaws.com/v10-eng-dev-frontend-node
   WEB_ECS_SERVICE: frontend-node
   WEB_ECS_CLUSTER: v10-eng-cluster
   WEB_ECS_TASK_DEFINITION: v10-eng-dev-frontend-node
   WEB_CONTAINER_NAME: frontend-node
-  SERVER_ECR_REPOSITORY: 060454264788.dkr.ecr.sa-east-1.amazonaws.com/v10-eng-dev-backend-ts
+  SERVER_ECR_REPOSITORY: 060454264788.dkr.ecr.us-east-1.amazonaws.com/v10-eng-dev-backend-ts
   SERVER_ECS_SERVICE: backend-ts
   SERVER_ECS_CLUSTER: v10-eng-cluster
   SERVER_ECS_TASK_DEFINITION: v10-eng-dev-backend-ts
@@ -59,7 +59,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@master
         with:
           role-to-assume: arn:aws:iam::060454264788:role/github-actions
-          aws-region: sa-east-1
+          aws-region: us-east-1
 
       - name: Login to Amazon ECR
         id: login-ecr
