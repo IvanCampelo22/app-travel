@@ -36,6 +36,7 @@
     "@nestjs/core": "9.2.1",
     "@nestjs/platform-express": "9.2.1",
     "@next/font": "13.1.6",
+    "@nrwl/webpack": "^16.0.3",
     "@prisma/client": "4.9.0",
     "@tabler/icons-react": "2.2.0",
     "@tanstack/react-query": "4.22.0",

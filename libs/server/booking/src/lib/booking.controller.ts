@@ -20,7 +20,11 @@ export class BookingController {
 
   @Get('new')
   async new() {
-    return this.service.new()
+    try {
+      return this.service.new()
+    } catch (error: any) {
+      throw new HttpException(error.message, error.status)
+    }
   }
 
   @Get()
