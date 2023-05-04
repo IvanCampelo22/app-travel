@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  HttpException,
   NotFoundException,
   Param,
   Patch,
@@ -26,8 +26,8 @@ export class AccountController {
   async create(@Body() input: CreateAccountDto) {
     try {
       return await this.service.create(input)
-    } catch (error) {
-      throw new BadRequestException('Bad Request')
+    } catch (error: any) {
+      throw new HttpException(error.message, error.status)
     }
   }
 

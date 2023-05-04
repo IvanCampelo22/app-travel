@@ -11,15 +11,19 @@ export class BookingService {
   ) {}
 
   async new() {
-    const account = (
-      await this.db.account.findMany({
-        select: {
-          id: true,
-          tenantId: true,
-          accountUsers: { select: { id: true } }
-        }
-      })
-    )[0]
+    const accounts = await this.db.account.findMany({
+      select: {
+        id: true,
+        tenantId: true,
+        accountUsers: { select: { id: true } }
+      }
+    })
+
+    const account = accounts.length > 0 ? accounts[0] : null
+
+    if (account === null) {
+      throw new Error('Nenhum registro encontrado')
+    }
 
     const booking = this.db.booking.create({
       data: {
@@ -28,6 +32,7 @@ export class BookingService {
         products: { createMany: { data: [] } }
       }
     })
+
     return booking
   }
 
