@@ -51,7 +51,7 @@ export class BookingController {
     try {
       return await this.service.find(Number(id))
     } catch (error) {
-      throw new NotFoundException('Not Found')
+      throw new NotFoundException('Not')
     }
   }
 
