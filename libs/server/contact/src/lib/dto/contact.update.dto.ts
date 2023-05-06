@@ -3,44 +3,63 @@ import {
   IsDate,
   IsEmail,
   IsInt,
-  IsNotEmpty,
   IsOptional,
   IsString
 } from 'class-validator'
 
-export class CreateClientDto {
-  @IsNotEmpty()
+export class UpdateContactDto {
+  @IsOptional()
   @IsInt()
-  accountId: number
+  accountId?: number
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsInt()
-  tenantId: number
+  tenantId?: number
 
   @IsOptional()
   @IsString()
   prefix?: string
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  firstName: string
+  firstName?: string
 
   @IsOptional()
   @IsString()
   middleName?: string
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  lastName: string
+  lastName?: string
 
   @IsOptional()
   @IsString()
   suffix?: string
 
-  @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  email: string
+  contactTypeCd?: string
+
+  @IsOptional()
+  @IsString()
+  companyName?: string
+
+  @IsOptional()
+  @IsString()
+  jobTitle?: string
+
+  @IsOptional()
+  @IsString()
+  department?: string
+
+  @IsOptional()
+  @IsString()
+  managerName?: string
+
+  @IsEmail()
+  @IsOptional()
+  @IsString()
+  email?: string
 
   @IsOptional()
   @IsString()
@@ -49,6 +68,10 @@ export class CreateClientDto {
   @IsOptional()
   @IsString()
   mobilePhone?: string
+
+  @IsOptional()
+  @IsString()
+  fax?: string
 
   @IsOptional()
   @IsString()
@@ -110,67 +133,39 @@ export class CreateClientDto {
   @IsString()
   gender?: string
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsDate()
-  dateOfBirth: Date
+  dateOfBirth?: Date
+
+  @IsOptional()
+  @IsBoolean()
+  allowCreateUser?: boolean
 
   @IsOptional()
   @IsString()
-  ccName?: string
+  ownerUserId?: string
 
   @IsOptional()
   @IsString()
-  ccNumber?: string
-
-  @IsOptional()
-  @IsString()
-  ccExpire?: string
-
-  @IsOptional()
-  @IsString()
-  ccCvv2?: string
-
-  @IsOptional()
-  @IsString()
-  ccApproval?: string
-
-  @IsString()
-  @IsOptional()
-  bankName?: string
-
-  @IsString()
-  @IsOptional()
-  branchName?: string
-
-  @IsString()
-  @IsOptional()
-  bankAccount?: string
-
-  @IsString()
-  @IsOptional()
-  notes?: string
-
-  @IsString()
-  @IsNotEmpty()
-  ownerUserId: string
+  contactUserId?: string
 
   @IsOptional()
   @IsDate()
   createdAt?: Date
 
-  @IsString()
   @IsOptional()
+  @IsString()
   createdBy?: string
 
+  @IsOptional()
   @IsDate()
-  @IsOptional()
-  modifeidAt?: Date
+  modifiedAt?: Date
 
-  @IsString()
   @IsOptional()
+  @IsString()
   modifiedBy?: string
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isActive?: boolean
 }

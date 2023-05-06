@@ -8,7 +8,7 @@ import {
   IsString
 } from 'class-validator'
 
-export class CreateClientDto {
+export class CreateContactDto {
   @IsNotEmpty()
   @IsInt()
   accountId: number
@@ -37,6 +37,26 @@ export class CreateClientDto {
   @IsString()
   suffix?: string
 
+  @IsOptional()
+  @IsString()
+  contactTypeCd?: string
+
+  @IsOptional()
+  @IsString()
+  companyName?: string
+
+  @IsOptional()
+  @IsString()
+  jobTitle?: string
+
+  @IsOptional()
+  @IsString()
+  department?: string
+
+  @IsOptional()
+  @IsString()
+  managerName?: string
+
   @IsEmail()
   @IsNotEmpty()
   @IsString()
@@ -49,6 +69,10 @@ export class CreateClientDto {
   @IsOptional()
   @IsString()
   mobilePhone?: string
+
+  @IsOptional()
+  @IsString()
+  fax?: string
 
   @IsOptional()
   @IsString()
@@ -114,63 +138,35 @@ export class CreateClientDto {
   @IsDate()
   dateOfBirth: Date
 
-  @IsOptional()
-  @IsString()
-  ccName?: string
-
-  @IsOptional()
-  @IsString()
-  ccNumber?: string
-
-  @IsOptional()
-  @IsString()
-  ccExpire?: string
-
-  @IsOptional()
-  @IsString()
-  ccCvv2?: string
-
-  @IsOptional()
-  @IsString()
-  ccApproval?: string
-
-  @IsString()
-  @IsOptional()
-  bankName?: string
-
-  @IsString()
-  @IsOptional()
-  branchName?: string
-
-  @IsString()
-  @IsOptional()
-  bankAccount?: string
-
-  @IsString()
-  @IsOptional()
-  notes?: string
-
-  @IsString()
   @IsNotEmpty()
-  ownerUserId: string
+  @IsBoolean()
+  allowCreateUser: boolean
+
+  @IsOptional()
+  @IsString()
+  ownerUserId?: string
+
+  @IsOptional()
+  @IsString()
+  contactUserId?: string
 
   @IsOptional()
   @IsDate()
   createdAt?: Date
 
-  @IsString()
   @IsOptional()
+  @IsString()
   createdBy?: string
 
+  @IsOptional()
   @IsDate()
-  @IsOptional()
-  modifeidAt?: Date
+  modifiedAt?: Date
 
-  @IsString()
   @IsOptional()
+  @IsString()
   modifiedBy?: string
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isActive?: boolean
 }

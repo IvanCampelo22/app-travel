@@ -5,12 +5,14 @@ import { AccountReceivableModule } from '@server/accountreceivable'
 import { BookingModule } from '@server/booking'
 import { BookingproductsModule } from '@server/bookingproducts'
 import { ClientModule } from '@server/client'
+import { ContactModule } from '@server/contact'
+import { ContacttypeModule } from '@server/contacttype'
 import { CoreModule } from '@server/core'
 import { DatabaseModule } from '@server/database'
+import { LeadModule } from '@server/lead'
 import { ProductModule } from '@server/product'
 import { TenantModule } from '@server/tenant'
 import { UserModule } from '@server/user'
-
 @Module({
   imports: [
     CoreModule,
@@ -23,7 +25,10 @@ import { UserModule } from '@server/user'
     ProductModule,
     ClientModule,
     AccountReceivableModule,
-    AccountPayableModule
+    AccountPayableModule,
+    LeadModule,
+    ContacttypeModule,
+    ContactModule
   ]
 })
 export class MainModule {}

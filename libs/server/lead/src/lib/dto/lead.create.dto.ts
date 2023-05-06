@@ -8,14 +8,14 @@ import {
   IsString
 } from 'class-validator'
 
-export class CreateClientDto {
-  @IsNotEmpty()
-  @IsInt()
-  accountId: number
-
+export class CreateLeadDto {
   @IsNotEmpty()
   @IsInt()
   tenantId: number
+
+  @IsNotEmpty()
+  @IsInt()
+  accountId: number
 
   @IsOptional()
   @IsString()
@@ -25,10 +25,6 @@ export class CreateClientDto {
   @IsString()
   firstName: string
 
-  @IsOptional()
-  @IsString()
-  middleName?: string
-
   @IsNotEmpty()
   @IsString()
   lastName: string
@@ -37,9 +33,24 @@ export class CreateClientDto {
   @IsString()
   suffix?: string
 
-  @IsEmail()
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
+  companyName?: string
+
+  @IsOptional()
+  @IsString()
+  jobTitle?: string
+
+  @IsOptional()
+  @IsString()
+  department?: string
+
+  @IsOptional()
+  @IsString()
+  managerName?: string
+
+  @IsNotEmpty()
+  @IsEmail()
   email: string
 
   @IsOptional()
@@ -52,15 +63,15 @@ export class CreateClientDto {
 
   @IsOptional()
   @IsString()
+  fax?: string
+
+  @IsOptional()
+  @IsString()
   mailingAdress1?: string
 
   @IsOptional()
   @IsString()
   mailingAdress2?: string
-
-  @IsOptional()
-  @IsString()
-  mailingAdress3?: string
 
   @IsOptional()
   @IsString()
@@ -106,71 +117,31 @@ export class CreateClientDto {
   @IsString()
   otherPostalCode?: string
 
-  @IsOptional()
-  @IsString()
-  gender?: string
-
   @IsNotEmpty()
   @IsDate()
   dateOfBirth: Date
 
   @IsOptional()
   @IsString()
-  ccName?: string
-
-  @IsOptional()
-  @IsString()
-  ccNumber?: string
-
-  @IsOptional()
-  @IsString()
-  ccExpire?: string
-
-  @IsOptional()
-  @IsString()
-  ccCvv2?: string
-
-  @IsOptional()
-  @IsString()
-  ccApproval?: string
-
-  @IsString()
-  @IsOptional()
-  bankName?: string
-
-  @IsString()
-  @IsOptional()
-  branchName?: string
-
-  @IsString()
-  @IsOptional()
-  bankAccount?: string
-
-  @IsString()
-  @IsOptional()
-  notes?: string
-
-  @IsString()
-  @IsNotEmpty()
-  ownerUserId: string
+  ownerUserId?: string
 
   @IsOptional()
   @IsDate()
   createdAt?: Date
 
-  @IsString()
   @IsOptional()
+  @IsString()
   createdBy?: string
 
+  @IsOptional()
   @IsDate()
-  @IsOptional()
-  modifeidAt?: Date
+  modifiedAt?: Date
 
-  @IsString()
   @IsOptional()
+  @IsString()
   modifiedBy?: string
 
-  @IsBoolean()
   @IsOptional()
+  @IsBoolean()
   isActive?: boolean
 }
