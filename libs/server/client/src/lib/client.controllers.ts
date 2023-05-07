@@ -21,8 +21,8 @@ export class ClientController {
   }
 
   @Get(':id')
-  async findOne(@Param(':id') id: number) {
-    return await this.clientService.findOne(id)
+  async findOne(@Param(':id') id: string) {
+    return await this.clientService.findOne(Number(id))
   }
 
   @Post()
@@ -31,12 +31,12 @@ export class ClientController {
   }
 
   @Patch(':id')
-  async update(@Param(':id') id: number, @Body() input: UpdateClientDto) {
-    return await this.clientService.update(id, input)
+  async update(@Param(':id') id: string, @Body() input: UpdateClientDto) {
+    return await this.clientService.update(Number(id), input)
   }
 
   @Delete()
-  async destroy(@Param(':id') id: number) {
-    return await this.clientService.destroy(id)
+  async destroy(@Param(':id') id: string) {
+    return await this.clientService.destroy(Number(id))
   }
 }

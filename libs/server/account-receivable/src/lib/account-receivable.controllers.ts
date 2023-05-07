@@ -22,8 +22,8 @@ export class AccountReceivableController {
   }
 
   @Get(':id')
-  async findOne(@Param(':id') id: number) {
-    return await this.accountReceivableService.findOne(id)
+  async findOne(@Param(':id') id: string) {
+    return await this.accountReceivableService.findOne(Number(id))
   }
 
   @Post()
@@ -33,14 +33,14 @@ export class AccountReceivableController {
 
   @Patch(':id')
   async update(
-    @Param(':id') id: number,
+    @Param(':id') id: string,
     @Body() input: CreateAccountReceivableDto
   ) {
-    return await this.accountReceivableService.update(id, input)
+    return await this.accountReceivableService.update(Number(id), input)
   }
 
   @Delete(':id')
-  async destroy(@Param(':id') id: number) {
-    return await this.accountReceivableService.destroy(id)
+  async destroy(@Param(':id') id: string) {
+    return await this.accountReceivableService.destroy(Number(id))
   }
 }

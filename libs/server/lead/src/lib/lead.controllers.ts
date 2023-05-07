@@ -19,18 +19,23 @@ export class LeadController {
     return this.leadService.findMany()
   }
 
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.leadService.findOne(Number(id))
+  }
+
   @Post()
   async create(@Body() input: CreateLeadDto) {
     return this.leadService.create(input)
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() input: UpdateLeadDto) {
-    return this.leadService.update(id, input)
+  async update(@Param('id') id: string, @Body() input: UpdateLeadDto) {
+    return this.leadService.update(Number(id), input)
   }
 
   @Delete(':id')
-  async destroy(@Param('id') id: number) {
-    return this.leadService.destroy(id)
+  async destroy(@Param('id') id: string) {
+    return this.leadService.destroy(Number(id))
   }
 }

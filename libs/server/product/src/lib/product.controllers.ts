@@ -21,8 +21,8 @@ export class ProductController {
   }
 
   @Get(':id')
-  async findOne(@Param(':id') id: number) {
-    return await this.productService.findOne(id)
+  async findOne(@Param(':id') id: string) {
+    return await this.productService.findOne(Number(id))
   }
 
   @Post()
@@ -31,12 +31,12 @@ export class ProductController {
   }
 
   @Patch(':id')
-  async update(@Param(':id') id: number, @Body() data: UpdateProductDto) {
-    return await this.productService.update(id, data)
+  async update(@Param(':id') id: string, @Body() data: UpdateProductDto) {
+    return await this.productService.update(Number(id), data)
   }
 
   @Delete(':id')
-  async delete(@Param(':id') id: number) {
-    return await this.productService.destroy(id)
+  async delete(@Param(':id') id: string) {
+    return await this.productService.destroy(Number(id))
   }
 }

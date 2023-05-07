@@ -21,8 +21,8 @@ export class ContactController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return await this.contactService.findOne(id)
+  async findOne(@Param('id') id: string) {
+    return await this.contactService.findOne(Number(id))
   }
 
   @Post()
@@ -31,12 +31,12 @@ export class ContactController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() input: UpdateContactDto) {
-    return await this.contactService.update(id, input)
+  async update(@Param('id') id: string, @Body() input: UpdateContactDto) {
+    return await this.contactService.update(Number(id), input)
   }
 
   @Delete(':id')
-  async destroy(@Param('id') id: number) {
-    return await this.contactService.destroy(id)
+  async destroy(@Param('id') id: string) {
+    return await this.contactService.destroy(Number(id))
   }
 }

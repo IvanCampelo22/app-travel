@@ -21,8 +21,8 @@ export class AccountPayableController {
   }
 
   @Get(':id')
-  async find(@Param(':id') id: number) {
-    return await this.accountPayableService.find(id)
+  async find(@Param(':id') id: string) {
+    return await this.accountPayableService.find(Number(id))
   }
 
   @Post()

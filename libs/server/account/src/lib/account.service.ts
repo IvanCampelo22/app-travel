@@ -22,6 +22,10 @@ export class AccountService {
     return this.db.account.findMany()
   }
 
+  async findOne(id: number) {
+    return this.db.account.findUnique({ where: { id } })
+  }
+
   async update(id: number, input: UpdateAccountDto) {
     return this.db.account.update({ where: { id }, data: input })
   }

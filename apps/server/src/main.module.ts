@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common'
 import { AccountModule } from '@server/account'
 import { AccountPayableModule } from '@server/accountpayable'
 import { AccountReceivableModule } from '@server/accountreceivable'
+import { AccounttypeModule } from '@server/accounttype'
 import { BookingModule } from '@server/booking'
 import { BookingproductsModule } from '@server/bookingproducts'
 import { ClientModule } from '@server/client'
@@ -13,6 +14,7 @@ import { LeadModule } from '@server/lead'
 import { ProductModule } from '@server/product'
 import { TenantModule } from '@server/tenant'
 import { UserModule } from '@server/user'
+
 @Module({
   imports: [
     CoreModule,
@@ -28,7 +30,8 @@ import { UserModule } from '@server/user'
     AccountPayableModule,
     LeadModule,
     ContacttypeModule,
-    ContactModule
+    ContactModule,
+    AccounttypeModule
   ]
 })
 export class MainModule {}

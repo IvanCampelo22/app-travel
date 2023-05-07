@@ -15,6 +15,10 @@ export class LeadService {
     return this.db.lead.findMany()
   }
 
+  async findOne(id: number) {
+    return this.db.lead.findUnique({ where: { id } })
+  }
+
   async create(input: CreateLeadDto) {
     return this.db.lead.create({
       data: { ...input }

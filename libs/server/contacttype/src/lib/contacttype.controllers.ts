@@ -26,17 +26,17 @@ export class ContacttypeController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return this.contacttype.findOne(id)
+  async findOne(@Param('id') id: string) {
+    return this.contacttype.findOne(Number(id))
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() input: UpdateContacttypeDto) {
-    return this.contacttype.update(id, input)
+  async update(@Param('id') id: string, @Body() input: UpdateContacttypeDto) {
+    return this.contacttype.update(Number(id), input)
   }
 
   @Delete(':id')
-  async destroy(@Param('id') id: number) {
-    return this.contacttype.destroy(id)
+  async destroy(@Param('id') id: string) {
+    return this.contacttype.destroy(Number(id))
   }
 }

@@ -22,6 +22,15 @@ export class AccountController {
     return this.service.findMany()
   }
 
+  @Get(':id')
+  async findUnique(@Param('id') id: string) {
+    try {
+      return await this.service.findOne(Number(id))
+    } catch (error) {
+      throw new NotFoundException('Not Found')
+    }
+  }
+
   @Post()
   async create(@Body() input: CreateAccountDto) {
     try {

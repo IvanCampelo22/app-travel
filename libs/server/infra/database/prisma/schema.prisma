@@ -56,6 +56,7 @@ model Tenant {
   leadTenants        Lead[]            @relation("leadTenants")
   contactTypesTenant ContactType[]     @relation("contactTypesTenant")
   contactTenant      Contact[]         @relation("contactTenant")
+  accountTypeTenant  AccountType[]     @relation("accountTypeTenant")
 
   @@unique([email])
 }
@@ -530,4 +531,17 @@ model Contact {
   isActive          Boolean?  @default(true)
 
   @@unique([email])
+}
+
+model AccountType {
+  id                     Int       @id @default(autoincrement())
+  accountTypeCd          String    @db.VarChar(10)
+  tenantId               Int
+  tenant                 Tenant    @relation(fields: [tenantId], references: [id], name: "accountTypeTenant")
+  accountTypeDescription String?   @db.VarChar(256)
+  createdAt              DateTime? @default(now())
+  createdBy              String?   @db.VarChar(32)
+  modifiedAt             DateTime  @updatedAt
+  modifiedBy             String?   @db.VarChar(32)
+  isActive               Boolean?  @default(true)
 }
