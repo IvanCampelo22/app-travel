@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { MulterModule } from '@nestjs/platform-express'
 import { AccountModule } from '@server/account'
 import { AccountPayableModule } from '@server/accountpayable'
 import { AccountReceivableModule } from '@server/accountreceivable'
@@ -31,7 +32,10 @@ import { UserModule } from '@server/user'
     LeadModule,
     ContacttypeModule,
     ContactModule,
-    AccounttypeModule
+    AccounttypeModule,
+    MulterModule.register({
+      dest: './files'
+    })
   ]
 })
 export class MainModule {}
