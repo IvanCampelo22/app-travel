@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common'
+import { BookingStatus } from '@prisma/client'
 import { DatabaseService } from '@server/database'
 import { UserService } from '@server/user'
 import { UpdateBookingDto } from './dto/booking.update.dto'
@@ -15,6 +16,7 @@ export class BookingService {
       select: {
         id: true,
         tenantId: true,
+        dobName: true,
         accountUsers: { select: { id: true } }
       }
     })
@@ -25,10 +27,28 @@ export class BookingService {
       throw new Error('Nenhum registro encontrado')
     }
 
+    const users = await this.db.user.findMany({
+      select: {
+        id: true,
+        tenantId: true,
+        firstName: true
+      }
+    })
+
+    const user = users.length > 0 ? users[0] : null
+
+    if (user === null) {
+      throw new Error('Nenhum registro encontrado')
+    }
+
     const booking = this.db.booking.create({
       data: {
         tenantId: account.tenantId,
         accountId: account.id,
+        ownerId: user.id,
+        createdBy: user.firstName,
+        modifiedBy: user.firstName,
+        status: BookingStatus.Draft,
         products: { createMany: { data: [] } }
       }
     })
