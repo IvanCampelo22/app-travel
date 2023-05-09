@@ -8,8 +8,12 @@ import {
   NotFoundException,
   Param,
   Patch,
-  Query
+  Post,
+  Query,
+  UploadedFile,
+  UseInterceptors
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { Booking } from '@prisma/client'
 import { BookingService } from './booking.service'
 import { UpdateBookingDto } from './dto/booking.update.dto'
@@ -25,6 +29,14 @@ export class BookingController {
     } catch (error: any) {
       throw new HttpException(error.message, error.status)
     }
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: any) {
+    console.log(file)
+    // aqui você pode processar o arquivo e salvar as informações no banco de dados
+    return { message: 'Arquivo enviado com sucesso' }
   }
 
   @Get()

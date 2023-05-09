@@ -7,8 +7,11 @@ import {
   NotFoundException,
   Param,
   Patch,
-  Post
+  Post,
+  UploadedFile,
+  UseInterceptors
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { BookingProductService } from './bookingproducts.service'
 import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
 import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
@@ -23,6 +26,14 @@ export class BookingProductControllers {
     } catch (error: any) {
       throw new HttpException(error.message, error.status)
     }
+  }
+
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: any) {
+    console.log(file)
+    // aqui você pode processar o arquivo e salvar as informações no banco de dados
+    return { message: 'Arquivo enviado com sucesso' }
   }
 
   @Post()

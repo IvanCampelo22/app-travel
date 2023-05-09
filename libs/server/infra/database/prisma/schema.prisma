@@ -243,6 +243,9 @@ model BookingTraveler {
 
 enum ProductCategory {
   Accommodation
+  Tours
+  Transfers
+  Budgte
 }
 
 enum AccommodationType {
