@@ -16,7 +16,43 @@ export class BookingProductService {
   }
 
   async createMany(data: CreateBookingProductDto[]) {
-    return this.service.bookingProduct.createMany({ data })
+    const users = await this.service.user.findMany({
+      select: {
+        id: true,
+        tenantId: true,
+        firstName: true
+      }
+    })
+
+    const user = users.length > 0 ? users[0] : null
+
+    if (user === null) {
+      throw new Error('Nenhum registro encontrado')
+    }
+
+    const bookings: BookingProduct[] = []
+
+    for (let i = 0; i < data.length; i++) {
+      const bookingproducts = await this.service.bookingProduct.create({
+        data: {
+          tenantId: data[i].tenantId,
+          bookingId: data[i].bookingId,
+          accountId: data[i].accountId,
+          ownerId: user.id,
+          category: data[i].category,
+          startDate: data[i].startDate,
+          endDate: data[i].endDate,
+          adultsCount: data[i].adultsCount,
+          minorsCount: data[i].minorsCount,
+          ageOfMinors: data[i].ageOfMinors,
+          toLocation: data[i].toLocation,
+          modifiedBy: user.firstName,
+          createdBy: user.firstName
+        }
+      })
+      bookings.push(bookingproducts)
+    }
+    return bookings
   }
   async find(id: number) {
     return await this.service.bookingProduct.findUnique({ where: { id } })

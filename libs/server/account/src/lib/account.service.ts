@@ -12,11 +12,32 @@ export class AccountService {
   ) {}
 
   async create(input: CreateAccountDto) {
-    return await this.db.account.create({
-      data: {
-        ...input
+    const users = await this.db.user.findMany({
+      select: {
+        id: true,
+        tenantId: true,
+        firstName: true
       }
     })
+
+    const user = users.length > 0 ? users[0] : null
+
+    if (user === null) {
+      throw new Error('Nenhum registro encontrado')
+    }
+
+    const account = await this.db.account.create({
+      data: {
+        tenantId: input.tenantId,
+        name: input.name,
+        email: input.email,
+        category: input.category,
+        ownerId: user.id,
+        createdBy: user.firstName,
+        modifiedBy: user.firstName
+      }
+    })
+    return account
   }
   async findMany() {
     return this.db.account.findMany()

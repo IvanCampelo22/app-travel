@@ -49,6 +49,7 @@ export class BookingService {
         createdBy: user.firstName,
         modifiedBy: user.firstName,
         status: BookingStatus.Draft,
+        customerId: user.id,
         products: { createMany: { data: [] } }
       }
     })
