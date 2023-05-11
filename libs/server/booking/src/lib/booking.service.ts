@@ -96,26 +96,16 @@ export class BookingService {
     if (startDate && endDate) {
       where['createdAt'] = {
         gte: startDate,
-        lte: endDate
+        lte: new Date(endDate.getTime() + 24 * 60 * 60 * 1000) // adiciona 1 dia em milissegundos
       }
     } else if (startDate) {
-      const nextDay = new Date(startDate.getTime())
-      nextDay.setDate(nextDay.getDate() + 1)
-      nextDay.setHours(0, 0, 0, 0)
-      const endDate = new Date(nextDay.getTime() - 1)
-      endDate.setHours(23, 59, 59, 999)
       where['createdAt'] = {
         gte: startDate,
-        lte: endDate
+        lte: new Date(startDate.getTime() + 24 * 60 * 60 * 1000)
       }
     } else if (endDate) {
-      const startDay = new Date(endDate.getTime())
-      startDay.setDate(startDay.getDate() - 1)
-      startDay.setHours(0, 0, 0, 0)
-      const startDate = new Date(startDay.getTime())
-      startDate.setHours(0, 0, 0, 0)
       where['createdAt'] = {
-        gte: startDate,
+        gte: new Date(endDate.getTime() - 24 * 60 * 60 * 1000),
         lte: endDate
       }
     }
