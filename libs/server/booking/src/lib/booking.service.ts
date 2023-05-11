@@ -99,21 +99,24 @@ export class BookingService {
         lte: endDate
       }
     } else if (startDate) {
+      const nextDay = new Date(startDate.getTime())
+      nextDay.setDate(nextDay.getDate() + 1)
+      nextDay.setHours(0, 0, 0, 0)
+      const endDate = new Date(nextDay.getTime() - 1)
+      endDate.setHours(23, 59, 59, 999)
       where['createdAt'] = {
         gte: startDate,
-        lte: new Date(startDate.getTime() + 86400000)
-      }
-    } else if (endDate) {
-      where['createdAt'] = {
-        gte: new Date(endDate.getTime() - 86400000),
         lte: endDate
       }
-    }
-
-    if (!endDate && startDate) {
+    } else if (endDate) {
+      const startDay = new Date(endDate.getTime())
+      startDay.setDate(startDay.getDate() - 1)
+      startDay.setHours(0, 0, 0, 0)
+      const startDate = new Date(startDay.getTime())
+      startDate.setHours(0, 0, 0, 0)
       where['createdAt'] = {
         gte: startDate,
-        lte: new Date(startDate.getTime() + 86400000)
+        lte: endDate
       }
     }
 

@@ -4,6 +4,7 @@ import { AccountModule } from '@server/account'
 import { AccountPayableModule } from '@server/accountpayable'
 import { AccountReceivableModule } from '@server/accountreceivable'
 import { AccounttypeModule } from '@server/accounttype'
+import { AwsModule } from '@server/aws'
 import { BookingModule } from '@server/booking'
 import { BookingproductsModule } from '@server/bookingproducts'
 import { ClientModule } from '@server/client'
@@ -33,6 +34,7 @@ import { UserModule } from '@server/user'
     ContacttypeModule,
     ContactModule,
     AccounttypeModule,
+    AwsModule,
     MulterModule.register({
       dest: './files'
     })

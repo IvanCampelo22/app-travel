@@ -63,7 +63,7 @@ export class CreateBookingProductDto {
 
   @IsOptional()
   @IsString()
-  termsAndCoditions?: string
+  termsAndConditions?: string
 
   @IsOptional()
   @IsString()

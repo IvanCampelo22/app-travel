@@ -12,12 +12,17 @@ import {
   UseInterceptors
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
+import { UploadService } from '@server/aws'
+import { Readable } from 'stream'
 import { BookingProductService } from './bookingproducts.service'
 import { CreateBookingProductDto } from './dto/bookingproduct.create.dto'
 import { UpdateBookingProductDto } from './dto/bookingproduct.update.dto'
 @Controller('bookingproducts')
 export class BookingProductControllers {
-  constructor(private readonly service: BookingProductService) {}
+  constructor(
+    private readonly service: BookingProductService,
+    private readonly uploadService: UploadService
+  ) {}
 
   @Get('booking/:bookingId')
   async index(@Param('bookingId') bookingId?: string) {
@@ -31,9 +36,11 @@ export class BookingProductControllers {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: any) {
-    console.log(file)
-    // aqui você pode processar o arquivo e salvar as informações no banco de dados
-    return { message: 'Arquivo enviado com sucesso' }
+    const stream = new Readable()
+    stream.push(file.buffer)
+    stream.push(null)
+    const url = await this.uploadService.uploadToS3(stream, file.originalname)
+    return { message: 'Arquivo enviado com sucesso', url }
   }
 
   @Post()

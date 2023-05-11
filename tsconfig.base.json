@@ -24,12 +24,13 @@
       "@server/accountreceivable": [
         "libs/server/account-receivable/src/index.ts"
       ],
+      "@server/accounttype": ["libs/server/accounttype/src/index.ts"],
       "@server/booking": ["libs/server/booking/src/index.ts"],
       "@server/booking/fixtures": ["libs/server/booking/src/specs/index.ts"],
       "@server/bookingproducts": ["libs/server/bookingproducts/src/index.ts"],
+      "@server/aws": ["libs/server/aws/src/index.ts"],
       "@server/client": ["libs/server/client/src/index.ts"],
       "@server/contact": ["libs/server/contact/src/index.ts"],
-      "@server/accounttype": ["libs/server/accounttype/src/index.ts"],
       "@server/contacttype": ["libs/server/contacttype/src/index.ts"],
       "@server/core": ["libs/server/infra/core/src/index.ts"],
       "@server/database": ["libs/server/infra/database/src/index.ts"],
@@ -46,6 +47,7 @@
         "libs/account-receivable/src/index.ts"
       ],
       "@viagem10-monorepo/accounttype": ["libs/accounttype/src/index.ts"],
+      "@viagem10-monorepo/aws": ["libs/aws/src/index.ts"],
       "@viagem10-monorepo/client": ["libs/client/src/index.ts"],
       "@viagem10-monorepo/contact": ["libs/contact/src/index.ts"],
       "@viagem10-monorepo/contacttype": ["libs/contacttype/src/index.ts"],
